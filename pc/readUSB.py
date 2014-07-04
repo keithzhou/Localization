@@ -16,14 +16,10 @@ def printUSB():
             waveform.append(data)
             print "%d" % data
     except:
-        print "Error"
         waveform = np.array(waveform) * 1.0
-        waveform -= np.mean(waveform)
-        waveform /= np.max(np.abs(waveform))
-        waveform *= 32767
-        scipy.io.wavfile.write('test.wav',44100,scaled)
-        
-
+        waveform = (((waveform - np.mean(waveform)) / np.max(np.abs(waveform))) * 10000).astype(np.int16)
+        scipy.io.wavefile.write('output.wav',44100,waveform) # writing the sound to a file
+        print "Done Saving"
 
 if __name__ == "__main__":
     printUSB()
