@@ -27,7 +27,7 @@ def printUSB():
         plt.plot(waveform)
         plt.savefig('output.png')
         print waveform.shape
-        scipy.io.wavfile.write('output.wav',1000,waveform) # writing the sound to a file
+        scipy.io.wavfile.write('output.wav',10000,waveform) # writing the sound to a file
         print "Done Saving"
 
 if __name__ == "__main__":
