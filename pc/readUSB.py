@@ -11,12 +11,14 @@ def printUSB():
     ser = serial.Serial(USBPORTNAME, USBBAUDRATE)
     waveform = list()
     try:
+        ts = time.time()
         while True:
             data = int(ser.readline())
             waveform.append(data)
-            print "%d" % data
+            print "%d dt:%.6f" % (data, time.time() - ts)
+            ts = time.time()
     except:
-        waveform = np.array(waveform) * 1.0
+        waveform = np.array(waveform).astype(np.float) 
         waveform = (((waveform - np.mean(waveform)) / np.max(np.abs(waveform))) * 10000).astype(np.int16)
         scipy.io.wavefile.write('output.wav',44100,waveform) # writing the sound to a file
         print "Done Saving"
