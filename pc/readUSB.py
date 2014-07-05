@@ -8,7 +8,7 @@ import scipy.io.wavfile
 USBPORTNAME = '/dev/tty.usbmodem406941'
 USBBAUDRATE = 9600
 
-SAMPLINGRATE = 20000
+SAMPLINGRATE = 20000 * 5
 
 def plotChannels(waveform, fileName):
         f, axes = plt.subplots(waveform.shape[1], sharex=True, sharey=True)
