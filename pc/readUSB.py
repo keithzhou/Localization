@@ -34,11 +34,12 @@ def printUSB():
         print repr(e)
     finally:
         waveform = np.array([ch1,ch2])
+        waveform = np.array(waveform).astype(np.float) 
         # save raw waveform
         plotChannels(waveform.T,'output_plot_raw.png')
+        np.save("output_raw",waveform)
 
         # normalize waveform to save as audio file
-        waveform = np.array(waveform).astype(np.float) 
         waveform -= np.mean(waveform,axis=-1)[:,np.newaxis]
         waveform = (waveform / np.max(np.abs(waveform),axis=-1)[:,np.newaxis] * 10000).astype(np.int16)
         plotChannels(waveform.T,'output_plot_audio.png')
