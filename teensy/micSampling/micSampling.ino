@@ -18,6 +18,8 @@ elapsedMicros sinceStart;
 
 unsigned short buffer_delay[BUFFER_SIZE_DELAY];
 CircularBuffer buffer_mic1(BUFFER_SIZE);
+CircularBuffer buffer_mic2(BUFFER_SIZE);
+
 int i = 0;
 boolean isDone = false;
 ADC *adc = new ADC(); // adc object
@@ -110,6 +112,7 @@ void loop() {
     //Serial.println(sensorValue);
     
     buffer_mic1.add(value1);
+    buffer_mic2.add(value2);
 //    
     if (i >= BUFFER_SIZE_DELAY) i -= BUFFER_SIZE_DELAY;
 //
@@ -119,7 +122,11 @@ void loop() {
   }
   if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70 && !isDone) {
     for (int j = 0; j < BUFFER_SIZE; j++) {
-      Serial.println(buffer_mic1.get_data_at_index(j));
+      Serial.print(buffer_mic1.get_data_at_index(j));
+      Serial.print(" ");
+      Serial.print(buffer_mic2.get_data_at_index(j));
+      Serial.print("\n");
+//      Serial.println(buffer_mic2.get_data_at_index(j));
     }
     isDone = true;
   }
