@@ -21,7 +21,6 @@ CircularBuffer buffer_mic1(BUFFER_SIZE);
 CircularBuffer buffer_mic2(BUFFER_SIZE);
 
 int i = 0;
-boolean isDone = false;
 ADC *adc = new ADC(); // adc object
 
 const int channelA2 = ADC::channel2sc1aADC0[2];
@@ -119,14 +118,17 @@ void loop() {
 //    buffer_mic1.add(value3);
 //    buffer_mic2.add(value4);
     
-    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70 && !isDone) {
+    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70) {
+      Serial.println("START");
       for (int j = 0; j < BUFFER_SIZE; j++) {
         Serial.print(buffer_mic1.get_data_at_index(j));
         Serial.print(" ");
         Serial.print(buffer_mic2.get_data_at_index(j));
         Serial.print("\n");
       }
-      isDone = true;
+      Serial.println("END");
+      buffer_mic1.clear_buffer();
+      buffer_mic2.clear_buffer();
     }
   
 //    buffer_delay[i++] = sinceLastRead;    

@@ -10,6 +10,7 @@ class CircularBuffer
         int get_data_at_index(int i);
         void print_buffer();
         int get_current_length();
+        void clear_buffer();
     private:
         int _buffer_size;
         byte *_buffer;

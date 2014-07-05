@@ -25,6 +25,10 @@ int CircularBuffer::get_current_length() {
   return _length_current;
 }
 
+void CircularBuffer::clear_buffer() {
+  _length_current = 0;
+}
+
 
 void CircularBuffer::print_buffer() {
   for (int i = 0; i < _buffer_size; i++) {
