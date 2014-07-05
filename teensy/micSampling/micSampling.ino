@@ -26,6 +26,8 @@ ADC *adc = new ADC(); // adc object
 
 const int channelA2 = ADC::channel2sc1aADC0[2];
 const int channelA3 = ADC::channel2sc1aADC1[3];
+const int channelA10 = ADC::channel2sc1aADC1[10];
+const int channelA11 = ADC::channel2sc1aADC0[11];
 
 #define highSpeed8bitAnalogReadMacro(channel1, channel2, value1, value2) ADC0_SC1A = channel1;ADC1_SC1A = channel2;while (!(ADC0_SC1A & ADC1_SC1A & ADC_SC1_COCO)) {} value1 = ADC0_RA;value2 = ADC1_RA;
 
@@ -94,46 +96,46 @@ void setup() {
   Serial.begin(9600);
   pinMode(A2, INPUT); 
   pinMode(A3, INPUT); 
-
+  pinMode(A10, INPUT); 
+  pinMode(A11, INPUT); 
+  
   highSpeed8bitADCSetup();
 }
 
 byte value1;
 byte value2;
-
+byte value3;
+byte value4;
+unsigned short sensorValue;
 // the loop routine runs over and over again forever:
 void loop() {
-  unsigned short sensorValue;
-  if (sinceLastRead > TIMING_SAMPLING_INTERVAL_MICRO) {
+  // note that all code must be inside the following if to avoid jitters on sampling interval
+  if (sinceLastRead >= TIMING_SAMPLING_INTERVAL_MICRO) {
+    sinceLastRead -= TIMING_SAMPLING_INTERVAL_MICRO;
     highSpeed8bitAnalogReadMacro(channelA2,channelA3,value1,value2);
-
-    //sensorValue = adc->analogRead(A1);
-    //sensorValue = analogRead(A0);
-    //Serial.println(sensorValue);
-    
+    highSpeed8bitAnalogReadMacro(channelA11,channelA10,value3,value4);
     buffer_mic1.add(value1);
     buffer_mic2.add(value2);
-//    
-    if (i >= BUFFER_SIZE_DELAY) i -= BUFFER_SIZE_DELAY;
-//
-    sinceLastRead -= TIMING_SAMPLING_INTERVAL_MICRO;
-    buffer_delay[i++] = sinceLastRead;
-
-  }
-  if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70 && !isDone) {
-    for (int j = 0; j < BUFFER_SIZE; j++) {
-      Serial.print(buffer_mic1.get_data_at_index(j));
-      Serial.print(" ");
-      Serial.print(buffer_mic2.get_data_at_index(j));
-      Serial.print("\n");
-//      Serial.println(buffer_mic2.get_data_at_index(j));
+//    buffer_mic1.add(value3);
+//    buffer_mic2.add(value4);
+    
+    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70 && !isDone) {
+      for (int j = 0; j < BUFFER_SIZE; j++) {
+        Serial.print(buffer_mic1.get_data_at_index(j));
+        Serial.print(" ");
+        Serial.print(buffer_mic2.get_data_at_index(j));
+        Serial.print("\n");
+      }
+      isDone = true;
     }
-    isDone = true;
-  }
-  if (sinceStart > 1e6 * 500) {
-    for (int j = 0; j < BUFFER_SIZE_DELAY; j++) {
-      Serial.println(buffer_delay[j]);
-    }
-    sinceStart = 0;
+  
+//    buffer_delay[i++] = sinceLastRead;    
+//    if (i >= BUFFER_SIZE_DELAY) i -= BUFFER_SIZE_DELAY;
+//    if (sinceStart > 1e6 * 5) {
+//      for (int j = 0; j < BUFFER_SIZE_DELAY; j++) {
+//        Serial.println(buffer_delay[j]);
+//      }
+//      sinceStart = 0;
+//    }
   }
 }
