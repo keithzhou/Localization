@@ -12,7 +12,7 @@ class CircularBuffer
         int get_current_length();
     private:
         int _buffer_size;
-        short *_buffer;
+        byte *_buffer;
         int _index_current;
         int _length_current;
 };

@@ -2,7 +2,7 @@
 
 CircularBuffer::CircularBuffer(int buffer_size)
 {
-    _buffer = (short *)malloc(sizeof(short) * buffer_size);
+    _buffer = (byte *)malloc(sizeof(byte) * buffer_size);
     _buffer_size = buffer_size;
     _index_current = 0;
     _length_current = 0;
