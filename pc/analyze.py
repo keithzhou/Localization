@@ -1,10 +1,15 @@
 import numpy as np
+import math
 
 FILENAME = "output_raw.npy"
 
+SPEED_SOUND = 340
+SAMPLING_RATE = 1e5
+DISTANCE_SPEAKER = .12
+
 def xcorr(sig1, sig2):
     output = np.correlate(sig1,sig2,'full')
-    return np.argmax(output) - (len(sig2) - 1) # positive means signal 2 should be moved to the left
+    return np.argmax(output) - (len(sig2) - 1) 
 
 
 if __name__ == "__main__":
@@ -18,7 +23,11 @@ if __name__ == "__main__":
 
     def run():
         waveform = np.load(FILENAME)
-        print xcorr(waveform[0], waveform[1])
+        xcorrLag = xcorr(waveform[0], waveform[1])
+        ratio = xcorrLag * 1.0 / SAMPLING_RATE *  SPEED_SOUND / DISTANCE_SPEAKER
+        ratio = min(max(-1.0,ratio),1.0)
+        angle = math.acos(ratio) / math.pi * 180
+        print "lag:%d angle:%.4f" % (xcorrLag, angle)
 
     #sanityCheck()
     run()

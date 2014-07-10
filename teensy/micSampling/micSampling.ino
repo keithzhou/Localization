@@ -12,7 +12,7 @@ elapsedMicros sinceStart;
 #include <arduino.h>
 
 #define TIMING_SAMPLING_INTERVAL_MICRO  10
-#define BUFFER_SIZE 2048 * 10
+#define BUFFER_SIZE 2048 * 13
 #define INDEX_TRIGGER BUFFER_SIZE/5
 #define BUFFER_SIZE_DELAY 500
 
