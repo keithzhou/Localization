@@ -118,7 +118,7 @@ void loop() {
 //    buffer_mic1.add(value3);
 //    buffer_mic2.add(value4);
     
-    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 70) {
+    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 20) {
       Serial.println("START");
       for (int j = 0; j < BUFFER_SIZE; j++) {
         Serial.print(buffer_mic1.get_data_at_index(j));

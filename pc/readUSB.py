@@ -5,6 +5,7 @@ import time
 import datetime
 import scipy.io.wavfile
 import os
+import threading
 
 USBPORTNAME = '/dev/tty.usbmodem406941'
 USBBAUDRATE = 9600
@@ -33,7 +34,6 @@ def processWaveform(waveform):
     scipy.io.wavfile.write('output_audio_ch2.wav',SAMPLINGRATE,waveform[1]) 
 
     print "Done Saving"
-    os.system("python analyze.py")
 
 def printUSB():
     ser = serial.Serial(USBPORTNAME, USBBAUDRATE)
@@ -48,6 +48,8 @@ def printUSB():
         elif (data == "END\r\n"):
             print "END detected"
             waveform = np.array([ch1,ch2]).astype(np.float)
+            #thread = threading.Thread(target=processWaveform,args=(waveform,))
+            #thread.start()
             processWaveform(waveform)
         else: 
             df = data.split(' ')
@@ -55,5 +57,6 @@ def printUSB():
             d2 = int(df[1])
             ch1.append(d1)
             ch2.append(d2)
+
 if __name__ == "__main__":
     printUSB()
