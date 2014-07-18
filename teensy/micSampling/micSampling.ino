@@ -12,11 +12,12 @@ elapsedMicros sinceStart;
 #include <arduino.h>
 
 #define TIMING_SAMPLING_INTERVAL_MICRO  10
-#define BUFFER_SIZE 2048 * 13
+#define BUFFER_SIZE 2048 * 3
 #define INDEX_TRIGGER BUFFER_SIZE/5
 #define BUFFER_SIZE_DELAY 500
+#define VOLUME_THRESHOLD 20
 
-unsigned short buffer_delay[BUFFER_SIZE_DELAY];
+int buffer_delay[BUFFER_SIZE_DELAY];
 CircularBuffer buffer_mic1(BUFFER_SIZE);
 CircularBuffer buffer_mic2(BUFFER_SIZE);
 
@@ -118,7 +119,7 @@ void loop() {
 //    buffer_mic1.add(value3);
 //    buffer_mic2.add(value4);
     
-    if (buffer_mic1.get_current_length() == BUFFER_SIZE && abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > 20) {
+    if (buffer_mic1.get_current_length() == BUFFER_SIZE && (abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD || abs(buffer_mic2.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD)) {
       Serial.println("START");
       for (int j = 0; j < BUFFER_SIZE; j++) {
         Serial.print(buffer_mic1.get_data_at_index(j));
