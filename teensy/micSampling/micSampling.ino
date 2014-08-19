@@ -125,11 +125,11 @@ void loop() {
     Serial.print("D: ");
     Serial.print(vv1);
     Serial.print(" ");
-    Serial.print(vv2);
-    Serial.print(" ");
     Serial.print(vv3);
     Serial.print(" ");
     Serial.print(vv4);
+    Serial.print(" ");
+    Serial.print(vv2);
     Serial.print("\n");
     
 //    if (buffer_mic1.get_current_length() == BUFFER_SIZE && (abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD || abs(buffer_mic2.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD /*|| abs(buffer_mic3.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD || abs(buffer_mic4.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD*/) ) {
