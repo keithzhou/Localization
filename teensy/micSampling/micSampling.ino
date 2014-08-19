@@ -11,7 +11,7 @@ elapsedMicros sinceStart;
 #include <ADC.h>
 #include <arduino.h>
 
-#define TIMING_SAMPLING_INTERVAL_MICRO  100
+#define TIMING_SAMPLING_INTERVAL_MICRO  20
 #define BUFFER_SIZE 2048 * 3
 #define INDEX_TRIGGER BUFFER_SIZE/5
 #define BUFFER_SIZE_DELAY 500
@@ -92,6 +92,7 @@ void highSpeed8bitADCSetup(){
 
 }
 
+byte values[5];
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -103,6 +104,7 @@ void setup() {
   pinMode(A11, INPUT); 
   
   highSpeed8bitADCSetup();
+  values[4] = '\n';
 }
 
 byte vv1;
@@ -116,21 +118,26 @@ void loop() {
     sinceLastRead -= TIMING_SAMPLING_INTERVAL_MICRO;
 //    highSpeed8bitAnalogReadMacro(channelA11,channelA10,vv3,vv4);
     //highSpeed8bitAnalogReadMacro(channelA2,channelA3,vv1,vv2);
-    highSpeed8bitAnalogReadMacro(channelA7,channelA2,vv3,vv1);
-    highSpeed8bitAnalogReadMacro(channelA8,channelA3,vv4,vv2);
+    
+//    highSpeed8bitAnalogReadMacro(channelA7,channelA2,vv3,vv1);
+//    highSpeed8bitAnalogReadMacro(channelA8,channelA3,vv4,vv2);
+    highSpeed8bitAnalogReadMacro(channelA7,channelA2,values[1],values[0]);
+    highSpeed8bitAnalogReadMacro(channelA8,channelA3,values[2],values[3]);
 //    buffer_mic1.add(value1);
 //    buffer_mic2.add(value2);
 //    buffer_mic3.add(value3);
 //    buffer_mic4.add(value4);
-    Serial.print("D: ");
-    Serial.print(vv1);
-    Serial.print(" ");
-    Serial.print(vv3);
-    Serial.print(" ");
-    Serial.print(vv4);
-    Serial.print(" ");
-    Serial.print(vv2);
-    Serial.print("\n");
+//    Serial.print("D: ");
+    Serial.write(values,5);
+    Serial.flush();
+//    Serial.print(vv1);
+    //Serial.print(" ");
+//    Serial.print(vv3);
+    //Serial.print(" ");
+//    Serial.print(vv4);
+    //Serial.print(" ");
+//    Serial.print(vv2);
+    //Serial.write("\n");
     
 //    if (buffer_mic1.get_current_length() == BUFFER_SIZE && (abs(buffer_mic1.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD || abs(buffer_mic2.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD /*|| abs(buffer_mic3.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD || abs(buffer_mic4.get_data_at_index(INDEX_TRIGGER) - 130) > VOLUME_THRESHOLD*/) ) {
 //      Serial.println("START");
@@ -154,6 +161,7 @@ void loop() {
         Serial.println(buffer_delay[j]);
       }
       sinceStart = 0;
+      sinceLastRead = 0;
     }
   }
 }

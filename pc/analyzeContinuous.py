@@ -14,9 +14,9 @@ import pylab as pl
 
 FILENAME = "output_raw.npy"
 
-SPEED_SOUND = 343.0
-SAMPLING_RATE = 10000
-LENG = 600
+SPEED_SOUND = 340.0
+SAMPLING_RATE = 50000
+LENG = 500
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
 LOC_MIC1 = ( 0.13,   0.0,     0.0)
@@ -43,12 +43,12 @@ def getXcorrs(sig1,sig2,sig3,sig4):
     s2 = (sig2 - np.mean(sig2))/np.std(sig2)
     s3 = (sig3 - np.mean(sig3))/np.std(sig3)
     s4 = (sig4 - np.mean(sig4))/np.std(sig4)
-    xcorr12 = np.correlate(s1,s2,'full') / len(sig1)
-    xcorr13 = np.correlate(s1,s3,'full') / len(sig1)
-    xcorr14 = np.correlate(s1,s4,'full') / len(sig1)
-    xcorr23 = np.correlate(s2,s3,'full') / len(sig1)
-    xcorr24 = np.correlate(s2,s4,'full') / len(sig1)
-    xcorr34 = np.correlate(s3,s4,'full') / len(sig1)
+    xcorr12 = np.correlate(s1,s2,'full') / xcorr_normalization
+    xcorr13 = np.correlate(s1,s3,'full') / xcorr_normalization
+    xcorr14 = np.correlate(s1,s4,'full') / xcorr_normalization
+    xcorr23 = np.correlate(s2,s3,'full') / xcorr_normalization
+    xcorr24 = np.correlate(s2,s4,'full') / xcorr_normalization
+    xcorr34 = np.correlate(s3,s4,'full') / xcorr_normalization
     return (xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34)
 
 def getXcorrs2D(sig1,sig2,sig3):
@@ -57,9 +57,9 @@ def getXcorrs2D(sig1,sig2,sig3):
     s1 = (sig1 - np.mean(sig1))/np.std(sig1)
     s2 = (sig2 - np.mean(sig2))/np.std(sig2)
     s3 = (sig3 - np.mean(sig3))/np.std(sig3)
-    xcorr12 = np.correlate(s1,s2,'full') /xcorr_normalization 
-    xcorr13 = np.correlate(s1,s3,'full') /xcorr_normalization 
-    xcorr23 = np.correlate(s2,s3,'full') /xcorr_normalization 
+    xcorr12 = np.correlate(s1,s2,'full') / xcorr_normalization 
+    xcorr13 = np.correlate(s1,s3,'full') / xcorr_normalization 
+    xcorr23 = np.correlate(s2,s3,'full') / xcorr_normalization 
     return (xcorr12, xcorr13, xcorr23)
 
 def createFig():
@@ -68,19 +68,63 @@ def createFig():
     cb = fig.colorbar(quad, ax=ax)
     plt.ion()
     plt.show()
-    return quad
+    return fig,quad
+
+def updateFig(figMap,quad,data):
+    plt.figure(figMap.number)
+    quad.set_clim(vmin=abs(data).min(),vmax=abs(data).max())
+    quad.set_array(data[:-1,:-1].ravel())
+    plt.draw()
  
-def buildMap2D(sig1,sig2,sig3,sig4,quad):
+plt.ion()
+figaa = plt.figure()
+ax12 = figaa.add_subplot(321)
+ax13 = figaa.add_subplot(322)
+ax13.set_title("1 vs 3")
+ax14 = figaa.add_subplot(323)
+ax23 = figaa.add_subplot(324)
+ax24 = figaa.add_subplot(325)
+ax34 = figaa.add_subplot(326)
+
+def plotXcorrDebug(x12,x13,x14,x23,x24,x34):
+    plt.sca(ax12)
+    plt.cla()
+    ax12.plot(x12[400:600])
+
+    plt.sca(ax13)
+    plt.cla()
+    ax13.plot(x13[400:600])
+
+    plt.sca(ax14)
+    plt.cla()
+    ax14.plot(x14[400:600])
+
+    plt.sca(ax23)
+    plt.cla()
+    ax23.plot(x23[400:600])
+
+    plt.sca(ax24)
+    plt.cla()
+    ax24.plot(x24[400:600])
+
+    plt.sca(ax34)
+    plt.cla()
+    ax34.plot(x34[400:600])
+    plt.pause(0.0001) 
+
+def buildMap2D(sig1,sig2,sig3,sig4,figMap,quad):
     time_start = time.time()
     offset_len = len(sig1) - 1
-    xcorr12, xcorr13, xcorr23 = getXcorrs2D(sig1,sig2,sig3)
+    xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4)
     d1 = np.sqrt(((xx - LOC_MIC1[0]) ** 2 + (yy - LOC_MIC1[1]) ** 2))
     d2 = np.sqrt(((xx - LOC_MIC2[0]) ** 2 + (yy - LOC_MIC2[1]) ** 2))
     d3 = np.sqrt(((xx - LOC_MIC3[0]) ** 2 + (yy - LOC_MIC3[1]) ** 2))
+    d4 = np.sqrt(((xx - LOC_MIC4[0]) ** 2 + (yy - LOC_MIC4[1]) ** 2))
 
     t1 = d1 / SPEED_SOUND * SAMPLING_RATE
     t2 = d2 / SPEED_SOUND * SAMPLING_RATE
     t3 = d3 / SPEED_SOUND * SAMPLING_RATE
+    t4 = d4 / SPEED_SOUND * SAMPLING_RATE
 
     l12 = (t1 - t2 + offset_len + 0.5).astype(np.int)
     l12[l12 < 0] = 0
@@ -90,15 +134,25 @@ def buildMap2D(sig1,sig2,sig3,sig4,quad):
     l13[l13 < 0] = 0
     l13[l13 > len(xcorr12)-1] = len(xcorr12) - 1
 
+    l14 = (t1 - t4 + offset_len + 0.5).astype(np.int)
+    l14[l14 < 0] = 0
+    l14[l14 > len(xcorr12)-1] = len(xcorr12) - 1
+
     l23 = (t2 - t3 + offset_len + 0.5).astype(np.int)
     l23[l23 < 0] = 0
     l23[l23 > len(xcorr12)-1] = len(xcorr12) - 1
 
-    ll = xcorr12[l12] + xcorr13[l13] + xcorr23[l23]
-    print "minmax:",np.min(ll),np.max(ll)
-    quad.set_clim(vmin=abs(ll).min(),vmax=abs(ll).max())
-    quad.set_array(ll[:-1,:-1].ravel())
-    plt.draw()
+    l24 = (t2 - t4 + offset_len + 0.5).astype(np.int)
+    l24[l24 < 0] = 0
+    l24[l24 > len(xcorr12)-1] = len(xcorr12) - 1
+
+    l34 = (t3 - t4 + offset_len + 0.5).astype(np.int)
+    l34[l34 < 0] = 0
+    l34[l34 > len(xcorr12)-1] = len(xcorr12) - 1
+
+    ll = xcorr12[l12] + xcorr13[l13] + xcorr14[l14] + xcorr23[l23] + xcorr24[l24] + xcorr34[l34]
+    updateFig(figMap,quad,ll)
+    #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
     print "time:", time.time() - time_start
 
 
@@ -193,7 +247,7 @@ ch2 = list()
 ch3 = list()
 ch4 = list()
 count = 0;
-quad = createFig()
+figMap, quad = createFig()
 while 1:
     string = socket.recv()
     topic, d1, d2, d3, d4 = string.split()
@@ -224,7 +278,7 @@ while 1:
         pd = kd - np.mean(kd)
         print "lag:%+.2f,%+.2f,%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (xcorrLag1,xcorrLag2,xcorrLag3, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
         sys.stdout.flush()
-        buildMap2D(ch1_f,ch2_f,ch3_f,ch4_f,quad)
+        buildMap2D(ch1_f,ch2_f,ch3_f,ch4_f,figMap,quad)
 #        buildMap(ch1_f,ch2_f,ch3_f,ch4_f)
         ch1 = list()
         ch2 = list()
