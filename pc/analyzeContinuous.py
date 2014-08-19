@@ -66,14 +66,18 @@ def createFig():
     fig, ax = plt.subplots()
     quad = ax.pcolormesh(xx, yy, xx, cmap=cm.RdBu, vmin=0, vmax=3)
     cb = fig.colorbar(quad, ax=ax)
+    dot, = ax.plot(.0,.0,'yo')
     plt.ion()
     plt.show()
-    return fig,quad
+    return fig,ax,quad,dot
 
-def updateFig(figMap,quad,data):
+def updateFig(figMap,ax,quad,dot,data):
     plt.figure(figMap.number)
     quad.set_clim(vmin=abs(data).min(),vmax=abs(data).max())
     quad.set_array(data[:-1,:-1].ravel())
+    xa,ya = np.unravel_index(data.argmax(), data.shape)
+    dot.set_xdata(xs[xa])
+    dot.set_ydata(ys[ya])
     plt.draw()
  
 plt.ion()
@@ -112,7 +116,7 @@ def plotXcorrDebug(x12,x13,x14,x23,x24,x34):
     ax34.plot(x34[400:600])
     plt.pause(0.0001) 
 
-def buildMap2D(sig1,sig2,sig3,sig4,figMap,quad):
+def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
     time_start = time.time()
     offset_len = len(sig1) - 1
     xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4)
@@ -151,7 +155,7 @@ def buildMap2D(sig1,sig2,sig3,sig4,figMap,quad):
     l34[l34 > len(xcorr12)-1] = len(xcorr12) - 1
 
     ll = xcorr12[l12] + xcorr13[l13] + xcorr14[l14] + xcorr23[l23] + xcorr24[l24] + xcorr34[l34]
-    updateFig(figMap,quad,ll)
+    updateFig(figMap,ax,quad,dot,ll)
     #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
     print "time:", time.time() - time_start
 
@@ -247,7 +251,7 @@ ch2 = list()
 ch3 = list()
 ch4 = list()
 count = 0;
-figMap, quad = createFig()
+figMap,ax, quad,dot = createFig()
 while 1:
     string = socket.recv()
     topic, d1, d2, d3, d4 = string.split()
@@ -278,7 +282,7 @@ while 1:
         pd = kd - np.mean(kd)
         print "lag:%+.2f,%+.2f,%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (xcorrLag1,xcorrLag2,xcorrLag3, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
         sys.stdout.flush()
-        buildMap2D(ch1_f,ch2_f,ch3_f,ch4_f,figMap,quad)
+        buildMap2D(ch1_f,ch2_f,ch3_f,ch4_f,figMap,ax,quad,dot)
 #        buildMap(ch1_f,ch2_f,ch3_f,ch4_f)
         ch1 = list()
         ch2 = list()
