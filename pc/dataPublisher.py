@@ -20,7 +20,7 @@ def printUSB():
     print ord('\n')
     ser = serial.Serial(USBPORTNAME, USBBAUDRATE)
     while True:
-        data = bytearray(ser.read(size=100))
+        data = bytearray(ser.read(size=1000))
         for i in data:
             if i == ord('\n'): # end of line detected
                 if len(last) == 0:

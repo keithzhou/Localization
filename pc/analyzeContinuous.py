@@ -19,10 +19,10 @@ SAMPLING_RATE = 50000
 LENG = 500
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-LOC_MIC1 = ( 0.13,   0.0,     0.0)
-LOC_MIC2 = (-0.065,  0.11518, 0.0)
-LOC_MIC3 = (-0.065, -0.11518, 0.0)
-LOC_MIC4 = ( 0.0,    0.0,     0.13)
+LOC_MIC1 = ( 0.137,   0.0,     0.0)
+LOC_MIC2 = (-0.06,  0.10392, 0.0)
+LOC_MIC3 = (-0.0685, -0.11864, 0.0)
+LOC_MIC4 = ( 0.0,    0.0,     0.145)
 
 RESOLUTION_XY = 100 
 xs = np.linspace(-.3,.3,RESOLUTION_XY)
@@ -66,7 +66,7 @@ def createFig():
     fig, ax = plt.subplots()
     quad = ax.pcolormesh(xx, yy, xx, cmap=cm.RdBu, vmin=0, vmax=3)
     cb = fig.colorbar(quad, ax=ax)
-    dot, = ax.plot(.0,.0,'yo')
+    dot, = ax.plot(.0,.0,'yo',markersize=10)
     plt.ion()
     plt.show()
     return fig,ax,quad,dot
@@ -268,10 +268,10 @@ while 1:
         kb = np.array(ch2).astype(np.float)
         kc = np.array(ch3).astype(np.float)
         kd = np.array(ch4).astype(np.float)
-        ch1_f = bandpass_filtering(ka,SAMPLING_RATE,0.2e3,50e3)
-        ch2_f = bandpass_filtering(kb,SAMPLING_RATE,0.2e3,50e3)
-        ch3_f = bandpass_filtering(kc,SAMPLING_RATE,0.2e3,50e3)
-        ch4_f = bandpass_filtering(kd,SAMPLING_RATE,0.2e3,50e3)
+        ch1_f = bandpass_filtering(ka,SAMPLING_RATE,1e3,5e3)
+        ch2_f = bandpass_filtering(kb,SAMPLING_RATE,1e3,5e3)
+        ch3_f = bandpass_filtering(kc,SAMPLING_RATE,1e3,5e3)
+        ch4_f = bandpass_filtering(kd,SAMPLING_RATE,1e3,5e3)
         xcorrLag1, xcorrMag1 = xcorr(ch1_f, ch2_f)
         xcorrLag2, xcorrMag2 = xcorr(ch1_f, ch3_f)
         xcorrLag3, xcorrMag3 = xcorr(ch1_f, ch4_f)
@@ -290,5 +290,3 @@ while 1:
         ch4 = list()
         clearQueue(socket)
         
-#while True:
-#            pass
