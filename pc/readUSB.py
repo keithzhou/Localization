@@ -7,7 +7,7 @@ import scipy.io.wavfile
 import os
 import threading
 
-USBPORTNAME = '/dev/tty.usbmodem406941'
+USBPORTNAME = '/dev/tty.usbmodem406541'
 USBBAUDRATE = 9600
 
 SAMPLINGRATE = 20000 * 5

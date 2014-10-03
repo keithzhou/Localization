@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
 
-SAMPLINGRATE = 50000
+SAMPLINGRATE = 1.0/(15e-6)
 
 port = "5556"
 context = zmq.Context()
