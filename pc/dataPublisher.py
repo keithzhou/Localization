@@ -15,12 +15,18 @@ PUBLISHERPORT = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:%s" % PUBLISHERPORT)
+
+port = "5557"
+contextrcv = zmq.Context()
+socketrcv = context.socket(zmq.SUB)
+socketrcv.connect ("tcp://localhost:%s" % port)
+socketrcv.setsockopt(zmq.SUBSCRIBE, "")
+
 def printUSB():
     last = list()
-    print ord('\n')
-    ser = serial.Serial(USBPORTNAME, USBBAUDRATE)
     while True:
-        data = bytearray(ser.read(size=100))
+        data = bytearray(socketrcv.recv())
+#        data = bytearray(ser.read(size=100))
         for i in data:
             if i == ord('\n'): # end of line detected
                 if len(last) == 0:

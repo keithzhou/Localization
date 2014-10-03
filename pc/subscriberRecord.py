@@ -3,8 +3,10 @@ import zmq
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
+import config
+config = config.config()
 
-SAMPLINGRATE = 1.0/(15e-6)
+SAMPLINGRATE = config.getSamplingRate()
 
 port = "5556"
 context = zmq.Context()

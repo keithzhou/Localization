@@ -23,7 +23,7 @@ LENG = 2000 # 10 to 12 ms
 HISTLEN = 1
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-RESOLUTION_XY = 2000
+RESOLUTION_XY = 1000
 xs = np.linspace(-1.0,1.0,RESOLUTION_XY)
 ys = np.linspace(-1.0,1.0,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)

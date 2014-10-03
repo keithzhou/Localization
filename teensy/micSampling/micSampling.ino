@@ -11,7 +11,7 @@ elapsedMicros sinceStart;
 #include <ADC.h>
 #include <arduino.h>
 
-#define TIMING_SAMPLING_INTERVAL_MICRO  15
+#define TIMING_SAMPLING_INTERVAL_MICRO  7
 #define BUFFER_SIZE 2048 * 3
 #define INDEX_TRIGGER BUFFER_SIZE/5
 #define BUFFER_SIZE_DELAY 500
@@ -129,7 +129,7 @@ void loop() {
 //    buffer_mic4.add(value4);
 //    Serial.print("D: ");
     Serial.write(values,5);
-    Serial.flush();
+    //Serial.flush();
 //    Serial.print(vv1);
     //Serial.print(" ");
 //    Serial.print(vv3);
@@ -154,14 +154,14 @@ void loop() {
 //      buffer_mic4.clear_buffer();
 //    }
   
-    buffer_delay[i++] = sinceLastRead;    
-    if (i >= BUFFER_SIZE_DELAY) i -= BUFFER_SIZE_DELAY;
-    if (sinceStart > 1e6 * 5) {
-      for (int j = 0; j < BUFFER_SIZE_DELAY; j++) {
-        Serial.println(buffer_delay[j]);
-      }
-      sinceStart = 0;
-      sinceLastRead = 0;
-    }
+//    buffer_delay[i++] = sinceLastRead;    
+//    if (i >= BUFFER_SIZE_DELAY) i -= BUFFER_SIZE_DELAY;
+//    if (sinceStart > 1e6 * 5) {
+//      for (int j = 0; j < BUFFER_SIZE_DELAY; j++) {
+//        Serial.println(buffer_delay[j]);
+//      }
+//      sinceStart = 0;
+//      sinceLastRead = 0;
+//    }
   }
 }

@@ -7,7 +7,7 @@ class config():
 
         self.DISTANCE_TEST = 0.5
 
-        self.SAMPLING_RATE = 1.0/(15e-6)
+        self.SAMPLING_RATE = 1.0/(7.0e-6)
 
         self.SPEED_SOUND = 340.0
 
