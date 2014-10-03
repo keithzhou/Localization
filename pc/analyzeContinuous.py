@@ -19,16 +19,15 @@ SPEED_SOUND = config.getSpeedSound()
 SAMPLING_RATE = config.getSamplingRate()
 
 
-#SPEED_SOUND = 340.0
-LENG = 1000 # 10 to 12 ms
-HISTLEN = 5 
+LENG = 2000 # 10 to 12 ms
+HISTLEN = 1
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-RESOLUTION_XY = 100 
-xs = np.linspace(-.6,.6,RESOLUTION_XY)
-ys = np.linspace(-.6,.6,RESOLUTION_XY)
+RESOLUTION_XY = 2000
+xs = np.linspace(-1.0,1.0,RESOLUTION_XY)
+ys = np.linspace(-1.0,1.0,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)
-yy,xx = np.meshgrid(ys,xs)
+xx,yy = np.meshgrid(xs,ys)
 
 fq12 = RunningHist.RunningHist(HISTLEN)
 fq13 = RunningHist.RunningHist(HISTLEN)
@@ -88,7 +87,7 @@ def getXcorrs(sig1,sig2,sig3,sig4):
 
 def createFig():
     fig, ax = plt.subplots()
-    quad = ax.pcolormesh(xx, yy, xx, cmap=cm.RdBu, vmin=0, vmax=3)
+    quad = ax.pcolormesh(xx, yy, xx.T, cmap=cm.RdBu, vmin=0, vmax=3)
     cb = fig.colorbar(quad, ax=ax)
     dot, = ax.plot(.0,.0,'yo',markersize=10)
     plt.ion()
@@ -100,8 +99,10 @@ def updateFig(figMap,ax,quad,dot,data):
     quad.set_clim(vmin=abs(data).min(),vmax=abs(data).max())
     quad.set_array(data[:-1,:-1].ravel())
     xa,ya = np.unravel_index(data.argmax(), data.shape)
-    dot.set_xdata(xs[xa])
-    dot.set_ydata(ys[ya])
+    maxy = xs[xa]
+    maxx = ys[ya]
+    dot.set_ydata(maxy)
+    dot.set_xdata(maxx)
     plt.draw()
  
 plt.ion()
@@ -143,10 +144,10 @@ def plotXcorrDebug(x12,x13,x14,x23,x24,x34):
     plt.pause(0.0001) 
 
 offset_len = LENG - 1
-d1 = np.sqrt(((xx - LOC_MIC1[0]) ** 2 + (yy - LOC_MIC1[1]) ** 2)) #+ (zz - LOC_MIC1[2]) ** 2 ))
-d2 = np.sqrt(((xx - LOC_MIC2[0]) ** 2 + (yy - LOC_MIC2[1]) ** 2)) #+ (zz - LOC_MIC1[2]) ** 2 ))
-d3 = np.sqrt(((xx - LOC_MIC3[0]) ** 2 + (yy - LOC_MIC3[1]) ** 2)) #+ (zz - LOC_MIC1[2]) ** 2 ))
-d4 = np.sqrt(((xx - LOC_MIC4[0]) ** 2 + (yy - LOC_MIC4[1]) ** 2)) #+ (zz - LOC_MIC1[2]) ** 2 ))
+d1 = np.sqrt((xx - LOC_MIC1[0]) ** 2 + (yy - LOC_MIC1[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
+d2 = np.sqrt((xx - LOC_MIC2[0]) ** 2 + (yy - LOC_MIC2[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
+d3 = np.sqrt((xx - LOC_MIC3[0]) ** 2 + (yy - LOC_MIC3[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
+d4 = np.sqrt((xx - LOC_MIC4[0]) ** 2 + (yy - LOC_MIC4[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
 
 t1 = d1 / SPEED_SOUND * SAMPLING_RATE
 t2 = d2 / SPEED_SOUND * SAMPLING_RATE
@@ -177,7 +178,6 @@ l34 = (t3 - t4 + 0.5).astype(np.int)
 #l34[l34 < 0] = 0
 #l34[l34 > len(xcorr12)-1] = len(xcorr12) - 1
 
-
 def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
     assert (len(sig1) == LENG)
     time_start = time.time()
@@ -193,74 +193,27 @@ def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
     pb = sig2 - np.mean(sig2)
     pc = sig3 - np.mean(sig3)
     pd = sig4 - np.mean(sig4)
-    print "lag:%+.2f,%+.2f,%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (maxloc12,maxloc13,maxloc14, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
+    print "lag:12:%+.2f,13:%+.2f,14:%+.2f,23:%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (maxloc12,maxloc13,maxloc14,maxloc23, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
     fq12.addNum(maxloc12)
     fq13.addNum(maxloc13)
     fq14.addNum(maxloc14)
     fq23.addNum(maxloc23)
     fq24.addNum(maxloc24)
     fq34.addNum(maxloc34)
+    touse = [fq12.freqFor(l12),fq13.freqFor(l13),fq23.freqFor(l23)]
+    touseTest = [abs(maxloc12),abs(maxloc13),abs(maxloc23)]
+    touse.pop(np.argmax(touseTest))
+#    ll = touse[0] + touse[1]
     ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
+    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
+    maxy = xs[xa]
+    maxx = ys[ya]
+    print "max loc:",maxx,maxy,np.sqrt(maxx**2+maxy**2),np.arctan(maxy/maxx)
 
 #    ll = xcorr12[l12] * xcorr13[l13] * xcorr23[l23] + xcorr14[l14]  + xcorr24[l24] + xcorr34[l34]
     updateFig(figMap,ax,quad,dot,ll)
-
     #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
     print "time:", time.time() - time_start
-
-def buildMap(sig1, sig2, sig3, sig4):
-    offset_len = len(sig1) - 1
-    xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4)
-    xs = np.linspace(-.2,.2,15)
-    ys = np.linspace(-.2,.2,15)
-    zs = np.linspace(0.0,.2,15)
-    result_x = list()
-    result_y = list()
-    result_z = list()
-    result_heat = list()
-    for x in xs :
-        for y in ys:
-            for z in zs:
-                ll = 0.0
-                loc_current = (x,y,z)
-                d1 = L2Between(loc_current,LOC_MIC1)
-                d2 = L2Between(loc_current,LOC_MIC2)
-                d3 = L2Between(loc_current,LOC_MIC3)
-                d4 = L2Between(loc_current,LOC_MIC4)
-                t1 = d1 / SPEED_SOUND * SAMPLING_RATE
-                t2 = d2 / SPEED_SOUND * SAMPLING_RATE
-                t3 = d3 / SPEED_SOUND * SAMPLING_RATE
-                t4 = d4 / SPEED_SOUND * SAMPLING_RATE
-                l12 = max(min(int(t1 - t2 + offset_len + 0.5),len(xcorr12)-1),0)
-                l13 = max(min(int(t1 - t3 + offset_len + 0.5),len(xcorr12)-1),0)
-                l14 = max(min(int(t1 - t4 + offset_len + 0.5),len(xcorr12)-1),0)
-                l23 = max(min(int(t2 - t3 + offset_len + 0.5),len(xcorr12)-1),0)
-                l24 = max(min(int(t2 - t4 + offset_len + 0.5),len(xcorr12)-1),0)
-                l34 = max(min(int(t3 - t4 + offset_len + 0.5),len(xcorr12)-1),0)
-                ll += xcorr12[l12] + xcorr13[l13] + xcorr14[l14] + xcorr23[l23] + xcorr24[l24] + xcorr34[l34]
-                result_x.append(x)
-                result_y.append(y)
-                result_z.append(z)
-#                result_heat.append(np.sqrt(x**2 + y**2 + z**2))
-                result_heat.append(ll)
-#                result_heat.append(d4)
-#                result_heat.append(1.0 * l14 * 1.0)
-    plotHeat(result_x,result_y,result_z,np.array(result_heat))
-
-def plotHeat(xs,ys,zs,the_fourth_dimension):
-#    colors = cm.hsv(the_fourth_dimension/max(the_fourth_dimension))
-    colors = cm.hsv((the_fourth_dimension - min(the_fourth_dimension))/(max(the_fourth_dimension) - min(the_fourth_dimension)) * .6 + .2)
-    colmap = cm.ScalarMappable(cmap=cm.hsv)
-    colmap.set_array(the_fourth_dimension)
-    fig = plt.figure(figsize=(8,6))
-    ax = fig.add_subplot(111,projection='3d')
-
-    yg = ax.scatter(xs, ys, zs, c=colors, marker='o')
-    cb = fig.colorbar(colmap)
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Y Label')
-    ax.set_zlabel('Z Label')
-    plt.show()
 
 def xcorr(sig1, sig2):
     a = (sig1 - np.mean(sig1))/np.std(sig1)
@@ -300,6 +253,7 @@ ch2 = list()
 ch3 = list()
 ch4 = list()
 figMap,ax, quad,dot = createFig()
+#figMap,ax, quad,dot = (None,None,None, None)
 while 1:
     string = socket.recv()
     topic, d1, d2, d3, d4 = string.split()
@@ -325,7 +279,7 @@ while 1:
         #xcorrLag3, xcorrMag3 = xcorr(ch1, ch4)
         sys.stdout.flush()
         buildMap2D(ka,kb,kc,kd,figMap,ax,quad,dot)
-#        buildMap(ch1_f,ch2_f,ch3_f,ch4_f)
+        sys.stdout.flush()
         ch1 = list()
         ch2 = list()
         ch3 = list()
