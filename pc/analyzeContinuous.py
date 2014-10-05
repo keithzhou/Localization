@@ -94,15 +94,12 @@ def createFig():
     plt.show()
     return fig,ax,quad,dot
 
-def updateFig(figMap,ax,quad,dot,data):
+def updateFig(figMap,ax,quad,dot,data,dot_x,dot_y):
     plt.figure(figMap.number)
     quad.set_clim(vmin=abs(data).min(),vmax=abs(data).max())
     quad.set_array(data[:-1,:-1].ravel())
-    xa,ya = np.unravel_index(data.argmax(), data.shape)
-    maxy = xs[xa]
-    maxx = ys[ya]
-    dot.set_ydata(maxy)
-    dot.set_xdata(maxx)
+    dot.set_ydata(dot_y)
+    dot.set_xdata(dot_x)
     plt.draw()
  
 plt.ion()
@@ -205,13 +202,16 @@ def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
     touse.pop(np.argmax(touseTest))
 #    ll = touse[0] + touse[1]
     ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
-    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
-    maxy = xs[xa]
-    maxx = ys[ya]
+#    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
+#    maxy = xs[xa]
+#    maxx = ys[ya]
+    (maxxx,maxyy) = np.where(ll == ll.max())
+    maxx = xs[int(round(np.median(maxyy)))]
+    maxy = ys[int(round(np.median(maxxx)))]
     print "max loc:",maxx,maxy,np.sqrt(maxx**2+maxy**2),np.arctan(maxy/maxx)
 
 #    ll = xcorr12[l12] * xcorr13[l13] * xcorr23[l23] + xcorr14[l14]  + xcorr24[l24] + xcorr34[l34]
-    updateFig(figMap,ax,quad,dot,ll)
+    updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
     #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
     print "time:", time.time() - time_start
 
