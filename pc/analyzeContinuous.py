@@ -23,9 +23,9 @@ LENG = 2000 # 10 to 12 ms
 HISTLEN = 1
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-RESOLUTION_XY = 1000
-xs = np.linspace(-1.0,1.0,RESOLUTION_XY)
-ys = np.linspace(-1.0,1.0,RESOLUTION_XY)
+RESOLUTION_XY = 500
+xs = np.linspace(-.6,.6,RESOLUTION_XY)
+ys = np.linspace(-.6,.6,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)
 xx,yy = np.meshgrid(xs,ys)
 
@@ -154,27 +154,27 @@ t2 = d2 / SPEED_SOUND * SAMPLING_RATE
 t3 = d3 / SPEED_SOUND * SAMPLING_RATE
 t4 = d4 / SPEED_SOUND * SAMPLING_RATE
 
-l12 = (t1 - t2 + 0.5).astype(np.int)
+l12 = np.rint(t1 - t2).astype(np.int)
 #l12[l12 < 0] = 0
 #l12[l12 > 2*LENG-1] = len(xcorr12) - 1
 
-l13 = (t1 - t3 + 0.5).astype(np.int)
+l13 = np.rint(t1 - t3).astype(np.int)
 #l13[l13 < 0] = 0
 #l13[l13 > len(xcorr12)-1] = len(xcorr12) - 1
 
-l14 = (t1 - t4 + 0.5).astype(np.int)
+l14 = np.rint(t1 - t4).astype(np.int)
 #l14[l14 < 0] = 0
 #l14[l14 > len(xcorr12)-1] = len(xcorr12) - 1
 
-l23 = (t2 - t3 + 0.5).astype(np.int)
+l23 = np.rint(t2 - t3).astype(np.int)
 #l23[l23 < 0] = 0
 #l23[l23 > len(xcorr12)-1] = len(xcorr12) - 1
 
-l24 = (t2 - t4 + 0.5).astype(np.int)
+l24 = np.rint(t2 - t4).astype(np.int)
 #l24[l24 < 0] = 0
 #l24[l24 > len(xcorr12)-1] = len(xcorr12) - 1
 
-l34 = (t3 - t4 + 0.5).astype(np.int)
+l34 = np.rint(t3 - t4).astype(np.int)
 #l34[l34 < 0] = 0
 #l34[l34 > len(xcorr12)-1] = len(xcorr12) - 1
 

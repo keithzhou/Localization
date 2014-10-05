@@ -20,8 +20,8 @@ def distanceBetween(l1,l2):
     return np.sqrt(r.dot(r))
 
 def getDataAtTime(t):
-    t = 5
-    LOC_TEST = (DISTANCE_TEST * np.cos(2*np.pi*1.0/20*t), DISTANCE_TEST * np.sin(2*np.pi*1.0/20*t),0)
+    t = 75
+    LOC_TEST = (DISTANCE_TEST * np.cos(2*np.pi*1.0/100*t), DISTANCE_TEST * np.sin(2*np.pi*1.0/100*t),0)
     print LOC_TEST[0], LOC_TEST[1], np.sqrt(LOC_TEST[0] ** 2 + LOC_TEST[1] ** 2), np.arctan(LOC_TEST[1]/LOC_TEST[0])
 
     d1 = distanceBetween(LOC_TEST,LOC_MIC1)
@@ -34,9 +34,9 @@ def getDataAtTime(t):
     t3 = d3 / SPEED_SOUND * SAMPLING_RATE
     t4 = d4 / SPEED_SOUND * SAMPLING_RATE
 
-    t12 = int(t1 - t2 + 0.5)
-    t13 = int(t1 - t3 + 0.5)
-    t14 = int(t1 - t4 + 0.5)
+    t12 = int(round(t1 - t2))
+    t13 = int(round(t1 - t3))
+    t14 = int(round(t1 - t4))
 
     data = (np.random.rand(5000) * 256).astype(np.int)
 
