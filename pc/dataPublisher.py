@@ -1,32 +1,22 @@
-import serial
-import matplotlib.pyplot as plt
-import numpy as np
-import time
-import datetime
-import scipy.io.wavfile
-import os
 import zmq
-import struct
+import config
 
-USBPORTNAME = '/dev/tty.usbmodem406541'
-USBBAUDRATE = 9600
+config = config.config()
 
 PUBLISHERPORT = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:%s" % PUBLISHERPORT)
+socket.bind("tcp://*:%s" % config.getPortPublisher())
 
-port = "5557"
 contextrcv = zmq.Context()
 socketrcv = context.socket(zmq.SUB)
-socketrcv.connect ("tcp://localhost:%s" % port)
+socketrcv.connect ("tcp://localhost:%s" % config.getPortPublisherPassThrough())
 socketrcv.setsockopt(zmq.SUBSCRIBE, "")
 
 def printUSB():
     last = list()
     while True:
         data = bytearray(socketrcv.recv())
-#        data = bytearray(ser.read(size=100))
         for i in data:
             if i == ord('\n'): # end of line detected
                 if len(last) == 0:
@@ -38,5 +28,6 @@ def printUSB():
                 last = list()
             else:
                 last.append(i)
+
 if __name__ == "__main__":
     printUSB()

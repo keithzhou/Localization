@@ -2,14 +2,20 @@ class config():
     def __init__(self):
         self.LOC_MIC1 = ( 0.137,   0.0,     0.0)
         self.LOC_MIC2 = (-0.06,  0.10392, 0.0)
-        self.LOC_MIC3 = (-0.0685, -0.11864, 0.0)
+        self.LOC_MIC3 = (-0.06, -0.11864, 0.0)
         self.LOC_MIC4 = ( 0.0,    0.0,     0.145)
 
-        self.DISTANCE_TEST = 0.5
+        self.DISTANCE_TEST = 0.4
 
         self.SAMPLING_RATE = 1.0/(7.0e-6)
 
         self.SPEED_SOUND = 340.0
+
+    def getPortPublisherPassThrough(self):
+      return 5557
+
+    def getPortPublisher(self):
+      return 5556
 
     def getMicLocs(self):
         return (self.LOC_MIC1, self.LOC_MIC2, self.LOC_MIC3, self.LOC_MIC4)

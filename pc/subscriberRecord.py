@@ -8,10 +8,9 @@ config = config.config()
 
 SAMPLINGRATE = config.getSamplingRate()
 
-port = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ("tcp://localhost:%s" % port)
+socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
 
 topicfilter = "DATA"
 socket.setsockopt(zmq.SUBSCRIBE, topicfilter)

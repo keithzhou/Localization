@@ -20,7 +20,7 @@ def distanceBetween(l1,l2):
     return np.sqrt(r.dot(r))
 
 def getDataAtTime(t):
-    t = 75
+    t = 0
     LOC_TEST = (DISTANCE_TEST * np.cos(2*np.pi*1.0/100*t), DISTANCE_TEST * np.sin(2*np.pi*1.0/100*t),0)
     print LOC_TEST[0], LOC_TEST[1], np.sqrt(LOC_TEST[0] ** 2 + LOC_TEST[1] ** 2), np.arctan(LOC_TEST[1]/LOC_TEST[0])
 

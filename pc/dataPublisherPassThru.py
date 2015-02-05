@@ -7,14 +7,18 @@ import scipy.io.wavfile
 import os
 import zmq
 import struct
+import config
+
+config = config.config()
 
 USBPORTNAME = '/dev/tty.usbmodem406541'
 USBBAUDRATE = 9600
 
-PUBLISHERPORT = "5557"
+PUBLISHERPORT = config.getPortPublisherPassThrough()
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:%s" % PUBLISHERPORT)
+
 def printUSB():
     ser = serial.Serial(USBPORTNAME, USBBAUDRATE)
     while True:

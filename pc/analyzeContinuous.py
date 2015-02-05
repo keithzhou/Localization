@@ -12,6 +12,22 @@ import sys
 import pylab as pl
 import RunningHist
 import config
+import xcorrs
+
+
+#data
+import socket
+import sys
+
+HOST, PORT = "localhost", 80
+
+# Create a socket (SOCK_STREAM means a TCP socket)
+#sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Connect to server and send data
+#sock.connect((HOST, PORT))
+#sock.send("iam:array")
+#end data
 
 config = config.config()
 (LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = config.getMicLocs()
@@ -23,7 +39,7 @@ LENG = 2000 # 10 to 12 ms
 HISTLEN = 1
 xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-RESOLUTION_XY = 500
+RESOLUTION_XY = 300
 xs = np.linspace(-.6,.6,RESOLUTION_XY)
 ys = np.linspace(-.6,.6,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)
@@ -43,47 +59,10 @@ def L2Between(loc1,loc2):
     return np.sqrt(ss)
 
 def xcorr_freq(s1,s2):
-    assert(len(s1)==len(s2))
-    pad = len(s1) * 2 - 1
-    lenOld = len(s1)
-    s1 = np.hstack([s1,np.zeros(pad)])
-    s2 = np.hstack([s2,np.zeros(pad)])
-    f_s1 = fft(s1)
-    f_s2 = fft(s2)
-    
-    W = fftfreq(s1.size, 1.0 / SAMPLING_RATE)
-    bolla = (abs(W) < .5e3) | (abs(W) > 7e3)
-    f_s1[bolla] = 0.0
-    f_s2[bolla] = 0.0
-    
-    f_s1c = np.conj(f_s1)
-    f_s2c = np.conj(f_s2)
-    f_s = f_s1 * f_s2c
-    denom = np.abs(f_s)
-    denom[denom < 1e-5] = 1e-5
-    f_s = f_s / denom
-    assert(np.any(np.isnan(f_s))==False)
-
-    td = ifft(f_s)
-    pos = td[:lenOld]
-    neg = td[-lenOld+1:]
-    return np.real(np.hstack([neg,pos]))
+    return xcorrs.xcorr_freq(s1,s2)
 
 def getXcorrs(sig1,sig2,sig3,sig4):
-    assert (len(sig1) == len(sig2))
-    assert (len(sig2) == len(sig3))
-    assert (len(sig3) == len(sig4))
-    s1 = (sig1 - np.mean(sig1))/np.std(sig1)
-    s2 = (sig2 - np.mean(sig2))/np.std(sig2)
-    s3 = (sig3 - np.mean(sig3))/np.std(sig3)
-    s4 = (sig4 - np.mean(sig4))/np.std(sig4)
-    xcorr12 = xcorr_freq(s1,s2)
-    xcorr13 = xcorr_freq(s1,s3)
-    xcorr14 = xcorr_freq(s1,s4)
-    xcorr23 = xcorr_freq(s2,s3)
-    xcorr24 = xcorr_freq(s2,s4)
-    xcorr34 = xcorr_freq(s3,s4)
-    return (xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34)
+    return xcorrs.getXcorrs(sig1,sig2,sig3,sig4)
 
 def createFig():
     fig, ax = plt.subplots()
@@ -179,36 +158,54 @@ def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
     assert (len(sig1) == LENG)
     time_start = time.time()
     global offset_len 
+    xxx1, xxx2, xxx3, xxx4 = xcorrs.getXcorrsTemplate(sig1,sig2,sig3,sig4)
+
+    loc12 = np.argmax(xxx1) - np.argmax(xxx2)
+    loc13 = np.argmax(xxx1) - np.argmax(xxx3)
+    loc14 = np.argmax(xxx1) - np.argmax(xxx4)
+    loc23 = np.argmax(xxx2) - np.argmax(xxx3)
+    loc24 = np.argmax(xxx2) - np.argmax(xxx4)
+    loc34 = np.argmax(xxx3) - np.argmax(xxx4)
+
+    print loc12, loc13, loc14, loc23
+
     xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4)
-    maxloc12 = np.argmax(xcorr12) - (len(sig1) - 1)
-    maxloc13 = np.argmax(xcorr13) - (len(sig1) - 1)
-    maxloc14 = np.argmax(xcorr14) - (len(sig1) - 1)
-    maxloc23 = np.argmax(xcorr23) - (len(sig1) - 1)
-    maxloc24 = np.argmax(xcorr24) - (len(sig1) - 1)
-    maxloc34 = np.argmax(xcorr34) - (len(sig1) - 1)
-    pa = sig1 - np.mean(sig1)
-    pb = sig2 - np.mean(sig2)
-    pc = sig3 - np.mean(sig3)
-    pd = sig4 - np.mean(sig4)
-    print "lag:12:%+.2f,13:%+.2f,14:%+.2f,23:%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (maxloc12,maxloc13,maxloc14,maxloc23, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
-    fq12.addNum(maxloc12)
-    fq13.addNum(maxloc13)
-    fq14.addNum(maxloc14)
-    fq23.addNum(maxloc23)
-    fq24.addNum(maxloc24)
-    fq34.addNum(maxloc34)
-    touse = [fq12.freqFor(l12),fq13.freqFor(l13),fq23.freqFor(l23)]
-    touseTest = [abs(maxloc12),abs(maxloc13),abs(maxloc23)]
-    touse.pop(np.argmax(touseTest))
-#    ll = touse[0] + touse[1]
-    ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
+#    maxloc12 = np.argmax(xcorr12) - (len(sig1) - 1)
+#    maxloc13 = np.argmax(xcorr13) - (len(sig1) - 1)
+#    maxloc14 = np.argmax(xcorr14) - (len(sig1) - 1)
+#    maxloc23 = np.argmax(xcorr23) - (len(sig1) - 1)
+#    maxloc24 = np.argmax(xcorr24) - (len(sig1) - 1)
+#    maxloc34 = np.argmax(xcorr34) - (len(sig1) - 1)
+#    pa = sig1 - np.mean(sig1)
+#    pb = sig2 - np.mean(sig2)
+#    pc = sig3 - np.mean(sig3)
+#    pd = sig4 - np.mean(sig4)
+#    print "lag:12:%+.2f,13:%+.2f,14:%+.2f,23:%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (maxloc12,maxloc13,maxloc14,maxloc23, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
+    fq12.addNum(loc12)
+    fq13.addNum(loc13)
+    fq14.addNum(loc14)
+    fq23.addNum(loc23)
+    fq24.addNum(loc24)
+    fq34.addNum(loc34)
+    ll = xcorr12[l12 + (len(sig1)-1)] + xcorr13[l13 + (len(sig1)-1)] + xcorr23[l23 + (len(sig1)-1)]
+    #ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
 #    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
 #    maxy = xs[xa]
 #    maxx = ys[ya]
     (maxxx,maxyy) = np.where(ll == ll.max())
     maxx = xs[int(round(np.median(maxyy)))]
     maxy = ys[int(round(np.median(maxxx)))]
-    print "max loc:",maxx,maxy,np.sqrt(maxx**2+maxy**2),np.arctan(maxy/maxx)
+    ang = abs(np.arctan(maxy/maxx) / np.pi * 180)
+    if (maxy > 0) and (maxx > 0):
+        ang = ang * 1
+    elif maxy > 0:
+        ang = 180 - ang
+    elif (maxy < 0) and (maxx > 0):
+        ang = -1 * ang
+    else:
+        ang = -180 + ang
+    print "max loc:",maxx,maxy,np.sqrt(maxx**2+maxy**2),ang
+    #sock.send("msg:%.4f %.4f\n" % (np.sqrt(maxx**2+maxy**2),ang))
 
 #    ll = xcorr12[l12] * xcorr13[l13] * xcorr23[l23] + xcorr14[l14]  + xcorr24[l24] + xcorr34[l34]
     updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
@@ -240,10 +237,9 @@ def clearQueue(s):
             else:
                 raise
 
-port = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ("tcp://localhost:%s" % port)
+socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
 
 topicfilter = "DATA"
 socket.setsockopt(zmq.SUBSCRIBE, topicfilter)

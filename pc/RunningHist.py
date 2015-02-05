@@ -5,7 +5,7 @@ class RunningHist():
         self.length = length
         self.history = []
         self.length = length
-        self.halfWindow = 100 # delay from -100 to 100
+        self.halfWindow = 800 # delay from -100 to 100
         self.freq = np.array([0 for i in range(2*self.halfWindow+1)])
 
     def addNum(self,num):
