@@ -1,13 +1,9 @@
+import sys
+sys.path.append('../')
 import serial
-import matplotlib.pyplot as plt
-import numpy as np
-import time
-import datetime
-import scipy.io.wavfile
-import os
 import zmq
-import struct
 import config
+
 
 config = config.config()
 

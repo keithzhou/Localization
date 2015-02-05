@@ -17,6 +17,9 @@ class config():
     def getPortPublisher(self):
       return 5556
 
+    def getPortAnalysisPublisher(self):
+      return 5558
+
     def getMicLocs(self):
         return (self.LOC_MIC1, self.LOC_MIC2, self.LOC_MIC3, self.LOC_MIC4)
 

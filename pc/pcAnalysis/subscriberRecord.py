@@ -1,4 +1,5 @@
 import sys
+sys.path.append('..')
 import zmq
 import numpy as np
 import matplotlib.pyplot as plt

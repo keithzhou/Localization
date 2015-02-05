@@ -1,0 +1,3 @@
+*.pyc
+pcAnalysis/*.png
+pcAnalysis/*.wav

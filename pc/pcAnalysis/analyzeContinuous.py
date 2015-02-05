@@ -1,9 +1,10 @@
+import sys
+sys.path.append('..')
 import ConfigParser
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
 import os.path, time
-import sys
 from IPython.core.display import clear_output
 import zmq
 from mpl_toolkits.mplot3d import Axes3D
