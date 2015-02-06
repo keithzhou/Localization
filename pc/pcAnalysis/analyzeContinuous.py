@@ -33,16 +33,14 @@ HOST, PORT = "localhost", 80
 config = config.config()
 (LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = config.getMicLocs()
 SPEED_SOUND = config.getSpeedSound()
-SAMPLING_RATE = config.getSamplingRate()
 
 
-LENG = 2000 # 10 to 12 ms
+LENG = config.getDataLength()# 10 to 12 ms
 HISTLEN = 1
-xcorr_normalization = np.hstack([np.arange(LENG),np.arange(LENG-1)[::-1]]) + 1.0
 
-RESOLUTION_XY = 300
-xs = np.linspace(-.6,.6,RESOLUTION_XY)
-ys = np.linspace(-.6,.6,RESOLUTION_XY)
+RESOLUTION_XY = 4000
+xs = np.linspace(-1.0,1.0,RESOLUTION_XY)
+ys = np.linspace(-1.0,1.0,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)
 xx,yy = np.meshgrid(xs,ys)
 
@@ -59,11 +57,11 @@ def L2Between(loc1,loc2):
         ss += (loc1[i] - loc2[i]) ** 2
     return np.sqrt(ss)
 
-def xcorr_freq(s1,s2):
-    return xcorrs.xcorr_freq(s1,s2)
+def xcorr_freq(s1,s2,SAMPLING_RATE):
+    return xcorrs.xcorr_freq(s1,s2,SAMPLING_RATE)
 
-def getXcorrs(sig1,sig2,sig3,sig4):
-    return xcorrs.getXcorrs(sig1,sig2,sig3,sig4)
+def getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE):
+    return xcorrs.getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE)
 
 def createFig():
     fig, ax = plt.subplots()
@@ -120,74 +118,47 @@ def plotXcorrDebug(x12,x13,x14,x23,x24,x34):
     ax34.plot(x34[index_mid - half_window: index_mid + half_window])
     plt.pause(0.0001) 
 
-offset_len = LENG - 1
 d1 = np.sqrt((xx - LOC_MIC1[0]) ** 2 + (yy - LOC_MIC1[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
 d2 = np.sqrt((xx - LOC_MIC2[0]) ** 2 + (yy - LOC_MIC2[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
 d3 = np.sqrt((xx - LOC_MIC3[0]) ** 2 + (yy - LOC_MIC3[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
 d4 = np.sqrt((xx - LOC_MIC4[0]) ** 2 + (yy - LOC_MIC4[1]) ** 2) #+ (zz - LOC_MIC1[2]) ** 2 ))
 
-t1 = d1 / SPEED_SOUND * SAMPLING_RATE
-t2 = d2 / SPEED_SOUND * SAMPLING_RATE
-t3 = d3 / SPEED_SOUND * SAMPLING_RATE
-t4 = d4 / SPEED_SOUND * SAMPLING_RATE
-
-l12 = np.rint(t1 - t2).astype(np.int)
-#l12[l12 < 0] = 0
-#l12[l12 > 2*LENG-1] = len(xcorr12) - 1
-
-l13 = np.rint(t1 - t3).astype(np.int)
-#l13[l13 < 0] = 0
-#l13[l13 > len(xcorr12)-1] = len(xcorr12) - 1
-
-l14 = np.rint(t1 - t4).astype(np.int)
-#l14[l14 < 0] = 0
-#l14[l14 > len(xcorr12)-1] = len(xcorr12) - 1
-
-l23 = np.rint(t2 - t3).astype(np.int)
-#l23[l23 < 0] = 0
-#l23[l23 > len(xcorr12)-1] = len(xcorr12) - 1
-
-l24 = np.rint(t2 - t4).astype(np.int)
-#l24[l24 < 0] = 0
-#l24[l24 > len(xcorr12)-1] = len(xcorr12) - 1
-
-l34 = np.rint(t3 - t4).astype(np.int)
-#l34[l34 < 0] = 0
-#l34[l34 > len(xcorr12)-1] = len(xcorr12) - 1
-
-def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
+def buildMap2D(sig1,sig2,sig3,sig4,SAMPLING_RATE,figMap,ax,quad,dot):
     assert (len(sig1) == LENG)
+    assert (len(sig2) == LENG)
+    assert (len(sig3) == LENG)
+    assert (len(sig4) == LENG)
     time_start = time.time()
-    global offset_len 
-    xxx1, xxx2, xxx3, xxx4 = xcorrs.getXcorrsTemplate(sig1,sig2,sig3,sig4)
 
-    loc12 = np.argmax(xxx1) - np.argmax(xxx2)
-    loc13 = np.argmax(xxx1) - np.argmax(xxx3)
-    loc14 = np.argmax(xxx1) - np.argmax(xxx4)
-    loc23 = np.argmax(xxx2) - np.argmax(xxx3)
-    loc24 = np.argmax(xxx2) - np.argmax(xxx4)
-    loc34 = np.argmax(xxx3) - np.argmax(xxx4)
+#    xxx1, xxx2, xxx3, xxx4 = xcorrs.getXcorrsTemplate(sig1,sig2,sig3,sig4)
 
-    print loc12, loc13, loc14, loc23
+#    loc12 = np.argmax(xxx1) - np.argmax(xxx2)
+#    loc13 = np.argmax(xxx1) - np.argmax(xxx3)
+#    loc14 = np.argmax(xxx1) - np.argmax(xxx4)
+#    loc23 = np.argmax(xxx2) - np.argmax(xxx3)
+#    loc24 = np.argmax(xxx2) - np.argmax(xxx4)
+#    loc34 = np.argmax(xxx3) - np.argmax(xxx4)
+#
+#    print loc12, loc13, loc14, loc23
 
-    xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4)
-#    maxloc12 = np.argmax(xcorr12) - (len(sig1) - 1)
-#    maxloc13 = np.argmax(xcorr13) - (len(sig1) - 1)
-#    maxloc14 = np.argmax(xcorr14) - (len(sig1) - 1)
-#    maxloc23 = np.argmax(xcorr23) - (len(sig1) - 1)
-#    maxloc24 = np.argmax(xcorr24) - (len(sig1) - 1)
-#    maxloc34 = np.argmax(xcorr34) - (len(sig1) - 1)
+    xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE)
+    maxloc12 = np.argmax(xcorr12) - (len(sig1) - 1)
+    maxloc13 = np.argmax(xcorr13) - (len(sig1) - 1)
+    maxloc14 = np.argmax(xcorr14) - (len(sig1) - 1)
+    maxloc23 = np.argmax(xcorr23) - (len(sig1) - 1)
+    maxloc24 = np.argmax(xcorr24) - (len(sig1) - 1)
+    maxloc34 = np.argmax(xcorr34) - (len(sig1) - 1)
 #    pa = sig1 - np.mean(sig1)
 #    pb = sig2 - np.mean(sig2)
 #    pc = sig3 - np.mean(sig3)
 #    pd = sig4 - np.mean(sig4)
 #    print "lag:12:%+.2f,13:%+.2f,14:%+.2f,23:%+.2f p1:%.2f,%.2f,%.2f,%.2f" % (maxloc12,maxloc13,maxloc14,maxloc23, np.sum(pa * pa)*1.0 / len(pa), np.sum(pb * pb) * 1.0 / len(pb),np.sum(pc * pc) * 1.0 / len(pc),np.sum(pd * pd) * 1.0 / len(pd))
-    fq12.addNum(loc12)
-    fq13.addNum(loc13)
-    fq14.addNum(loc14)
-    fq23.addNum(loc23)
-    fq24.addNum(loc24)
-    fq34.addNum(loc34)
+#    fq12.addNum(maxloc12)
+#    fq13.addNum(maxloc13)
+#    fq14.addNum(maxloc14)
+#    fq23.addNum(maxloc23)
+#    fq24.addNum(maxloc24)
+#    fq34.addNum(maxloc34)
     ll = xcorr12[l12 + (len(sig1)-1)] + xcorr13[l13 + (len(sig1)-1)] + xcorr23[l23 + (len(sig1)-1)]
     #ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
 #    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
@@ -205,19 +176,18 @@ def buildMap2D(sig1,sig2,sig3,sig4,figMap,ax,quad,dot):
         ang = -1 * ang
     else:
         ang = -180 + ang
-    print "max loc:",maxx,maxy,np.sqrt(maxx**2+maxy**2),ang
+    print "dist: %.4f ang: %.4f time: %.4f"%(np.sqrt(maxx**2+maxy**2),ang,time.time() - time_start)
     #sock.send("msg:%.4f %.4f\n" % (np.sqrt(maxx**2+maxy**2),ang))
 
 #    ll = xcorr12[l12] * xcorr13[l13] * xcorr23[l23] + xcorr14[l14]  + xcorr24[l24] + xcorr34[l34]
-    updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
+    #updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
     #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
-    print "time:", time.time() - time_start
 
-def xcorr(sig1, sig2):
+def xcorr(sig1, sig2, SAMPLING_RATE):
     a = (sig1 - np.mean(sig1))/np.std(sig1)
     b = (sig2 - np.mean(sig2))/np.std(sig2)
     #output = np.correlate(a,b,'full')
-    output = xcorr_freq(a,b)
+    output = xcorr_freq(a,b, SAMPLING_RATE)
     return (np.argmax(output) - (len(sig2) - 1), output[np.argmax(output)]*1.0/len(sig1))
 
 def bandpass_filtering(signal,fs,f_low,f_heigh):
@@ -233,7 +203,7 @@ def clearQueue(s):
             s.recv(flags=zmq.NOBLOCK)
         except zmq.error.Again, e:
             if str("Resource temporarily unavailable") in repr(e):
-                print "Queue cleared"
+                #print "Queue cleared"
                 return
             else:
                 raise
@@ -242,43 +212,37 @@ context = zmq.Context()
 socket = context.socket(zmq.SUB)
 socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
 
-topicfilter = "DATA"
-socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
+socket.setsockopt(zmq.SUBSCRIBE, "")
 
 ch1 = list()
 ch2 = list()
 ch3 = list()
 ch4 = list()
 figMap,ax, quad,dot = createFig()
-#figMap,ax, quad,dot = (None,None,None, None)
+
+#calibrating sampling rate
+print "calibrating sampling rates..."
+rates = [config.getSamplingRate(bytearray(socket.recv())[:4]) for i in range(10)]
+sampling_rate = np.median(rates)
+print "min:%.4f max:%.4f median:%.4f, mean:%.4f, std:%.4f, touse:%.4f" %(np.min(rates), np.max(rates), np.median(rates), np.mean(rates), np.std(rates), sampling_rate)
+
+# sampling rate dependent calculations
+t1 = d1 / SPEED_SOUND * sampling_rate
+t2 = d2 / SPEED_SOUND * sampling_rate
+t3 = d3 / SPEED_SOUND * sampling_rate
+t4 = d4 / SPEED_SOUND * sampling_rate
+l12 = np.rint(t1 - t2).astype(np.int)
+l13 = np.rint(t1 - t3).astype(np.int)
+l14 = np.rint(t1 - t4).astype(np.int)
+l23 = np.rint(t2 - t3).astype(np.int)
+l24 = np.rint(t2 - t4).astype(np.int)
+l34 = np.rint(t3 - t4).astype(np.int)
+
 while 1:
-    string = socket.recv()
-    topic, d1, d2, d3, d4 = string.split()
-    d1 = int(d1)
-    d2 = int(d2)
-    d3 = int(d3)
-    d4 = int(d4)
-    ch1.append(d1)
-    ch2.append(d2)
-    ch3.append(d3)
-    ch4.append(d4)
-    if len(ch1) >= LENG:
-        ka = np.array(ch1).astype(np.float)
-        kb = np.array(ch2).astype(np.float)
-        kc = np.array(ch3).astype(np.float)
-        kd = np.array(ch4).astype(np.float)
-        #ch1_f = bandpass_filtering(ka,SAMPLING_RATE,1e3,5e3)
-        #ch2_f = bandpass_filtering(kb,SAMPLING_RATE,1e3,5e3)
-        #ch3_f = bandpass_filtering(kc,SAMPLING_RATE,1e3,5e3)
-        #ch4_f = bandpass_filtering(kd,SAMPLING_RATE,1e3,5e3)
-        #xcorrLag1, xcorrMag1 = xcorr(ch1, ch2)
-        #xcorrLag2, xcorrMag2 = xcorr(ch1, ch3)
-        #xcorrLag3, xcorrMag3 = xcorr(ch1, ch4)
-        sys.stdout.flush()
-        buildMap2D(ka,kb,kc,kd,figMap,ax,quad,dot)
-        sys.stdout.flush()
-        ch1 = list()
-        ch2 = list()
-        ch3 = list()
-        ch4 = list()
-        clearQueue(socket)
+    string = bytearray(socket.recv())
+    dd = np.array(string[4:],dtype=np.float).reshape(LENG,4)
+    assert dd.shape == (LENG,4)
+    sys.stdout.flush()
+    buildMap2D(dd[:,0],dd[:,1],dd[:,2],dd[:,3],sampling_rate,figMap,ax,quad,dot)
+    sys.stdout.flush()
+    clearQueue(socket)

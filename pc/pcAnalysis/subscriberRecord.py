@@ -7,14 +7,11 @@ import scipy.io.wavfile
 import config
 config = config.config()
 
-SAMPLINGRATE = config.getSamplingRate()
-
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
 socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
 
-topicfilter = "DATA"
-socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
+socket.setsockopt(zmq.SUBSCRIBE, "")
 
 def plotChannels(waveform, fileName):
         f, axes = plt.subplots(waveform.shape[1], sharex=True, sharey=True)
@@ -23,37 +20,34 @@ def plotChannels(waveform, fileName):
             axes[i].set_title("channel %d" % (i+1,))
         plt.savefig(fileName)
 
-def processWaveform(waveform):
+def processWaveform(waveform,SAMPLINGRATE):
     # save raw waveform
-    plotChannels(waveform.T,'output_plot_raw.png')
-    np.save("output_raw",waveform)
+    #print "save raw array"
+    #plotChannels(waveform.T,'output_plot_raw.png')
+    #np.save("output_raw",waveform)
 
     # normalize waveform to save as audio file
+    print "normalize for audio"
     waveform -= np.mean(waveform,axis=-1)[:,np.newaxis]
     waveform = (waveform / np.max(np.abs(waveform),axis=-1)[:,np.newaxis] * 10000).astype(np.int16)
-    plotChannels(waveform.T,'output_plot_audio.png')
+    #plotChannels(waveform.T,'output_plot_audio.png')
 
     # writing the sound to a file
+    print "save audio"
     scipy.io.wavfile.write('output_audio_ch1.wav',SAMPLINGRATE,waveform[0])
     scipy.io.wavfile.write('output_audio_ch2.wav',SAMPLINGRATE,waveform[1])
     scipy.io.wavfile.write('output_audio_ch3.wav',SAMPLINGRATE,waveform[2])
     scipy.io.wavfile.write('output_audio_ch4.wav',SAMPLINGRATE,waveform[3])
-ch1 = list()
-ch2 = list()
-ch3 = list()
-ch4 = list()
+
+result = []
+samplingRate = []
 try:
     while 1:
-        string = socket.recv()
-        topic, d1, d2, d3, d4 = string.split()
-        d1 = int(d1)
-        d2 = int(d2)
-        d3 = int(d3)
-        d4 = int(d4)
-        ch1.append(d1)
-        ch2.append(d2)
-        ch3.append(d3)
-        ch4.append(d4)
+        string = bytearray(socket.recv())
+        current = np.array(string[4:],dtype=np.float).reshape(config.getDataLength(),4)
+        samplingRate.append(config.getSamplingRate(string[:4]))
+        print current.shape
+        result.append(current)
 except:
-    waveform = np.array([ch1,ch2,ch3,ch4]).astype(np.float)
-    processWaveform(waveform)
+    print "sampling rates:",np.median(samplingRate), "variation:", np.std(samplingRate)
+    processWaveform(np.vstack(result).T,np.median(samplingRate))

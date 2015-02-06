@@ -1,3 +1,4 @@
+import struct 
 class config():
     def __init__(self):
         self.LOC_MIC1 = ( 0.137,   0.0,     0.0)
@@ -7,9 +8,9 @@ class config():
 
         self.DISTANCE_TEST = 0.4
 
-        self.SAMPLING_RATE = 1.0/(7.0e-6)
-
         self.SPEED_SOUND = 340.0
+
+        self.DATA_LENGTH = 6000
 
     def getPortPublisherPassThrough(self):
       return 5557
@@ -26,11 +27,14 @@ class config():
     def getTestDistance(self):
         return self.DISTANCE_TEST
 
-    def getSamplingRate(self):
-        return self.SAMPLING_RATE
+    def getSamplingRate(self, delay_bytes):
+        return 1.0 /(struct.unpack("<L", delay_bytes)[0] * 1.0 / self.DATA_LENGTH *1e-6)
 
     def getSpeedSound(self):
         return self.SPEED_SOUND
+
+    def getDataLength(self):
+        return self.DATA_LENGTH
 
     def printDebug(self):
         print "mic locations:", self.getMicLocs()

@@ -4,7 +4,6 @@ import config
 config = config.config()
 (LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = config.getMicLocs()
 SPEED_SOUND = config.getSpeedSound()
-SAMPLING_RATE = config.getSamplingRate()
 
 TEMPLATE = np.load('template_raw.npy')
 TEMPLATE = TEMPLATE[0]
@@ -13,6 +12,7 @@ TEMPLATE = TEMPLATE[midIndex:midIndex+2000]
 TEMPLATE = (TEMPLATE - np.mean(TEMPLATE)) / np.std(TEMPLATE)
 
 def getXcorrsTemplate(sig1,sig2,sig3,sig4, doPhaseTransform = True, doBandpassFiltering = True):
+    assert 0
     assert (len(sig1) == len(sig2))
     assert (len(sig2) == len(sig3))
     assert (len(sig3) == len(sig4))
@@ -26,7 +26,7 @@ def getXcorrsTemplate(sig1,sig2,sig3,sig4, doPhaseTransform = True, doBandpassFi
     xxx4 = xcorr_freq(s4,TEMPLATE,doPhaseTransform, doBandpassFiltering)
     return (xxx1, xxx2, xxx3, xxx4)
 
-def getXcorrs(sig1,sig2,sig3,sig4, doPhaseTransform = True, doBandpassFiltering = True):
+def getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE, doPhaseTransform = True, doBandpassFiltering = True):
     assert (len(sig1) == len(sig2))
     assert (len(sig2) == len(sig3))
     assert (len(sig3) == len(sig4))
@@ -34,15 +34,15 @@ def getXcorrs(sig1,sig2,sig3,sig4, doPhaseTransform = True, doBandpassFiltering 
     s2 = (sig2 - np.mean(sig2))/np.std(sig2)
     s3 = (sig3 - np.mean(sig3))/np.std(sig3)
     s4 = (sig4 - np.mean(sig4))/np.std(sig4)
-    xcorr12 = xcorr_freq(s1,s2, doPhaseTransform, doBandpassFiltering)
-    xcorr13 = xcorr_freq(s1,s3, doPhaseTransform, doBandpassFiltering)
-    xcorr14 = xcorr_freq(s1,s4, doPhaseTransform, doBandpassFiltering)
-    xcorr23 = xcorr_freq(s2,s3, doPhaseTransform, doBandpassFiltering)
-    xcorr24 = xcorr_freq(s2,s4, doPhaseTransform, doBandpassFiltering)
-    xcorr34 = xcorr_freq(s3,s4, doPhaseTransform, doBandpassFiltering)
+    xcorr12 = xcorr_freq(s1,s2,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
+    xcorr13 = xcorr_freq(s1,s3,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
+    xcorr14 = xcorr_freq(s1,s4,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
+    xcorr23 = xcorr_freq(s2,s3,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
+    xcorr24 = xcorr_freq(s2,s4,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
+    xcorr34 = xcorr_freq(s3,s4,SAMPLING_RATE, doPhaseTransform, doBandpassFiltering)
     return (xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34)
 
-def xcorr_freq(s1,s2, doPhaseTransform = True, doBandpassFiltering = True): 
+def xcorr_freq(s1,s2,SAMPLING_RATE, doPhaseTransform = True, doBandpassFiltering = True, ): 
     assert(len(s1)==len(s2))
     pad = len(s1) * 2 - 1
     lenOld = len(s1)

@@ -2,8 +2,11 @@ import sys
 sys.path.append('..')
 import zmq
 import config
+import time
+import struct
 
 config = config.config()
+dataLength = config.getDataLength()
 
 PUBLISHERPORT = "5556"
 context = zmq.Context()
@@ -16,20 +19,14 @@ socketrcv.connect ("tcp://localhost:%s" % config.getPortPublisherPassThrough())
 socketrcv.setsockopt(zmq.SUBSCRIBE, "")
 
 def printUSB():
-    last = list()
+    lastTime = time.time()
     while True:
         data = bytearray(socketrcv.recv())
-        for i in data:
-            if i == ord('\n'): # end of line detected
-                if len(last) == 0:
-                    pass
-                elif len(last) == 4:
-                    socket.send("DATA %s %s %s %s" % (last[0],last[1],last[2],last[3]))
-                else:
-                    print "len:",len(last), ''.join([chr(k) for k in last])
-                last = list()
-            else:
-                last.append(i)
+        assert(len(data) == dataLength * 4 + 1 + 4)
+        assert(data[-1] == ord('\n'))
+        socket.send(data[:-1])
+        print "time elapsed: %.4f sampling rate: %.4f" %(time.time() - lastTime, config.getSamplingRate(data[:4]))
+        lastTime = time.time()
 
 if __name__ == "__main__":
     printUSB()
