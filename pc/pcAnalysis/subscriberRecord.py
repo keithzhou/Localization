@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.io.wavfile
 import config
+import pickle
 config = config.config()
 
 context = zmq.Context()
@@ -49,5 +50,6 @@ try:
         print current.shape
         result.append(current)
 except:
+    pickle.dump([result,samplingRate], open( "save.p", "wb" ) )
     print "sampling rates:",np.median(samplingRate), "variation:", np.std(samplingRate)
     processWaveform(np.vstack(result).T,np.median(samplingRate))
