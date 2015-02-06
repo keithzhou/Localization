@@ -38,7 +38,7 @@ SPEED_SOUND = config.getSpeedSound()
 LENG = config.getDataLength()# 10 to 12 ms
 HISTLEN = 1
 
-RESOLUTION_XY = 4000
+RESOLUTION_XY = 400
 xs = np.linspace(-1.0,1.0,RESOLUTION_XY)
 ys = np.linspace(-1.0,1.0,RESOLUTION_XY)
 zs = np.linspace(.0,.3,RESOLUTION_XY)
@@ -159,7 +159,7 @@ def buildMap2D(sig1,sig2,sig3,sig4,SAMPLING_RATE,figMap,ax,quad,dot):
 #    fq23.addNum(maxloc23)
 #    fq24.addNum(maxloc24)
 #    fq34.addNum(maxloc34)
-    ll = xcorr12[l12 + (len(sig1)-1)] + xcorr13[l13 + (len(sig1)-1)] + xcorr23[l23 + (len(sig1)-1)]
+    ll = (xcorr12[l12 + (len(sig1)-1)]) * (xcorr13[l13 + (len(sig1)-1)]) * (xcorr23[l23 + (len(sig1)-1)])
     #ll = fq12.freqFor(l12) + fq13.freqFor(l13) + fq23.freqFor(l23)# + fq14.freqFor(l14) + fq24.freqFor(l24) + fq34.freqFor(l34)
 #    xa,ya = np.unravel_index(ll.argmax(), ll.shape)
 #    maxy = xs[xa]
@@ -176,12 +176,12 @@ def buildMap2D(sig1,sig2,sig3,sig4,SAMPLING_RATE,figMap,ax,quad,dot):
         ang = -1 * ang
     else:
         ang = -180 + ang
-    print "dist: %.4f ang: %.4f time: %.4f"%(np.sqrt(maxx**2+maxy**2),ang,time.time() - time_start)
     #sock.send("msg:%.4f %.4f\n" % (np.sqrt(maxx**2+maxy**2),ang))
 
 #    ll = xcorr12[l12] * xcorr13[l13] * xcorr23[l23] + xcorr14[l14]  + xcorr24[l24] + xcorr34[l34]
-    #updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
+    updateFig(figMap,ax,quad,dot,ll, maxx,maxy)
     #plotXcorrDebug(xcorr12,xcorr13,xcorr14,xcorr23,xcorr24,xcorr34)
+    print "dist: %.4f ang: %.4f time: %.4f"%(np.sqrt(maxx**2+maxy**2),ang,time.time() - time_start)
 
 def xcorr(sig1, sig2, SAMPLING_RATE):
     a = (sig1 - np.mean(sig1))/np.std(sig1)

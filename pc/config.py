@@ -8,7 +8,7 @@ class config():
 
         self.DISTANCE_TEST = 0.4
 
-        self.SPEED_SOUND = 340.0
+        self.SPEED_SOUND = 343.8112863772779
 
         self.DATA_LENGTH = 6000
 

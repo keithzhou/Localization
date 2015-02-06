@@ -9,7 +9,7 @@ config = config.config()
 DATA_LENGTH = config.getDataLength()
 
 USBPORTNAME = '/dev/tty.usbmodem406541'
-USBBAUDRATE = 9600
+USBBAUDRATE = 115200
 
 PUBLISHERPORT = config.getPortPublisherPassThrough()
 context = zmq.Context()
