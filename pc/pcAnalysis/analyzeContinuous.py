@@ -14,16 +14,15 @@ import socket
 import sys
 import heatMap
 
-tdoa = tdoa.tdoa(grid_resolution = 400, doPhaseTransform = False, doBandpassFiltering = False)
 
 HOST, PORT = "localhost", 80
 
 # Create a socket (SOCK_STREAM means a TCP socket)
-#sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect to server and send data
-#sock.connect((HOST, PORT))
-#sock.send("iam:array")
+sock.connect((HOST, PORT))
+sock.send("iam:array")
 #end data
 
 HISTLEN = 1
@@ -53,7 +52,8 @@ socket = context.socket(zmq.SUB)
 socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
 socket.setsockopt(zmq.SUBSCRIBE, "")
 
-#figMap,ax, quad,dot = createFig(*tdoa.get_grid())
+# set up 
+tdoa = tdoa.tdoa(grid_resolution = 400, doPhaseTransform = False, doBandpassFiltering = False)
 heatMap = heatMap.heatMap(*tdoa.get_grid())
 
 #calibrating sampling rate
@@ -71,8 +71,8 @@ while 1:
     sys.stdout.flush()
     time_start = time.time()
     (maxx,maxy,r,theta,ll) = tdoa.calculate_liklihood_map(sigs)
-    #sock.send("msg:%.4f %.4f\n" % (np.sqrt(maxx**2+maxy**2),ang))
-    heatMap.update(ll, maxx,maxy)
+    sock.send("msg:%.4f %.4f\n" %  (maxx * 100, maxy * 100))
+    #heatMap.update(ll, maxx,maxy)
     print "dist: %.4f ang: %.4f time: %.4f"%(r,theta,time.time() - time_start)
     sys.stdout.flush()
     clearQueue(socket)

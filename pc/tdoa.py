@@ -41,8 +41,8 @@ class tdoa():
     self.l13 = np.rint(t1 - t3).astype(np.int)
     self.l14 = np.rint(t1 - t4).astype(np.int)
     self.l23 = np.rint(t2 - t3).astype(np.int)
-    l24 = np.rint(t2 - t4).astype(np.int)
-    l34 = np.rint(t3 - t4).astype(np.int)
+    self.l24 = np.rint(t2 - t4).astype(np.int)
+    self.l34 = np.rint(t3 - t4).astype(np.int)
 
   def calculate_liklihood_map(self,sigs):
     (sig1,sig2,sig3,sig4) = [sigs[:,i] for i in range(4)]
