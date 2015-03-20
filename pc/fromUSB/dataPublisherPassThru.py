@@ -3,15 +3,21 @@ sys.path.append('../')
 import serial
 import zmq
 import config
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument("array")
+args = parser.parse_args()
+array = int(args.array)
+print "using array:", array
 
 config = config.config()
 DATA_LENGTH = config.getDataLength()
 
-USBPORTNAME = '/dev/tty.usbmodem406541'
+USBPORTNAME = config.getPortUSB(array)
 USBBAUDRATE = 115200
 
-PUBLISHERPORT = config.getPortPublisherPassThrough()
+PUBLISHERPORT = config.getPortPublisherPassThrough(array)
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
 socket.bind("tcp://*:%s" % PUBLISHERPORT)

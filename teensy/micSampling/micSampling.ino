@@ -19,14 +19,8 @@ elapsedMicros sinceStart;
 int buffer_delay[BUFFER_SIZE_DELAY];
 
 
-ADC *adc = new ADC(); // adc object
 
-const int channelA2 = ADC::channel2sc1aADC1[2];
-const int channelA3 = ADC::channel2sc1aADC1[3];
-//const int channelA10 = ADC::channel2sc1aADC1[10];
-//const int channelA11 = ADC::channel2sc1aADC0[11];
-const int channelA7 = ADC::channel2sc1aADC0[7];
-const int channelA8 = ADC::channel2sc1aADC0[8];
+
 #define highSpeed8bitAnalogReadMacro(channel1, channel2, value1, value2) ADC0_SC1A = channel1;ADC1_SC1A = channel2;while (!(ADC0_SC1A & ADC1_SC1A & ADC_SC1_COCO)) {} value1 = ADC0_RA;value2 = ADC1_RA;
 
 void highSpeed8bitADCSetup(){
@@ -87,26 +81,44 @@ void highSpeed8bitADCSetup(){
 
 }
 
-byte values[NUM_BYTES_TO_TRANSMIT];
+ADC *adc = new ADC(); // adc object
 
+//const int channelA2 = ADC::channel2sc1aADC1[2];
+//const int channelA3 = ADC::channel2sc1aADC1[3];
+//const int channelA7 = ADC::channel2sc1aADC0[7];
+//const int channelA8 = ADC::channel2sc1aADC0[8];
+//const int channelA0 = ADC::channel2sc1aADC0[0];
+//const int channelA17 = ADC::channel2sc1aADC1[17];
+
+
+const int channel01 = ADC::channel2sc1aADC0[4];
+const int channel02 = ADC::channel2sc1aADC0[5];
+const int channel11 = ADC::channel2sc1aADC1[2];
+const int channel12 = ADC::channel2sc1aADC1[3];
+
+byte values[NUM_BYTES_TO_TRANSMIT];
+byte value1;
+byte value2;
+byte value3;
+byte value4;
 
 // the setup routine runs once when you press reset:
 void setup() {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(115200);
-  pinMode(A2, INPUT); 
-  pinMode(A3, INPUT); 
-  pinMode(A10, INPUT); 
-  pinMode(A11, INPUT); 
-  
+//  pinMode(A6, INPUT); 
+//  pinMode(A7, INPUT); 
+//  pinMode(A18, INPUT); 
+//  pinMode(A19, INPUT); 
+
   highSpeed8bitADCSetup();
+  
   for (int j = 0; j < NUM_BYTES_TO_TRANSMIT ; j ++) {
     values[j] = 'c';
   }
   for (int j = 0; j < BUFFER_SIZE_DELAY; j ++) {
     buffer_delay[j] = -1;
   }
-  //values[4] = '\n';
   values[NUM_BYTES_TO_TRANSMIT - 1] = '\n';
 }
 int i = 0;
@@ -147,9 +159,14 @@ int i = 0;
 //}
 
 void loop() {
-  for (int k = 0; k < BUFFER_SIZE; k ++) {
-     highSpeed8bitAnalogReadMacro(channelA7,channelA2,values[k*4 + 1],values[k*4 + 0]);
-     highSpeed8bitAnalogReadMacro(channelA8,channelA3,values[k*4 + 2],values[k*4 + 3]); 
+  for (int k = 0; k < BUFFER_SIZE; ++k) {
+     highSpeed8bitAnalogReadMacro(channel01,channel11,value1,value2);
+     highSpeed8bitAnalogReadMacro(channel02,channel12,value3,value4); 
+     
+     values[k*4 + 0] = value2;
+     values[k*4 + 1] = value4;
+     values[k*4 + 2] = value1;
+     values[k*4 + 3] = value1;
   }
   int a = sinceLastRead;
   Serial.write((byte *)& a,4);

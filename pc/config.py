@@ -1,28 +1,51 @@
 import struct 
 class config():
     def __init__(self):
-        self.LOC_MIC1 = ( 0.137,   0.0,     0.0)
-        self.LOC_MIC2 = (-0.06,  0.10392, 0.0)
-        self.LOC_MIC3 = (-0.06, -0.11864, 0.0)
-        self.LOC_MIC4 = ( 0.0,    0.0,     0.145)
+        array1 = {
+          "MICS": ((-.22,0.0,0.0), (-.09,.18,0),(0.0, 0.0, 0.0),(0,0,0)), 
+          "PORT_PASS_THROUGH": 5557, 
+          "PORT_PUBLISHER": 5556, 
+          "PORT_ANALYSIS": 5558,
+          "SIDE": -1,
+          "PORT_USB": '/dev/tty.usbmodem406861',
+        }
 
+        array2 = {
+          "MICS": ((.24,0.0,0.0), (.0,.0,0),(0.095, 0.19, 0.0), (0,0,0)), 
+          "PORT_PASS_THROUGH": 6557, 
+          "PORT_PUBLISHER": 6556, 
+          "PORT_ANALYSIS": 6558,
+          "PORT_USB": '/dev/tty.usbmodem406691',
+          "SIDE": 1
+        }
+
+        self.array_seperation = .3
+
+        array1["MICS"] = [(i[0] + array1["SIDE"]*self.array_seperation/2.0, i[1], i[2]) for i in array1["MICS"]] 
+        array2["MICS"] = [(i[0] + array2["SIDE"]*self.array_seperation/2.0,i[1],i[2]) for i in array2["MICS"]] 
+
+        self.params_arrays = (array1, array2)
+          
         self.DISTANCE_TEST = 0.4
 
         self.SPEED_SOUND = 343.8112863772779
 
         self.DATA_LENGTH = 6000
 
-    def getPortPublisherPassThrough(self):
-      return 5557
+    def getPortUSB(self,array):
+      return self.params_arrays[array]["PORT_USB"]
 
-    def getPortPublisher(self):
-      return 5556
+    def getPortPublisherPassThrough(self, array):
+      return self.params_arrays[array]["PORT_PASS_THROUGH"]
 
-    def getPortAnalysisPublisher(self):
-      return 5558
+    def getPortPublisher(self, array):
+      return self.params_arrays[array]["PORT_PUBLISHER"]
 
-    def getMicLocs(self):
-        return (self.LOC_MIC1, self.LOC_MIC2, self.LOC_MIC3, self.LOC_MIC4)
+    def getPortAnalysisPublisher(self, array):
+      return self.params_arrays[array]["PORT_ANALYSIS"]
+
+    def getMicLocs(self, array):
+        return self.params_arrays[array]["MICS"]
 
     def getTestDistance(self):
         return self.DISTANCE_TEST
@@ -37,9 +60,9 @@ class config():
         return self.DATA_LENGTH
 
     def printDebug(self):
-        print "mic locations:", self.getMicLocs()
+        print "mic locations:", self.getMicLocs(0)
+        print "mic locations:", self.getMicLocs(1)
         print "test distance:", self.getTestDistance()
-        print "sampling rate:", self.getSamplingRate()
         print "speed of sound:", self.getSpeedSound()
 
 if __name__ == "__main__":

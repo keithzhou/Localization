@@ -16,8 +16,11 @@ class heatMap():
 
   def update(self,data,dot_x,dot_y):
       plt.figure(self.fig.number)
-      self.quad.set_clim(vmin=abs(data).min(),vmax=abs(data).max())
+      self.quad.set_clim(vmin=data.min(),vmax=abs(data).max())
       self.quad.set_array(data[:-1,:-1].ravel())
       self.dot.set_ydata(dot_y)
       self.dot.set_xdata(dot_x)
       plt.draw()
+
+  def saveFig(self,name):
+    plt.savefig(name)

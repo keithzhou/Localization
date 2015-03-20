@@ -6,7 +6,6 @@ import os.path, time
 import zmq
 import sys
 import pylab as pl
-import RunningHist
 import config
 import xcorrs
 import tdoa
@@ -14,25 +13,17 @@ import socket
 import sys
 import heatMap
 
+import argparse
 
 HOST, PORT = "localhost", 80
 
 # Create a socket (SOCK_STREAM means a TCP socket)
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connect to server and send data
-sock.connect((HOST, PORT))
-sock.send("iam:array")
+#sock.connect((HOST, PORT))
+#sock.send("iam:array")
 #end data
-
-HISTLEN = 1
-
-fq12 = RunningHist.RunningHist(HISTLEN)
-fq13 = RunningHist.RunningHist(HISTLEN)
-fq14 = RunningHist.RunningHist(HISTLEN)
-fq23 = RunningHist.RunningHist(HISTLEN)
-fq24 = RunningHist.RunningHist(HISTLEN)
-fq34 = RunningHist.RunningHist(HISTLEN)
 
 def clearQueue(s):
     while 1:
@@ -49,8 +40,13 @@ config = config.config()
 LENG = config.getDataLength()# 10 to 12 ms
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
+socket.connect ("tcp://localhost:%s" % config.getPortPublisher(0))
 socket.setsockopt(zmq.SUBSCRIBE, "")
+
+context2 = zmq.Context()
+socket2 = context2.socket(zmq.SUB)
+socket2.connect ("tcp://localhost:%s" % config.getPortPublisher(1))
+socket2.setsockopt(zmq.SUBSCRIBE, "")
 
 # set up 
 tdoa = tdoa.tdoa(grid_resolution = 400, doPhaseTransform = False, doBandpassFiltering = False)
@@ -64,15 +60,21 @@ print "min:%.4f max:%.4f median:%.4f, mean:%.4f, std:%.4f, touse:%.4f" %(np.min(
 
 tdoa.set_sampling_rate(sampling_rate)
 
-while 1:
-    string = bytearray(socket.recv())
+def get_sig_from_socket(ss):
+    string = bytearray(ss.recv())
     sigs = np.array(string[4:],dtype=np.float).reshape(LENG,4)
     assert sigs.shape == (LENG,4)
+    return sigs
+
+while 1:
+    sig1 = get_sig_from_socket(socket)
+    sig2 = get_sig_from_socket(socket2)
     sys.stdout.flush()
     time_start = time.time()
-    (maxx,maxy,r,theta,ll) = tdoa.calculate_liklihood_map(sigs)
-    sock.send("msg:%.4f %.4f\n" %  (maxx * 100, maxy * 100))
-    #heatMap.update(ll, maxx,maxy)
+    (maxx,maxy,r,theta,ll) = tdoa.calculate_liklihood_map([sig1,sig2])
+    #sock.send("msg:%.4f %.4f\n" %  (maxx * 100, maxy * 100))
+    heatMap.update(ll, maxx,maxy)
     print "dist: %.4f ang: %.4f time: %.4f"%(r,theta,time.time() - time_start)
     sys.stdout.flush()
     clearQueue(socket)
+    clearQueue(socket2)

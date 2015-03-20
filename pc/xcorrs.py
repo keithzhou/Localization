@@ -1,30 +1,6 @@
 from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
 import numpy as np
 import config
-config = config.config()
-(LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = config.getMicLocs()
-SPEED_SOUND = config.getSpeedSound()
-
-TEMPLATE = np.load('template_raw.npy')
-TEMPLATE = TEMPLATE[0]
-midIndex = len(TEMPLATE)/2
-TEMPLATE = TEMPLATE[midIndex:midIndex+2000]
-TEMPLATE = (TEMPLATE - np.mean(TEMPLATE)) / np.std(TEMPLATE)
-
-def getXcorrsTemplate(sig1,sig2,sig3,sig4, doPhaseTransform = True, doBandpassFiltering = True):
-    assert 0
-    assert (len(sig1) == len(sig2))
-    assert (len(sig2) == len(sig3))
-    assert (len(sig3) == len(sig4))
-    s1 = (sig1 - np.mean(sig1))/np.std(sig1)
-    s2 = (sig2 - np.mean(sig2))/np.std(sig2)
-    s3 = (sig3 - np.mean(sig3))/np.std(sig3)
-    s4 = (sig4 - np.mean(sig4))/np.std(sig4)
-    xxx1 = xcorr_freq(s1,TEMPLATE,doPhaseTransform, doBandpassFiltering)
-    xxx2 = xcorr_freq(s2,TEMPLATE,doPhaseTransform, doBandpassFiltering)
-    xxx3 = xcorr_freq(s3,TEMPLATE,doPhaseTransform, doBandpassFiltering)
-    xxx4 = xcorr_freq(s4,TEMPLATE,doPhaseTransform, doBandpassFiltering)
-    return (xxx1, xxx2, xxx3, xxx4)
 
 def getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE, doPhaseTransform = True, doBandpassFiltering = True):
     assert (len(sig1) == len(sig2))

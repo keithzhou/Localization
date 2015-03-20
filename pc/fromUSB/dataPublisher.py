@@ -5,17 +5,25 @@ import config
 import time
 import struct
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("array")
+args = parser.parse_args()
+array = int(args.array)
+print "using array:", array
+
+
 config = config.config()
 dataLength = config.getDataLength()
 
-PUBLISHERPORT = "5556"
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
-socket.bind("tcp://*:%s" % config.getPortPublisher())
+socket.bind("tcp://*:%s" % config.getPortPublisher(array))
 
 contextrcv = zmq.Context()
 socketrcv = context.socket(zmq.SUB)
-socketrcv.connect ("tcp://localhost:%s" % config.getPortPublisherPassThrough())
+socketrcv.connect ("tcp://localhost:%s" % config.getPortPublisherPassThrough(array))
 socketrcv.setsockopt(zmq.SUBSCRIBE, "")
 
 def printUSB():
