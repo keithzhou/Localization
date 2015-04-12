@@ -2,6 +2,7 @@ import xcorrs
 import config
 import numpy as np
 import operator
+from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
 
 class tdoa():
   def __init__(self, sampling_rate = None, grid_resolution = 400, doBandpassFiltering = True, doPhaseTransform = True):
@@ -43,31 +44,73 @@ class tdoa():
       t2 = d2 / SPEED_SOUND * self.sampling_rate
       t3 = d3 / SPEED_SOUND * self.sampling_rate
       t4 = d4 / SPEED_SOUND * self.sampling_rate
+#      l12 = (t1 - t2)
+#      l13 = (t1 - t3)
+#      l14 = (t1 - t4)
+#      l23 = (t2 - t3)
+#      l24 = (t2 - t4)
+#      l34 = (t3 - t4)
+#
       l12 = np.rint(t1 - t2).astype(np.int)
       l13 = np.rint(t1 - t3).astype(np.int)
       l14 = np.rint(t1 - t4).astype(np.int)
       l23 = np.rint(t2 - t3).astype(np.int)
       l24 = np.rint(t2 - t4).astype(np.int)
       l34 = np.rint(t3 - t4).astype(np.int)
+
       self.ls.append((l12,l13,l14,l23,l24,l34))
+
+  def arg_max_corr(self,a, b):
+
+      if len(a.shape) > 1:
+          raise ValueError('Needs a 1-dimensional array.')
+
+      length = len(a)
+      if not length % 2 == 0:
+          raise ValueError('Needs an even length array.')
+
+      if not a.shape == b.shape:
+          raise ValueError('The 2 arrays need to be the same shape')
+
+
+      omega = np.zeros(length)
+      omega[0:length/2] = (2*np.pi*np.arange(length/2))/length
+      omega[length/2+1:] = (2*np.pi*
+              (np.arange(length/2+1, length)-length))/length
+
+      fft_a = fft(a)
+      def correlate_point(tau):
+          rotate_vec = np.exp(1j*tau*omega)
+          rotate_vec[length/2] = np.cos(np.pi*tau)
+          return np.sum((ifft(fft_a*rotate_vec)).real*b)
+
+      return np.vectorize(correlate_point)
 
   def ll_for_sigs(self,sigs, array):
     (sig1,sig2,sig3,sig4) = [sigs[:,i] for i in range(4)]
     xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = xcorrs.getXcorrs(sig1,sig2,sig3,sig4,self.sampling_rate, doBandpassFiltering = self.doBandpassFiltering, doPhaseTransform=self.doPhaseTransform)
 
+#    ff12 = self.arg_max_corr(sig1,sig2)
+#    ff13 = self.arg_max_corr(sig1,sig3)
+#    ff23 = self.arg_max_corr(sig2,sig3)
+
 #    xcorr12 = np.where(xcorr12 == np.max(xcorr12), 1, 0)
 #    xcorr13 = np.where(xcorr13 == np.max(xcorr13), 1, 0)
 #    xcorr23 = np.where(xcorr23 == np.max(xcorr23), 1, 0)
 
-    maxloc12 = np.argmax(xcorr12) - (len(sig1) - 1)
-    maxloc13 = np.argmax(xcorr13) - (len(sig1) - 1)
-    maxloc14 = np.argmax(xcorr14) - (len(sig1) - 1)
-    maxloc23 = np.argmax(xcorr23) - (len(sig1) - 1)
-    maxloc24 = np.argmax(xcorr24) - (len(sig1) - 1)
-    maxloc34 = np.argmax(xcorr34) - (len(sig1) - 1)
     l12 = self.ls[array][0]
     l13 = self.ls[array][1]
     l23 = self.ls[array][3]
+
+#    print "a12"
+#    aa12 = ff12(l12)
+#    print "a13"
+#    aa13 = ff13(l13)
+#    print "a23"
+#    aa23 = ff23(l23)
+#
+#    ll = aa12 + aa13 + aa23
+#
     ll = (xcorr12[l12 + (len(sig1)-1)]) + (xcorr13[l13 + (len(sig1)-1)]) + (xcorr23[l23 + (len(sig1)-1)])
     #mm = np.max(ll)
     #ll = np.where(ll > 0.9 * mm, 1.0 , 0.0)

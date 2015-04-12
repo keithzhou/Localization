@@ -9,7 +9,6 @@ import pylab as pl
 import config
 import xcorrs
 import tdoa
-import socket
 import sys
 import heatMap
 
@@ -17,13 +16,6 @@ import argparse
 
 HOST, PORT = "localhost", 80
 
-# Create a socket (SOCK_STREAM means a TCP socket)
-#sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Connect to server and send data
-#sock.connect((HOST, PORT))
-#sock.send("iam:array")
-#end data
 
 def clearQueue(s):
     while 1:
@@ -48,8 +40,12 @@ socket2 = context2.socket(zmq.SUB)
 socket2.connect ("tcp://localhost:%s" % config.getPortPublisher(1))
 socket2.setsockopt(zmq.SUBSCRIBE, "")
 
+contextPub = zmq.Context()
+socketPub = contextPub.socket(zmq.PUB)
+socketPub.bind("tcp://*:%s" % config.getPortAnalysisPublisher())
+
 # set up 
-tdoa = tdoa.tdoa(grid_resolution = 400, doPhaseTransform = False, doBandpassFiltering = False)
+tdoa = tdoa.tdoa(grid_resolution = 200, doPhaseTransform = False, doBandpassFiltering = False)
 heatMap = heatMap.heatMap(*tdoa.get_grid())
 
 #calibrating sampling rate
@@ -66,15 +62,21 @@ def get_sig_from_socket(ss):
     assert sigs.shape == (LENG,4)
     return sigs
 
+def energy_for_sig(s):
+    a = s - np.mean(s)
+    return np.mean(a * a)
+    
 while 1:
     sig1 = get_sig_from_socket(socket)
     sig2 = get_sig_from_socket(socket2)
     sys.stdout.flush()
     time_start = time.time()
     (maxx,maxy,r,theta,ll) = tdoa.calculate_liklihood_map([sig1,sig2])
-    #sock.send("msg:%.4f %.4f\n" %  (maxx * 100, maxy * 100))
-    heatMap.update(ll, maxx,maxy)
-    print "dist: %.4f ang: %.4f time: %.4f"%(r,theta,time.time() - time_start)
+    #heatMap.update(ll, maxx,maxy)
+    energy = max(energy_for_sig(sig1[:,0]),energy_for_sig(sig2[:,0]))
+    print "dist: %.4f ang: %.4f time: %.4f energy:%.4f"% (r,theta,time.time() - time_start, energy)
+    socketPub.send("%.6f %.6f %.6f" %(maxx,maxy, energy)); # publish result r, theta, energy
+
     sys.stdout.flush()
     clearQueue(socket)
     clearQueue(socket2)

@@ -5,7 +5,6 @@ class config():
           "MICS": ((-.22,0.0,0.0), (-.09,.18,0),(0.0, 0.0, 0.0),(0,0,0)), 
           "PORT_PASS_THROUGH": 5557, 
           "PORT_PUBLISHER": 5556, 
-          "PORT_ANALYSIS": 5558,
           "SIDE": -1,
           "PORT_USB": '/dev/tty.usbmodem406861',
         }
@@ -14,7 +13,6 @@ class config():
           "MICS": ((.24,0.0,0.0), (.0,.0,0),(0.095, 0.19, 0.0), (0,0,0)), 
           "PORT_PASS_THROUGH": 6557, 
           "PORT_PUBLISHER": 6556, 
-          "PORT_ANALYSIS": 6558,
           "PORT_USB": '/dev/tty.usbmodem406691',
           "SIDE": 1
         }
@@ -30,6 +28,8 @@ class config():
 
         self.SPEED_SOUND = 343.8112863772779
 
+        self.param_port_analysis = 6558  #analysis result will be published through this port
+
         self.DATA_LENGTH = 6000
 
     def getPortUSB(self,array):
@@ -41,8 +41,8 @@ class config():
     def getPortPublisher(self, array):
       return self.params_arrays[array]["PORT_PUBLISHER"]
 
-    def getPortAnalysisPublisher(self, array):
-      return self.params_arrays[array]["PORT_ANALYSIS"]
+    def getPortAnalysisPublisher(self):
+      return self.param_port_analysis
 
     def getMicLocs(self, array):
         return self.params_arrays[array]["MICS"]
