@@ -25,6 +25,7 @@ class Scope:
 
         self.ax.set_ylim(-.5, 0)
         self.ax.set_xlim(-0.5, 0.5)
+        self.count = 0
 
     def update(self):
         data = socket2.recv()
@@ -34,6 +35,8 @@ class Scope:
           self.ydata += [y]
           self.dot.set_ydata(self.ydata)
           self.dot.set_xdata(self.xdata)
+          #plt.savefig("result_%05d.png" % self.count)
+          self.count += 1
           plt.draw()
 
 fig, ax = plt.subplots()

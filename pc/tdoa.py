@@ -1,4 +1,5 @@
 import xcorrs
+import time
 import config
 import numpy as np
 import operator
@@ -14,7 +15,7 @@ class tdoa():
     self.xs = np.linspace(-.5,.5,self.grid_resolution)
     self.ys = np.linspace(-1.0,0.0,self.grid_resolution)
     (self.xx, self.yy) = np.meshgrid(self.xs,self.ys)
-
+    self.dataLength = self.config.getDataLength()
 
     self.ds = []
     for array in (0,1):
@@ -51,12 +52,12 @@ class tdoa():
 #      l24 = (t2 - t4)
 #      l34 = (t3 - t4)
 #
-      l12 = np.rint(t1 - t2).astype(np.int)
-      l13 = np.rint(t1 - t3).astype(np.int)
-      l14 = np.rint(t1 - t4).astype(np.int)
-      l23 = np.rint(t2 - t3).astype(np.int)
-      l24 = np.rint(t2 - t4).astype(np.int)
-      l34 = np.rint(t3 - t4).astype(np.int)
+      l12 = np.rint(t1 - t2).astype(np.int) + self.dataLength - 1
+      l13 = np.rint(t1 - t3).astype(np.int) + self.dataLength - 1
+      l14 = np.rint(t1 - t4).astype(np.int) + self.dataLength - 1
+      l23 = np.rint(t2 - t3).astype(np.int) + self.dataLength - 1
+      l24 = np.rint(t2 - t4).astype(np.int) + self.dataLength - 1
+      l34 = np.rint(t3 - t4).astype(np.int) + self.dataLength - 1
 
       self.ls.append((l12,l13,l14,l23,l24,l34))
 
@@ -88,7 +89,9 @@ class tdoa():
 
   def ll_for_sigs(self,sigs, array):
     (sig1,sig2,sig3,sig4) = [sigs[:,i] for i in range(4)]
+    t0 = time.time()
     xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34 = xcorrs.getXcorrs(sig1,sig2,sig3,sig4,self.sampling_rate, doBandpassFiltering = self.doBandpassFiltering, doPhaseTransform=self.doPhaseTransform)
+    t1 = time.time()
 
 #    ff12 = self.arg_max_corr(sig1,sig2)
 #    ff13 = self.arg_max_corr(sig1,sig3)
@@ -101,6 +104,7 @@ class tdoa():
     l12 = self.ls[array][0]
     l13 = self.ls[array][1]
     l23 = self.ls[array][3]
+    t2 = time.time()
 
 #    print "a12"
 #    aa12 = ff12(l12)
@@ -111,18 +115,25 @@ class tdoa():
 #
 #    ll = aa12 + aa13 + aa23
 #
-    ll = (xcorr12[l12 + (len(sig1)-1)]) + (xcorr13[l13 + (len(sig1)-1)]) + (xcorr23[l23 + (len(sig1)-1)])
+    ll = (xcorr12[l12] ) + (xcorr13[l13]) +(xcorr23[l23]) 
+    t3 = time.time()
+    #print "get_map: xcorr:%.4f access:%.4f lookup:%.4f" % (t1 - t0, t2-t1, t3 - t2)
     #mm = np.max(ll)
     #ll = np.where(ll > 0.9 * mm, 1.0 , 0.0)
     return ll
 
   def calculate_liklihood_map(self,sigs):
+    t0 = time.time()
     lls = [self.ll_for_sigs(s,i) for i,s in enumerate(sigs)]
-    ll = reduce(operator.add,lls)
+    t1 = time.time()
+    ll = reduce(operator.mul,lls)
+    t2 = time.time()
     (maxxx,maxyy) = np.where(ll == ll.max())
     maxx = self.xs[int(round(np.median(maxyy)))]
     maxy = self.ys[int(round(np.median(maxxx)))]
     r,theta = self.to_rth(maxx,maxy)
+    t3 = time.time()
+    #print "get_map:%.4f reduce:%.4f other:%.4f" % (t1 - t0, t2 - t1, t3- t2)
     return (maxx,maxy,r,theta,ll)
 
   def to_rth(self,maxx,maxy):

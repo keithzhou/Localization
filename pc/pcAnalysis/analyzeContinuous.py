@@ -11,11 +11,9 @@ import xcorrs
 import tdoa
 import sys
 import heatMap
-
 import argparse
 
-HOST, PORT = "localhost", 80
-
+SHOWHEAT = False
 
 def clearQueue(s):
     while 1:
@@ -45,8 +43,9 @@ socketPub = contextPub.socket(zmq.PUB)
 socketPub.bind("tcp://*:%s" % config.getPortAnalysisPublisher())
 
 # set up 
-tdoa = tdoa.tdoa(grid_resolution = 200, doPhaseTransform = False, doBandpassFiltering = False)
-heatMap = heatMap.heatMap(*tdoa.get_grid())
+tdoa = tdoa.tdoa(grid_resolution = 800, doPhaseTransform = False, doBandpassFiltering = False)
+if SHOWHEAT:
+  heatMap = heatMap.heatMap(*tdoa.get_grid())
 
 #calibrating sampling rate
 print "calibrating sampling rates..."
@@ -72,7 +71,8 @@ while 1:
     sys.stdout.flush()
     time_start = time.time()
     (maxx,maxy,r,theta,ll) = tdoa.calculate_liklihood_map([sig1,sig2])
-    #heatMap.update(ll, maxx,maxy)
+    if SHOWHEAT:
+      heatMap.update(ll, maxx,maxy)
     energy = max(energy_for_sig(sig1[:,0]),energy_for_sig(sig2[:,0]))
     print "dist: %.4f ang: %.4f time: %.4f energy:%.4f"% (r,theta,time.time() - time_start, energy)
     socketPub.send("%.6f %.6f %.6f" %(maxx,maxy, energy)); # publish result r, theta, energy
