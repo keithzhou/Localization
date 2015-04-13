@@ -6,11 +6,19 @@ import matplotlib.pyplot as plt
 import scipy.io.wavfile
 import config
 import pickle
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("array")
+args = parser.parse_args()
+array = int(args.array)
+print "using array:", array
+
 config = config.config()
 
 context = zmq.Context()
 socket = context.socket(zmq.SUB)
-socket.connect ("tcp://localhost:%s" % config.getPortPublisher())
+socket.connect ("tcp://localhost:%s" % config.getPortPublisher(array))
 
 socket.setsockopt(zmq.SUBSCRIBE, "")
 
@@ -24,8 +32,8 @@ def plotChannels(waveform, fileName):
 def processWaveform(waveform,SAMPLINGRATE):
     # save raw waveform
     #print "save raw array"
-    #plotChannels(waveform.T,'output_plot_raw.png')
-    #np.save("output_raw",waveform)
+    plotChannels(waveform.T,'output_plot_raw.png')
+    np.save("output_raw",waveform)
 
     # normalize waveform to save as audio file
     print "normalize for audio"
