@@ -45,19 +45,14 @@ class tdoa():
       t2 = d2 / SPEED_SOUND * self.sampling_rate
       t3 = d3 / SPEED_SOUND * self.sampling_rate
       t4 = d4 / SPEED_SOUND * self.sampling_rate
-#      l12 = (t1 - t2)
-#      l13 = (t1 - t3)
-#      l14 = (t1 - t4)
-#      l23 = (t2 - t3)
-#      l24 = (t2 - t4)
-#      l34 = (t3 - t4)
-#
       l12 = np.rint(t1 - t2).astype(np.int) + self.dataLength - 1
       l13 = np.rint(t1 - t3).astype(np.int) + self.dataLength - 1
       l14 = np.rint(t1 - t4).astype(np.int) + self.dataLength - 1
       l23 = np.rint(t2 - t3).astype(np.int) + self.dataLength - 1
       l24 = np.rint(t2 - t4).astype(np.int) + self.dataLength - 1
       l34 = np.rint(t3 - t4).astype(np.int) + self.dataLength - 1
+
+      print "l12(%d,%d), l13(%d,%d), l23(%d,%d)"%(np.min(l12),np.max(l12),np.min(l13),np.max(l13),np.min(l23),np.max(l23))
 
       self.ls.append((l12,l13,l14,l23,l24,l34))
 
