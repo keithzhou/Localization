@@ -15,6 +15,10 @@ import argparse
 
 SHOWHEAT = False
 
+grid_res = 800
+if SHOWHEAT:
+  grid_res = 200
+
 def clearQueue(s):
     while 1:
         try:
@@ -43,7 +47,7 @@ socketPub = contextPub.socket(zmq.PUB)
 socketPub.bind("tcp://*:%s" % config.getPortAnalysisPublisher())
 
 # set up 
-tdoa = tdoa.tdoa(grid_resolution = 800, doPhaseTransform = False, doBandpassFiltering = False)
+tdoa = tdoa.tdoa(grid_resolution = grid_res, doPhaseTransform = False, doBandpassFiltering = False)
 if SHOWHEAT:
   heatMap = heatMap.heatMap(*tdoa.get_grid())
 

@@ -23,7 +23,7 @@ class Scope:
         self.ydata = []
         self.dot, = ax.plot(self.xdata,self.ydata,'go',markersize=5)
 
-        self.ax.set_ylim(-.5, 0)
+        self.ax.set_ylim(-1.0, 0)
         self.ax.set_xlim(-0.5, 0.5)
         self.count = 0
 
