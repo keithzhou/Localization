@@ -47,7 +47,7 @@ socketPub = contextPub.socket(zmq.PUB)
 socketPub.bind("tcp://*:%s" % config.getPortAnalysisPublisher())
 
 # set up 
-tdoa = tdoa.tdoa(grid_resolution = grid_res, doPhaseTransform = False, doBandpassFiltering = False)
+tdoa = tdoa.tdoa(config = config.getConfig(), grid_resolution = grid_res, doPhaseTransform = False, doBandpassFiltering = False)
 if SHOWHEAT:
   heatMap = heatMap.heatMap(*tdoa.get_grid())
 
@@ -78,7 +78,7 @@ while 1:
     if SHOWHEAT:
       heatMap.update(ll, maxx,maxy)
     energy = max(energy_for_sig(sig1[:,0]),energy_for_sig(sig2[:,0]))
-    print "dist: %.4f ang: %.4f time: %.4f energy:%.4f"% (r,theta,time.time() - time_start, energy)
+    print "loc:%.4f,%.4f(%.4f,%.4f) time: %.4f energy:%.4f"% (maxx,maxy,r,theta,time.time() - time_start, energy)
     socketPub.send("%.6f %.6f %.6f" %(maxx,maxy, energy)); # publish result r, theta, energy
 
     sys.stdout.flush()

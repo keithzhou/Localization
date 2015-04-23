@@ -17,7 +17,7 @@ class config():
           "SIDE": 1
         }
 
-        self.array_seperation = .84
+        self.array_seperation = 1.0
 
         array1["MICS"] = [(i[0] + array1["SIDE"]*self.array_seperation/2.0, i[1], i[2]) for i in array1["MICS"]] 
         array2["MICS"] = [(i[0] + array2["SIDE"]*self.array_seperation/2.0,i[1],i[2]) for i in array2["MICS"]] 

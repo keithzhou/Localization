@@ -51,13 +51,18 @@ def processWaveform(waveform,SAMPLINGRATE):
 result = []
 samplingRate = []
 try:
-    while 1:
+    count = 0
+    while count < 20:
         string = bytearray(socket.recv())
         current = np.array(string[4:],dtype=np.float).reshape(config.getDataLength(),4)
         samplingRate.append(config.getSamplingRate(string[:4]))
         print current.shape
         result.append(current)
+        count += 1
+    raise
 except:
-    pickle.dump([result,samplingRate], open( "save.p", "wb" ) )
+    cc = config.getConfig()
+    cc['sampling_rate'] = np.median(samplingRate)
+    pickle.dump([result,cc], open( "save_%d.p" % array, "wb" ))
     print "sampling rates:",np.median(samplingRate), "variation:", np.std(samplingRate)
-    processWaveform(np.vstack(result).T,np.median(samplingRate))
+    #processWaveform(np.vstack(result).T,np.median(samplingRate))

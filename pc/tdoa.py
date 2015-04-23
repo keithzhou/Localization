@@ -1,6 +1,5 @@
 import xcorrs
 import time
-import config
 import numpy as np
 import operator
 from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
@@ -8,20 +7,20 @@ from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
 # will improve this file
 
 class tdoa():
-  def __init__(self, sampling_rate = None, grid_resolution = 400, doBandpassFiltering = True, doPhaseTransform = True):
+  def __init__(self,  sampling_rate = None, config = None, grid_resolution = 400, doBandpassFiltering = True, doPhaseTransform = True):
     self.sampling_rate = sampling_rate
     self.grid_resolution = grid_resolution
     self.doBandpassFiltering = doBandpassFiltering
     self.doPhaseTransform = doPhaseTransform
-    self.config = config.config()
+    self.config = config
     self.xs = np.linspace(-.5,.5,self.grid_resolution)
     self.ys = np.linspace(-1.0,0.0,self.grid_resolution)
     (self.xx, self.yy) = np.meshgrid(self.xs,self.ys)
-    self.dataLength = self.config.getDataLength()
+    self.dataLength = config['data_length']
 
     self.ds = []
     for array in (0,1):
-      (LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = self.config.getMicLocs(array)
+      (LOC_MIC1, LOC_MIC2, LOC_MIC3, LOC_MIC4) = config['arrays'][array]['MICS']
       d1 = np.sqrt((self.xx - LOC_MIC1[0]) ** 2 + (self.yy - LOC_MIC1[1]) ** 2) 
       d2 = np.sqrt((self.xx - LOC_MIC2[0]) ** 2 + (self.yy - LOC_MIC2[1]) ** 2) 
       d3 = np.sqrt((self.xx - LOC_MIC3[0]) ** 2 + (self.yy - LOC_MIC3[1]) ** 2) 
@@ -39,7 +38,7 @@ class tdoa():
       self.sampling_rate_dependent_calculation()
 
   def sampling_rate_dependent_calculation(self):
-    SPEED_SOUND = self.config.getSpeedSound()
+    SPEED_SOUND = self.config['speed_sound']
     self.ls = []
     for (d1,d2,d3,d4) in self.ds:
       # ti represents time(in terms of samples) from each point in the grid to the microphone
