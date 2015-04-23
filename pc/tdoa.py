@@ -5,6 +5,8 @@ import numpy as np
 import operator
 from scipy.fftpack import rfft, irfft, fftfreq,fft,ifft
 
+# will improve this file
+
 class tdoa():
   def __init__(self, sampling_rate = None, grid_resolution = 400, doBandpassFiltering = True, doPhaseTransform = True):
     self.sampling_rate = sampling_rate
