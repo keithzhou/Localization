@@ -32,6 +32,15 @@ class config():
 
         self.DATA_LENGTH = 6000
 
+    def getConfig(self): # return a dictionary of config data
+      result = {
+        "arrays": self.params_arrays,
+        "speed_sound": self.SPEED_SOUND,
+        "data_length": self.DATA_LENGTH,
+        "sampling_rate": None
+      }
+      return result
+
     def getPortUSB(self,array):
       return self.params_arrays[array]["PORT_USB"]
 
@@ -60,10 +69,8 @@ class config():
         return self.DATA_LENGTH
 
     def printDebug(self):
-        print "mic locations:", self.getMicLocs(0)
-        print "mic locations:", self.getMicLocs(1)
-        print "test distance:", self.getTestDistance()
-        print "speed of sound:", self.getSpeedSound()
+      c = self.getConfig()
+      print c
 
 if __name__ == "__main__":
     sut = config()
