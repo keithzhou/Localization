@@ -53,7 +53,7 @@ class tdoa():
       l24 = np.rint(t2 - t4).astype(np.int) + self.dataLength - 1
       l34 = np.rint(t3 - t4).astype(np.int) + self.dataLength - 1
 
-      print "l12(%d,%d), l13(%d,%d), l23(%d,%d)"%(np.min(l12),np.max(l12),np.min(l13),np.max(l13),np.min(l23),np.max(l23))
+      #print "l12(%d,%d), l13(%d,%d), l23(%d,%d)"%(np.min(l12),np.max(l12),np.min(l13),np.max(l13),np.min(l23),np.max(l23))
 
       self.ls.append((l12,l13,l14,l23,l24,l34))
 

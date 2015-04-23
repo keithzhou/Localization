@@ -10,30 +10,30 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-PATH = 'data'
+PATH = 'saved'
 
 CV = {
-  'no_phase,no_bpf': {'grid_resolution': 800,'doPhaseTransform':False, 'doBandpassFiltering':False},
-  'no_phase,no_bpf': {'grid_resolution': 400,'doPhaseTransform':False, 'doBandpassFiltering':False},
-#  'no_phase,do_bpf': {'grid_resolution': 800,'doPhaseTransform':False, 'doBandpassFiltering':True},
-#  'do_phase,no_bpf': {'grid_resolution': 800,'doPhaseTransform':True, 'doBandpassFiltering':False},
-#  'do_phase,do_bpf': {'grid_resolution': 800,'doPhaseTransform':True, 'doBandpassFiltering':True},
+  'use only max value, addition': {'grid_resolution': 100,'doPhaseTransform':False, 'doBandpassFiltering':False},
 }
 
 for key in CV:
   print key, CV[key]
-  engine = tdoa.tdoa(**CV[key])
   for f in os.listdir(PATH):
-    m = re.search('rr_([\d\.]+)+_([\d\.-]+)\.p',f)
-    r_gold = float(m.group(1)) / 100.0
-    theta_gold = float(m.group(2))
+    m1 = re.search('save_([-\d\.]+)+_([-\d\.-]+)_0\.p',f)
+    if not m1:
+      continue
+    f2 = 'save_'+ m1.group(1)+ '_' + m1.group(2)+'_1.p'
+    print "use:", f, f2
+    x_gold = float(m1.group(1)) / 100.0
+    y_gold = float(m1.group(2)) /100.0
     d = pickle.load(open(PATH + '/' + f,'rb'))
-    thetas = []
-    rs = []
-    for data,freq in zip(d[0],d[1]):
-      engine.set_sampling_rate(freq)
-      (xx,yy,r,theta,ll) = engine.calculate_liklihood_map(data)
-      rs.append(r)
-      thetas.append(theta / 180.0 * np.pi)
+    d2 = pickle.load(open(PATH + '/' + f2,'rb'))
+
+    engine = tdoa.tdoa(d[1]['sampling_rate'], config = d[1], grid_resolution = 800, doPhaseTransform = False, doBandpassFiltering = False)
+
+    for s1,s2 in zip(d[0],d2[0]):
+      engine.set_sampling_rate(d[1]['sampling_rate'])
+      (xx,yy,r,theta,ll) = engine.calculate_liklihood_map([s1,s2])
       #print r,theta
-    print "\tfile:",f,"r: %.2f theta: %.2f" %(r_gold,theta_gold),"error: %.4f" %np.mean(abs(np.array(rs) - r_gold))
+      print "%.4f,%.4f (%.4f,%.4f)" %(xx,yy,x_gold,y_gold)
+#      print "\tfile:",f,"r: %.2f theta: %.2f" %(r_gold,theta_gold),"error: %.4f" %np.mean(abs(np.array(rs) - r_gold))
