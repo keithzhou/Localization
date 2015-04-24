@@ -27,7 +27,7 @@ def getXcorrs(sig1,sig2,sig3,sig4,SAMPLING_RATE, doPhaseTransform = True, doBand
     return (xcorr12, xcorr13, xcorr14, xcorr23, xcorr24, xcorr34)
 
 def getFFT(s1, SAMPLING_RATE, doBandpassFiltering = True):
-    pad = len(s1) * 2 - 1
+    pad = len(s1) - 1
     lenOld = len(s1)
     s = np.hstack([s1,np.zeros(pad)])
     f_s1 = fft(s)
@@ -42,9 +42,7 @@ def getFFT(s1, SAMPLING_RATE, doBandpassFiltering = True):
 def do_xcorr_freq(f_s1,f_s2c,lenOld,doPhaseTransform = True):
     f_s = f_s1 * f_s2c 
     if doPhaseTransform == True:
-        denom = np.abs(f_s)
-        denom[denom < 1e-5] = 1e-5
-        f_s = f_s / denom  
+        f_s[f_s != 0] = f_s[f_s != 0] / denom[f_s != 0]  
         assert(np.any(np.isnan(f_s))==False)
 
     td = ifft(f_s)
