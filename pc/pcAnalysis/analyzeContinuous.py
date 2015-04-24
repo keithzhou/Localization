@@ -47,7 +47,7 @@ socketPub = contextPub.socket(zmq.PUB)
 socketPub.bind("tcp://*:%s" % config.getPortAnalysisPublisher())
 
 # set up 
-tdoa = tdoa.tdoa(config = config.getConfig(), grid_resolution = grid_res, doPhaseTransform = False, doBandpassFiltering = False)
+tdoa = tdoa.tdoa(config = config.getConfig(), grid_resolution = grid_res, doPhaseTransform = True, doBandpassFiltering = True)
 if SHOWHEAT:
   heatMap = heatMap.heatMap(*tdoa.get_grid())
 

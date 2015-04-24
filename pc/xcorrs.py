@@ -42,7 +42,8 @@ def getFFT(s1, SAMPLING_RATE, doBandpassFiltering = True):
 def do_xcorr_freq(f_s1,f_s2c,lenOld,doPhaseTransform = True):
     f_s = f_s1 * f_s2c 
     if doPhaseTransform == True:
-        f_s[f_s != 0] = f_s[f_s != 0] / denom[f_s != 0]  
+        denom = np.abs(f_s)
+        f_s[f_s != 0] = f_s[f_s != 0] / denom[f_s != 0]
         assert(np.any(np.isnan(f_s))==False)
 
     td = ifft(f_s)
