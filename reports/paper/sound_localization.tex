@@ -1,11 +1,12 @@
 \section{Sound Localization}
-points with the same difference of distance to two fixed points form a hyperbola in the 2D plane. Since each pair of microphones gives a hyperbola in the plane, localization becomes finding intersection of hyperbolas when more than two microphones are used. Localization relies on accuracte estimate of delay differences between microphones.
+Points with the same time difference of arrival(TDOA) to two fixed points on a plane form a hyperbola. Since TDOA from each pair of microphones gives a hyperbola in the plane, localization becomes finding intersection of hyperbolas when more than two microphones are used. Localization relies on accurate estimate of delay differences between microphones.
 
 Generalized Cross Correlation(GCC) provides a framework to estimate delay differences $t_0$ between two signals $x_1(t)$ and $x_2(t)$:
-\begin{equation} \label{eq:gcc}
-t_0 = \arg\max_{\tau} \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
-\end{equation}
-, where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter the signals passed to cross correlation estimator. We experiment with three ways of prefiltering the signal:
+\begin{eqnarray} \label{eq:gcc}
+t_0 &=& \arg\max_{\tau} R_{x_1x_2}(\tau) \\
+R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
+\end{eqnarray}
+, where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to cross correlation estimator. We experimented with three ways of prefiltering the signal:
 \begin{description}[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divideded by its magnitude. Only phase information contributes to delay estimation.
