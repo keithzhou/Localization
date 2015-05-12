@@ -53,7 +53,7 @@ We also calculated the localization error for each tested point in the region. F
 \end{figure}
 
 
-To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0, y=-0.3)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we want to test how accuracy changes with:
+To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0, y=-0.3)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we tested how accuracy changes with:
 \begin{itemize}
 \item different window sizes
 \item different audio sources
@@ -76,11 +76,11 @@ To test how well the arrays track movement, we mounted a rotating disk $40$ cent
 \end{figure}
 
 
-Fig~\ref{fig:err_win_circle} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate arrival time differences. The localization is very noisy. As window size increases, the localization converges to the shape of ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. The error decreases as window size increases and plateaus after window size exceeds around $10$ milliseconds.
+Fig~\ref{fig:err_win_circle} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate arrival time differences. The localization is noisy. As window size increases, the localization converges to the shape of ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. The error decreases as window size increases and plateaus after window size exceeds around $10$ milliseconds.
 
-To test how different sound sources impact localization quality, three experiments on the same movement track were conducted with three different sound sources:
+To test how different sound sources impact localization quality, we conducted three experiments on the same movement track with three different sound sources:
 
-\begin{description}
+\begin{description}[\IEEEsetlabelwidth{long a label}\IEEEusemathlabelsep]
 
 \item[White Noise] A recording of white noise.
 
@@ -90,14 +90,14 @@ To test how different sound sources impact localization quality, three experimen
 
 \end{description} 
 
-To test how audio movement source affects localization quality, each of three experiments were conducted at two different speeds:
+To test how sound source movement speed affects localization quality, each of three experiments were conducted at two different speeds:
 \begin{description}
 \item[Normal] An angular speed of $0.5$ rad/s was maintained, which translates to linear speed of $10$ cm/s.
 \item[Fast] An angular speed of $1.0$ rad/s was maintained, which translates to linear speed of $20$ cm/s.
 \end{description}
 
 For each experiment conducted, two different movement filters are tests:
-\begin{description}
+\begin{description}[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
 \item[Averaging filter] localization for past $0.5$ seconds are averaged and outputed as current estimate.
 \item[Kalman filter] A 2nd order Kalman filtering is used.
 \end{description}
@@ -107,49 +107,45 @@ For each experiment conducted, two different movement filters are tests:
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=1.0\textwidth]{trace_output_circle_wnn.eps}
   \caption{white noise}
-  \label{fig:circle_wn}
+  \label{fig:circle_wnn}
 \end{subfigure}
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=\textwidth]{trace_output_circle_man.eps}
   \caption{music A}
-  \label{fig:circle_musica}
+  \label{fig:circle_musican}
 \end{subfigure}
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=\textwidth]{trace_output_circle_mbn.eps}
   \caption{music B}
-  \label{fig:circle_musicb}
+  \label{fig:circle_musicbn}
 \end{subfigure}
 \caption{Localization of circle movement with different sound sources. Sound source is moving at $10$ cm per second}
 \label{fig:circle_normal}
 \end{figure*}
-
-
-Fig~\ref{fig:circle_normal} shows results for experiments with three different audio sources at normal speed.
-
-with three different audio source were used for the same circular movement. In the first trial, white noise is used to set a baseline for audio sources, since our understanding is that white noise performs the best under GCC\_PHAT. In the second trial, a randomly picked music is used. In the third trial, a music that contains low amplitude segments is picked to reflect real life situations. Fig~\ref{fig:circle} shows the result for all three trials. From the result, white noise does perform the best and the localized shape matches well with the shape of the rotating disk. There exists a bit of jiggling, but can be improved with filtering. Fig~\ref{fig:circle} also shows the result with averaging filtering and Kalman filtering. 
-
-For the music A, the array still localizaes correctly and the output represetns a circular shape, but the localizaed points are more spread out with more jiggling. This is because music does not have components in all frequency bands and GCC\_PHAT estimate is less accuracy with such audio sources. Similar to the white noise case, we can improve the raw tracking estimates from the array with filtering.
-
-For music B, the music has a low amplitude section and it is also shown in the traced result. The "blank" region in the output corresponds to the low amplitude segment in the audio. The general tracking quality of this music is not as good as that with Music A due to these low amplitude audio segments. 
-
 
 \begin{figure*}[]
 \centering
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=\textwidth]{trace_output_circle_wnf.eps}
   \caption{white noise}
-  \label{fig:circle_wn}
+  \label{fig:circle_wnf}
 \end{subfigure}
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=\textwidth]{trace_output_circle_maf.eps}
   \caption{music A}
-  \label{fig:circle_musica}
+  \label{fig:circle_musicaf}
 \end{subfigure}
 \begin{subfigure}[]{1.0\textwidth}
   \includegraphics[width=\textwidth]{trace_output_circle_mbf.eps}
   \caption{music B}
-  \label{fig:circle_musicb}
+  \label{fig:circle_musicbf}
 \end{subfigure}
 \caption{Localization of circle movement with different sound sources. Sound source is moving at $20$ cm per second}
 \label{fig:circle_fast}
 \end{figure*}
+
+Fig~\ref{fig:circle_normal} shows results for experiments with at normal speed, and Fig~\ref{fig:circle_fast} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find the localization error does depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
+
+From fig~\ref{fig:circle_normal}, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would make arrays lose track of where the source is. This can also be seen from the "blank" regions in fig~\ref{fig:circle_musicbn} 
+
+Fig ~\ref{fig:circle_normal} also shows that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past 0.5 seconds, which makes the filtered output lags the real movement. 

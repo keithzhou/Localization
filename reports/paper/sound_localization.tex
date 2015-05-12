@@ -1,0 +1,13 @@
+\section{Sound Localization}
+Constant difference of distance to two fixed points trace out a hyperbola in the 2D plane. Since each pair of microphones gives a hyperbola curve in the plane, localization becomes finding intersection of hyperbolas when more than two microphones are used. Accurate localization relies on accuracte estimate of delay differences between microphones.
+
+Generalized Cross Correlation provides a framework to estimate delay differences $t_0$ between two signals $x_1(t)$ and $x_2(t)$:
+\[
+t_0 = \arg\max_{\tau} \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
+\]
+, where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter the signals passed to cross correlation estimator. We experiment with three ways of prefiltering the signal:
+\begin{description}[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
+\item[GCC] $W(\omega) = 1$. No prefiltering is done. This is normal cross correlation.
+\item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divideded by its magnitude. Only phase information contributes to delay estimation
+\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. part of magnitude information is included in delay estimation.
+\end{description}
