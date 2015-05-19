@@ -1,7 +1,13 @@
 \section{Introduction}
- Inexpensive local localization. Options:
-\begin{enumerate}
-\item GPS not accurate.
-\item Ultrasound. expensive
-\item use sound. Everyone has access to. One application is to draw with music
-\end{enumerate} 
+
+%Localization has been a widely researched topic in both academia and industry due to its wide range of applications. Companies and individuals have bennefited from technologies such as GPS, ultrasound, and blah.  Since xxx  GPS technology has been invented and built into cars for navigation which provided great convenience for drivers. Ultrasound when used by sonar, help greatly helped underwater mapping. However, when it comes to localizationon a smaller scale such as the inside of a room, GPS would not be of much help because it's accuracy range is $1.4$ m~\cite{intro:gps}.
+
+Accuracte indoor locazation allows creation of noval applications with surrounding awareness that uses position and movment information as input. One application is to allow users to draw with music, without physically touching the computer. Another example is to build AI games with physical pieces such as toy car racing where the computer controls some of the pieces. In this work, we aim to build such a source localization system that is portable, inexpensive, yet accuracte for localization in a small area. 
+
+Global Positioning System (GPS) is the prevailing technology used for outdoor localization. Commercial grade GPS has an average error of a few meters, depending on the size and quality of the receiver~\cite{intro:gps}. While accuracy in this range is good for many applications including driving navigation and vehicle tracking, it does not provide enough precision for local movement tracking. Ultrasound based indoor localization has achieved sub-centimeter accuracy~\cite{intro:ultra}. However, ultrasound systems require use of expensive transducers.
+
+Bluetooth and Wi-Fi based technologies gained popularity in indoor positioning recently, mainly due to the widespread deployment of bluetooth tags and Wi-Fi stations in public spaces. In these systems, signal strength received from different base stations are used for the estimation of the device location. However, their reported accuracy are in the range of $1$ to $5$ meters~\cite{intro:blue, intro:loc}, which is not enough for local movement tracking.
+
+In this project, we have built a local area localization system using microphone array that localizes normal audio source. The system is built with inexpensive electret microphones. People can interact with the system using any device that has audio output such as a mobile phone.
+
+In this paper, we discuss prior relevant research and the theory in sound localization in Section II. In Section III, we carried out a simulation to evaluate different array achitectures and their impact on accuracy. In Section IV, we present the chosen architecture along with hardware details. Finally, we provide the experiment details and results in Section V.
