@@ -361,12 +361,12 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Paint with Music}
+\title{Painting with Music}
 
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{XXX}
+\author{\IEEEauthorblockN{xxx}
 \IEEEauthorblockA{XXX}
 %Email: http://www.michaelshell.org/contact.html}
 \and
@@ -436,7 +436,6 @@ The abstract goes here.
 
 
 
-\section{Introduction}
 % no \IEEEPARstart
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
@@ -522,10 +521,10 @@ The abstract goes here.
 % exclusively. Note that, LaTeX2e, unlike IEEE journals/conferences, places
 % footnotes above bottom floats. This can be corrected via the \fnbelowfloat
 % command of the stfloats package.
+\input{./introduction}
 \input{./prior}
 \input{./simulation}
 \input{./system}
-\input{./sound_localization}
 \input{./experiment}
 
 \section{Conclusion}
@@ -571,9 +570,29 @@ The authors would like to thank...
 % (used to reserve space for the reference number labels box)
 \begin{thebibliography}{1}
 
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+\bibitem{extended:tusi}
+Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, \emph{Extended touch user interfaces}, IEEE International Conference on  Multimedia and Expo (ICME), 2013. 
+
+\bibitem{ltm:pham}
+Pham, D. T., et al. \emph{Tangible acoustic interface approaches}, Proceedings of IPROMS 2005 Virtual Conference, 2005.
+
+\bibitem{ltm:lpc}
+XueXin Yap, Khong, A.W.H., and Woon-Seng Gan, \emph{Localization of acoustic source on solids: A linear predictive coding based algorithm for location template matching} IEEE International Conference on Acoustics Speech and Signal Processing (ICASSP), 2010
+
+\bibitem{ltm:tusi2}
+Chowdhury, Tusi. \emph{Single Microphone Tap Localization}, University of Toronto, 2013.
+
+\bibitem{tdoa:ppp}
+Ishii, Hiroshi, et al. \emph{PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play}, Proceedings of the SIGCHI conference on Human Factors in Computing Systems. ACM, 1999.
+
+\bibitem{tdoa:mit2}
+Paradiso, Joseph A., et al. \emph{Passive acoustic sensing for tracking knocks atop large interactive displays}, Proceedings of IEEE. Vol. 1. IEEE, 2002.
+
+\bibitem{tdoa:3}
+Polotti, Pietro, et al. \emph{Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces} Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05). 2005.
+
+\bibitem{tdoa:mit3}
+Paradiso, Joseph A., et al. \emph{Sensor systems for interactive surfaces}, IBM Systems Journal, 2000.
 
 \end{thebibliography}
 
