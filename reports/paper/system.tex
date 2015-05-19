@@ -1,17 +1,17 @@
 \section{System Setup}
-The system uses two arrays, each with three microphones mounted on vetices of a $20$cm equilateral triangle. A micro-controller is also attached to one of the vertices. Fig~\ref{fig:setup_array} shows a picture of the array setup. Micro-controller used in this project is \emph{teensy 3.1}. It has $64$k RAM memory and the ADC is capable of sampling at $500$kHz. In this project, the micro-controller collects microphone data on all three channels for $12$ millisecond and then send the recorded data to a computer through USB port for localization. 
+The end system has two arrays, each with three microphones mounted on vetices of a $20$ cm equilateral triangle. A micro-controller is also attached to one of the vertices. Fig~\ref{fig:setup_array} shows a picture of the array setup. Micro-controller used in this project is \emph{teensy 3.1}. It has $64$k RAM memory and the ADC is capable of sampling at $500$kHz. In this project, the micro-controller collects microphone data on all three channels for $12$ millisecond and then send the recorded data to a computer through USB port for localization. 
 
 \begin{figure}[]
   \centering
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{array_close.JPG}
     \caption{micro-controller}
   \end{subfigure}
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{array.JPG}
     \caption{array}
   \end{subfigure}
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{setup_2.JPG}
     \caption{two arrays}
   \end{subfigure}
@@ -24,7 +24,7 @@ To speed up computation for real time localization, instead of searching for $t_
   L(x,y) &=& R_{m_1,m_2}(D_{m_1,m_2}(x,y)) + R_{m_1,m_3}(D_{m_1,m_3}(x,y)) \\
  & & +R_{m_2,m_3}(D_{m_2,m_3}(x,y)) 
 \end{eqnarray*}
-,where $R_{m_1,m_2}(\tau)$,$R_{m_1,m_2}(\tau)$, and $R_{m_1,m_2}(\tau)$ denote GCC output from microphone pairs $m_1m_2,m_1m_3,$ and $m_2m_3$.
+,where $R_{m_1,m_2}(\tau)$,$R_{m_1,m_3}(\tau)$, and $R_{m_2,m_3}(\tau)$ denote GCC output from microphone pairs $m_1m_2,m_1m_3,$ and $m_2m_3$.
 
 Liklihood maps from two arrays can be combined into final liklihood map:
 \begin{equation}\label{eq:combine_l}
@@ -34,17 +34,17 @@ L(x,y) = L_1(x,y) L_2(x,y)
 
 \begin{figure}[]
   \centering
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{left.png}
     \caption{localization with only array 1}
     \label{fig:liklihood1}
   \end{subfigure}
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{right.png}
     \caption{localization with only array 2}
     \label{fig:liklihood2}
   \end{subfigure}
-  \begin{subfigure}[]{.15\textwidth}
+  \begin{subfigure}[]{.23\textwidth}
     \includegraphics[width=\textwidth]{combined.png}
     \caption{localization with both arrays}
     \label{fig:liklihood3}

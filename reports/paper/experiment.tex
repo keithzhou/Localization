@@ -1,5 +1,6 @@
-\section{Experiment Results}
-To test localization accuracy, an one meter by one meter grid was set up and the arrays are placed at the top left and top right corners of the grid. Fig~\ref{fig:setup_point} shows a picture of the setup. 
+\section{Experiment}
+\subsection{Setup}
+\subsubsection{Point localization}
 
 \begin{figure}[]
   \centering
@@ -15,7 +16,45 @@ To test localization accuracy, an one meter by one meter grid was set up and the
   \label{fig:setup_point}
 \end{figure}
 
-A total of $32$ positions are chosen uniformly in this region where microphone data is recorded. To test how accuracy varies with window size, the algorithm is fed with recorded microphone data with different segment length. Fig~\ref{fig:accuracy_vs_window} shows how accuracy changes with window length for three GCC algorithms. The error lowers as window size increases and plataeus after window size exceeds around $10$ milli-second. The lowest error achieved is $2.53$ centimeters. It is achieved when window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation.
+To test localization accuracy, an one meter by one meter grid was set up and the arrays are placed at the top left and top right corners of the grid. Fig~\ref{fig:setup_point} shows a picture of the setup. A total of $32$ positions are chosen uniformly in this region where microphone data is recorded.
+
+\subsubsection{Movement tracking}
+To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0, y=-0.3)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we tested how accuracy changes with:
+\begin{itemize}
+\item different window sizes
+\item different audio sources
+\item different movement tracking filters
+\item different movement speeds
+\end{itemize}
+
+To test how different sound sources impact localization quality, we conducted three experiments on the same movement track with three different sound sources:
+
+\begin{description}[\IEEEsetlabelwidth{long a label}\IEEEusemathlabelsep]
+
+\item[White Noise] A recording of white noise.
+
+\item[Music A] A music that has normal audio amplitude throughout experiment period was chosen. "Honest Eyes" by Black Tide was the music used.
+
+\item[Music B] A music with intermittent low amplitude sections was chosen. "Canon" was the music used.
+
+\end{description} 
+
+To test how sound source movement speed affects localization quality, each of three experiments were conducted at two different speeds:
+\begin{description}
+\item[Normal] An angular speed of $0.5$ rad/s was maintained, which translates to linear speed of $10$ cm/s.
+\item[Fast] An angular speed of $1.0$ rad/s was maintained, which translates to linear speed of $20$ cm/s.
+\end{description}
+
+For each experiment conducted, two different movement filters are tests:
+\begin{description}[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
+\item[Averaging filter] localization for past $0.5$ seconds are averaged and outputed as current estimate.
+\item[Kalman filter] A 2nd order Kalman filtering is used.
+\end{description}
+
+\subsection{Results}
+\subsubsection{Point localization}
+
+To test how accuracy varies with window size, the algorithm is fed with recorded microphone data with different segment length. Fig~\ref{fig:accuracy_vs_window} shows how accuracy changes with window length for three GCC algorithms. The error lowers as window size increases and plataeus after window size exceeds around $10$ milli-second. The lowest error achieved is $2.53$ centimeters. It is achieved when window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation.
 
 Although accuracy improves with window length, the calculation time also increases with window length. The part of calculation that depends on window length is using cross correlation to estimate TDOA. cross correlation can be calculated with FFT and the runtime is of order $O(N\log N)$. We measured how the computation time varies with window length and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
 
@@ -53,15 +92,6 @@ We also calculated the localization error for each tested point in the region. F
 \end{figure}
 
 
-To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0, y=-0.3)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we tested how accuracy changes with:
-\begin{itemize}
-\item different window sizes
-\item different audio sources
-\item different movement tracking filters
-\item different movement speeds
-\end{itemize}
-
-
 \begin{figure*}[]
 \centering
   \includegraphics[width=\textwidth]{trace_window_size_movement.eps}
@@ -75,32 +105,9 @@ To test how well the arrays track movement, we mounted a rotating disk $40$ cent
 \label{fig:err_win_circle}
 \end{figure}
 
+\subsubsection{Movement tracking}
 
 Fig~\ref{fig:err_win_circle} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA. The localization is noisy. As window size increases, the localization converges to the shape of ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. The error decreases as window size increases and plateaus after window size exceeds around $10$ milliseconds.
-
-To test how different sound sources impact localization quality, we conducted three experiments on the same movement track with three different sound sources:
-
-\begin{description}[\IEEEsetlabelwidth{long a label}\IEEEusemathlabelsep]
-
-\item[White Noise] A recording of white noise.
-
-\item[Music A] A music that has normal audio amplitude throughout experiment period was chosen. "Honest Eyes" by Black Tide was the music used.
-
-\item[Music B] A music with intermittent low amplitude sections was chosen. "Canon" was the music used.
-
-\end{description} 
-
-To test how sound source movement speed affects localization quality, each of three experiments were conducted at two different speeds:
-\begin{description}
-\item[Normal] An angular speed of $0.5$ rad/s was maintained, which translates to linear speed of $10$ cm/s.
-\item[Fast] An angular speed of $1.0$ rad/s was maintained, which translates to linear speed of $20$ cm/s.
-\end{description}
-
-For each experiment conducted, two different movement filters are tests:
-\begin{description}[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
-\item[Averaging filter] localization for past $0.5$ seconds are averaged and outputed as current estimate.
-\item[Kalman filter] A 2nd order Kalman filtering is used.
-\end{description}
 
 \begin{figure*}[]
 \centering

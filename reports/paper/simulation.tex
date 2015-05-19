@@ -1,5 +1,5 @@
 \section{Array Architecture}
-In a 2D region, points with the same TDOA to two fixed locations form a hyperbola. However, in practical systems, we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ prepresents accuracy on measurement of difference of distances, and in practice it is related to sampling rate and TDOA methods.
+As was mentioned in the previous section, points with the same TDOA to two fixed locations form a hyperbola in a 2D plane. In practical systems, we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ prepresents accuracy on measurement of difference of distances, and in practice it is related to sampling rate and TDOA methods. In this section we evaluate delay estimation's impact on localization accuracy.
 
 \begin{figure}[]
   \centering
@@ -19,9 +19,9 @@ In a 2D region, points with the same TDOA to two fixed locations form a hyperbol
   \label{fig:sim_2_5}
 \end{figure}
 
-To see how precision affects localization accuracy, we simulated two microphones placed at: $M_1:(x=-10\mbox{ cm},y=0\mbox{ cm})$ and $M_2:(x=10\mbox{ cm},y=0\mbox{ cm})$. A test sound source is emitted at point $P$ $50$ centimeters away from $(0,0)$. Fig~\ref{fig:sim_2_5} shows the region where all points $\hat P$ satisfy:
+To see how precision affects localization accuracy, we simulated two microphones placed at: $M_1:(x=-10\mbox{ cm},y=0\mbox{ cm})$ and $M_2:(x=10\mbox{ cm},y=0\mbox{ cm})$. A test sound source is emitted at point $P$ which is $50$ centimeters away from $(0,0)$. Fig~\ref{fig:sim_2_5} shows the region where all points $\hat P$ satisfy:
 \[
- (\hat P M_1 - \hat P M_2) - (P M_1 - P M_2) < 1 \mbox{cm}
+ (\hat P M_1 - \hat P M_2) - (P M_1 - P M_2) < 1 \mbox{ cm}
 \]
 Intuitively, points in the region have difference of distance very similar to each other. From fig~\ref{fig:sim_2_5}, the region still has the shape of a hyperbola, but with an uncertainty region around the curvce. The uncertainty region is not uniform around the curve, the farther away the point is, the larger the uncertainty region becomes. It indicates that the same delta distance movement will generate smaller difference of distance when the source is farther away from the array. The size of the uncertianty region is also angle dependent: points closer to the line of microphones have larger region compared to points close to the line perpenticular to microphones. 
 
@@ -129,4 +129,6 @@ In fig~\ref{fig:sim_hm_3_line}, three microphones are placed $10$ cm apart from 
 
 To further increase the distance between microphones, we placed four microphones at four corners of the region. Fig~\ref{fig:sim_hm_4} showed the result. With this configuration, accuracy is consistently good across the region. The average error is $0.05$ cm.  However, placing microphones far apart at corners of the region requires accurate placement of all four individual microphones. The system is less portable compared to small arrays with microphones near each other.
 
-To avoid the need to accurate place four microphones at far distance(as required by fig~\ref{fig:sim_hm_4}), we explored configuration with two arrays. Two $3$ microphone array are placed $1$ meter apart and the result is presented in fig~\ref{fig:sim_hm_2_array}.  The result indicates that this configuration has good accuracy when source is close to the arrays. Accuracy decreases as sound source moves outside the one meter by one meter region. The average error is $2.60$ cm.
+To avoid the need to accurate place four microphones at far distance(as required by fig~\ref{fig:sim_hm_4}), we explored configuration with two arrays. Two $3$ microphone array are placed $1$ meter apart and the result is presented in fig~\ref{fig:sim_hm_2_array}.  The result indicates that this configuration has good accuracy when source is close to the arrays. Accuracy decreases as sound source moves outside the one meter by one meter region. The average error is $2.60$ cm. 
+
+With simulation results, we decided to build the two array system as described in fig~\ref{fig:sim_hm_2_array}. The setup is reasonably portable (compared to fig~\ref{fig:sim_hm_4}), while at the same time having significantly better accuracy compared to one array systems.

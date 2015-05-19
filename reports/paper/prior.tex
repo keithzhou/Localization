@@ -17,14 +17,14 @@ Points with the same TDOA to two fixed points on a plane form a hyperbola. With 
 
 In \cite{tdoa:ppp}, authors used eight microphnes mounted on corners of a ping pong table to localize the point where the ping pong ball hits the table. They used a threshold to determine the arrival time of acoustic signal. This approach works well in noise free environment but performance degrades with background noise. It also suffers from dispersive deflections that arrives before the main wavefront. To make it more robust, authors in \cite{tdoa:mit3} and \cite{tdoa:mit4} extracted descriptive parameters for each significant peak(e.g., peak height, width, mean arrival time). The algorithm then used extracted parameters to predict arrival time with a second order polynomial, the parameters of which were fitted during calibration at fixed locations.
 
-Cross-correlation has been used extensively in measure signal delays\cite{tdoa:mit2, tdoa:3}. Cross-correlation with different prefiterings (known as \emph{generalized cross correlation (GCC)}) have also been investigated to improve delay estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}.
+Cross-correlation has been used extensively in measuring signal delays\cite{tdoa:mit2, tdoa:3}. Cross-correlation with different prefiterings (known as \emph{generalized cross correlation (GCC)}) have also been investigated to improve delay estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}.
 
 GCC provides a framework to estimate delay differences $t_0$ between two signals $x_1(t)$ and $x_2(t)$:
 \begin{eqnarray} \label{eq:gcc}
 t_0 &=& \arg\max_{\tau} R_{x_1x_2}(\tau) \\
 R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
 \end{eqnarray}
-, where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to cross correlation estimator. We experimented with three ways of prefiltering the signal:
+, where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to cross correlation estimator. We focused with three ways of prefiltering the signal:
 \begin{description}[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divideded by its magnitude. Only phase information contributes to delay estimation.
