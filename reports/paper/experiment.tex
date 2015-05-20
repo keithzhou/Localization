@@ -19,7 +19,7 @@
 To test localization accuracy, an one meter by one meter grid was set up and the arrays are placed at the top left and top right corners of the grid. Fig~\ref{fig:setup_point} shows a picture of the setup. A total of $32$ positions are chosen uniformly in this region where microphone data is recorded.
 
 \subsubsection{Movement tracking}
-To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0, y=-0.3)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we tested how accuracy changes with:
+To test how well the arrays track movement, we mounted a rotating disk $40$ centimeter in diameter onto the grid at $(x=0$ cm$, y=-30$ cm$)$. Fig~\ref{fig:setup_circle} shows a picture of the sestup. A sound source is placed on the edge of rotating disk and the arrays localizes the sound source as it rotates in a circle. In this experiment, we tested how accuracy changes with:
 \begin{itemize}
 \item different window sizes
 \item different audio sources
@@ -33,9 +33,9 @@ To test how different sound sources impact localization quality, we conducted th
 
 \item[White Noise] A recording of white noise.
 
-\item[Music A] A music that has normal audio amplitude throughout experiment period was chosen. "Honest Eyes" by Black Tide was the music used.
+\item[Music A] A music that has normal audio amplitude throughout experiment period was chosen. ``Honest Eyes'' by Black Tide was the music used.
 
-\item[Music B] A music with intermittent low amplitude sections was chosen. "Canon" was the music used.
+\item[Music B] A music with intermittent low amplitude sections was chosen. ``Canon'' was the music used.
 
 \end{description} 
 
@@ -54,11 +54,11 @@ For each experiment conducted, two different movement filters are tests:
 \subsection{Results}
 \subsubsection{Point localization}
 
-To test how accuracy varies with window size, the algorithm is fed with recorded microphone data with different segment length. Fig~\ref{fig:accuracy_vs_window} shows how accuracy changes with window length for three GCC algorithms. The error lowers as window size increases and plataeus after window size exceeds around $10$ milli-second. The lowest error achieved is $2.53$ centimeters. It is achieved when window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation.
+To test how accuracy varies with window size, the algorithm is fed with recorded microphone data with different segment length. Fig~\ref{fig:accuracy_vs_window} shows how accuracy changes with window length for three GCC algorithms. The error decreases as window size increases and plataeus after window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters. It is achieved when window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation.
 
 Although accuracy improves with window length, the calculation time also increases with window length. The part of calculation that depends on window length is using cross correlation to estimate TDOA. cross correlation can be calculated with FFT and the runtime is of order $O(N\log N)$. We measured how the computation time varies with window length and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
 
-We also calculated the localization error for each tested point in the region. Figure~\ref{fig:error_distribution} shows a heatmap of the error distribution inside the grid. The error is below $3$ cm for most areas inside the region. There is one error spike in the mid-left region and we contribute this to audio source placecment error becuase the error is fairly low and consistent around that spike region.
+We also calculated the localization error for each tested point in the region. Figure~\ref{fig:error_distribution} shows a heatmap of the error distribution inside the grid. The error is below $3$ cm for most areas inside the region. There is one error spike in the mid-left region and we contribute this to audio source misplacecment becuase the error is fairly low and consistent around that spike region.
 
 \begin{figure}[]
 \includegraphics[width=0.5\textwidth]{average_error_window_size.eps}
@@ -151,8 +151,8 @@ Fig~\ref{fig:err_win_circle} gives an intuitive representation of how accuracy c
 \label{fig:circle_fast}
 \end{figure*}
 
-Fig~\ref{fig:circle_normal} shows results for experiments with at normal speed, and Fig~\ref{fig:circle_fast} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find the localization error does not depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
+Fig~\ref{fig:circle_normal} shows results for experiments at normal speed, and Fig~\ref{fig:circle_fast} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find the localization error does not depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
 
-From fig~\ref{fig:circle_normal}, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the "blank" regions in fig~\ref{fig:circle_musicbn}.
+From fig~\ref{fig:circle_normal}, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the ``blank'' regions in fig~\ref{fig:circle_musicbn}.
 
 Fig ~\ref{fig:circle_normal} also shows that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past 0.5 seconds, which makes the filtered output lag the real movement. 
