@@ -21,7 +21,7 @@ As was mentioned in the previous section, points with the same TDOA to two fixed
 
 To see how precision affects localization accuracy, we simulated two microphones placed at: $M_1:(x=-10\mbox{ cm},y=0\mbox{ cm})$ and $M_2:(x=10\mbox{ cm},y=0\mbox{ cm})$. A test sound source is emitted at point $P$ which is $50$ centimeters away from $(0,0)$. Fig~\ref{fig:sim_2_5} shows the region where all points $\hat P$ satisfy:
 \[
- (\hat P M_1 - \hat P M_2) - (P M_1 - P M_2) < 1 \mbox{ cm}
+|(\hat P M_1 - \hat P M_2) - (P M_1 - P M_2)|< 1 \mbox{ cm}
 \]
 Intuitively, points in the region have difference of distance very similar to each other. From fig~\ref{fig:sim_2_5}, the region still has the shape of a hyperbola, but with an uncertainty region around the curvce. The uncertainty region is not uniform around the curve, the farther away the point is, the larger the uncertainty region becomes. It indicates that the same delta distance movement will generate smaller difference of distance when the source is farther away from the array. The size of the uncertianty region is also angle dependent: points closer to the line of microphones have larger region compared to points close to the line perpenticular to microphones. 
 
@@ -29,7 +29,7 @@ This can also be seen analytically. Assuming two microphones are placed at $M_1:
 \begin{eqnarray}\label{eqn:hyperbola}
 \frac{x^2}{a^2} - \frac{y^2}{c^2-a^2} = 1
 \end{eqnarray}
-To see how difference of distance changes with respect to distance, we can expand the equation and take partial derivative with respect to $x$ we can get:
+To see how difference of distance changes with respect to distance, we can expand the equation and find partial differential $\frac{\partial a}{\partial x}$:
 \begin{eqnarray}\label{eqn:derivative}
 \frac{\partial a}{\partial x} = \frac{x(c^2-a^2)}{a(x^2+y^2+c^2)-2a^3}
 \end{eqnarray}
@@ -38,7 +38,7 @@ Since all points in equation~\ref{eqn:derivative} must lie on the hyperbola, we 
 \frac{\partial a}{\partial x} = \frac{c^2-a^2}{\frac{c^2}{a}x - \frac{a^3}{x}}
 \end{eqnarray}
 
-The denominator of equation~\ref{eqn:derivativeF} increases monotonically as $|x|$ increases, which indicates $\frac{\partial a}{\partial x}$ decreases as we move farther away. The same distance move $\delta x$ would generate smaller change in difference of distance $a$ when source is farther away from the microphones. 
+The denominator of equation~\ref{eqn:derivativeF} increases monotonically as $|x|$ increases, which indicates $\frac{\partial a}{\partial x}$ decreases as we move farther away along the hyperbola. The same distance move $\delta x$ would generate smaller change in difference of distance $a$ when source is farther away from the microphones. 
 
 \begin{figure*}[]
   \centering
