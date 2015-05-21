@@ -25,7 +25,7 @@ To see how precision affects localization accuracy, we simulated two microphones
 \]
 Intuitively, points in the region have difference of distance very similar to each other. From fig~\ref{fig:sim_2_5}, the region still has the shape of a hyperbola, but with an uncertainty region around the curvce. The uncertainty region is not uniform around the curve, the farther away the point is, the larger the uncertainty region becomes. It indicates that the same delta distance movement will generate smaller difference of distance when the source is farther away from the array. The size of the uncertianty region is also angle dependent: points closer to the line of microphones have larger region compared to points close to the line perpenticular to microphones. 
 
-This can also be seen analytically. Assuming two microphones are placed at $M_1:(-c,0)$ and $M2:(c,0)$. All points $P:(x,y)$ with difference of distance $ |PM_1 - PM_2| = 2a$ satisfies:
+This can also be seen analytically. Assuming two microphones are placed on x-axis at $M_1:(-c,0)$ and $M2:(c,0)$. All points $P:(x,y)$ with difference of distance $ |PM_1 - PM_2| = 2a$ satisfies:
 \begin{eqnarray}\label{eqn:hyperbola}
 \frac{x^2}{a^2} - \frac{y^2}{c^2-a^2} = 1
 \end{eqnarray}

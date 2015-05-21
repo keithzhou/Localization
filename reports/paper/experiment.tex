@@ -74,7 +74,8 @@ We also calculated the localization error for each tested point in the region. F
 
 
 \begin{figure}[]
-\includegraphics[width=0.5\textwidth]{error_distribution.eps}
+\centering
+\includegraphics[width=0.3\textwidth]{error_distribution.eps}
 \caption{error distribution in the grid}
 \label{fig:error_distribution}
 \end{figure}
@@ -111,48 +112,48 @@ Fig~\ref{fig:err_win_circle} gives an intuitive representation of how accuracy c
 
 \begin{figure*}[]
 \centering
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=1.0\textwidth]{trace_output_circle_wnn.eps}
-  \caption{white noise}
-  \label{fig:circle_wnn}
-\end{subfigure}
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=\textwidth]{trace_output_circle_man.eps}
-  \caption{music A}
-  \label{fig:circle_musican}
-\end{subfigure}
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=\textwidth]{trace_output_circle_mbn.eps}
-  \caption{music B}
-  \label{fig:circle_musicbn}
-\end{subfigure}
-\caption{Localization of circle movement with different sound sources. Sound source is moving at $10$ cm per second}
-\label{fig:circle_normal}
+\includegraphics[width=.8\textwidth]{trace_output_circle_wnn.eps}
+\caption{white noise ($10$ cm per second)}
+\label{fig:circle_wnn}
 \end{figure*}
 
 \begin{figure*}[]
 \centering
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=\textwidth]{trace_output_circle_wnf.eps}
-  \caption{white noise}
-  \label{fig:circle_wnf}
-\end{subfigure}
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=\textwidth]{trace_output_circle_maf.eps}
-  \caption{music A}
-  \label{fig:circle_musicaf}
-\end{subfigure}
-\begin{subfigure}[]{1.0\textwidth}
-  \includegraphics[width=\textwidth]{trace_output_circle_mbf.eps}
-  \caption{music B}
-  \label{fig:circle_musicbf}
-\end{subfigure}
-\caption{Localization of circle movement with different sound sources. Sound source is moving at $20$ cm per second}
-\label{fig:circle_fast}
+\includegraphics[width=.8\textwidth]{trace_output_circle_man.eps}
+\caption{music A ($10$ cm per second)}
+\label{fig:circle_musican}
 \end{figure*}
 
-Fig~\ref{fig:circle_normal} shows results for experiments at normal speed, and Fig~\ref{fig:circle_fast} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find the localization error does not depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
+\begin{figure*}[]
+\centering
+\includegraphics[width=.8\textwidth]{trace_output_circle_mbn.eps}
+\caption{music B ($10$ cm per second)}
+\label{fig:circle_musicbn}
+\end{figure*}
 
-From fig~\ref{fig:circle_normal}, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the ``blank'' regions in fig~\ref{fig:circle_musicbn}.
+\begin{figure*}[]
+\centering
+\includegraphics[width=.8\textwidth]{trace_output_circle_wnf.eps}
+\caption{white noise ($20$ cm per second)}
+\label{fig:circle_wnf}
+\end{figure*}
 
-Fig ~\ref{fig:circle_normal} also shows that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past 0.5 seconds, which makes the filtered output lag the real movement. 
+\begin{figure*}[]
+\centering
+  \includegraphics[width=.8\textwidth]{trace_output_circle_maf.eps}
+  \caption{music A ($20$ cm per second)}
+  \label{fig:circle_musicaf}
+\end{figure*}
+
+\begin{figure*}[]
+\centering
+  \includegraphics[width=.8\textwidth]{trace_output_circle_mbf.eps}
+  \caption{music B ($20$ cm per second)}
+  \label{fig:circle_musicbf}
+\end{figure*}
+
+Fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn} shows results for experiments at normal speed, and Fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find the localization error does not depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
+
+For normal speed movement tracking, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the ``blank'' regions in fig~\ref{fig:circle_musicbn}.
+
+It also shows that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past 0.5 seconds, which makes the filtered output lag the real movement. 
