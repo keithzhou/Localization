@@ -14,7 +14,7 @@ We conducted two sets of experiments to evaluate the system's localization accur
     \includegraphics[width=\textwidth]{setup_2.JPG}
     \caption{array placement}
   \end{subfigure}
-  \caption{Setup for localization accuracy testing}
+  \caption{Setup for point localization evaluation}
   \label{fig:setup_point}
 \end{figure}
 
@@ -48,8 +48,8 @@ To test how the movement speed of sound source affects localization quality, eac
 
 For each experiment conducted, two different movement filters were evaluated:
 \begin{description}[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
-\item[Averaging filter] localization for past $0.5$ seconds were averaged and outputed as current estimate.
-\item[Kalman filter] A 2nd order Kalman filtering was used.
+\item[Averaging filter] localization for past $0.5$ seconds were averaged and outputted as current estimate.
+\item[Kalman filter] A 2nd order Kalman filter was used.
 \end{description}
 
 In the movement tracking experiments described above, we have the ground truth location of the circle, but not the exact location of the audio source at each moment during the movement. Therefore, the error is reported as the distance between the localized point to its closest point on the ground truth circle.
@@ -60,18 +60,18 @@ To test how accuracy varies with window size, the algorithm is fed with micropho
 
 Although accuracy improves with the window size, computation time also increases with it. The part of calculation that depends on the window size is using cross correlation for TDOA estimation. Cross correlation can be calculated with Fast Fourier Transform (FFT) and the runtime is of order $O(N\log N)$. We measured how the computation time varied with window size and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
 
-We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacecment becuase the error is fairly low and consistent around that spike.
+We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacement because the error is fairly low and consistent around that spike.
 
 \begin{figure}[]
 \includegraphics[width=0.5\textwidth]{average_error_window_size.eps}
-\caption{accuracy versus window size}
+\caption{Localization error versus window size}
 \label{fig:accuracy_vs_window}
 \end{figure}
 
 \begin{figure}[]
 \centering
 \includegraphics[width=0.4\textwidth]{calculation_time.eps}
-\caption{speed versus window size}
+\caption{Computation time versus window size}
 \label{fig:speed_vs_window}
 \end{figure}
 
@@ -91,7 +91,7 @@ We also calculated the localization error for each tested point in the grid. Fig
   \begin{subfigure}[]{.2\textwidth}
     \includegraphics[width=\textwidth]{setup_rotating_disk.JPG}
   \end{subfigure}
-  \caption{Setup for circle movement localization}
+  \caption{Setup for movement tracking evaluation}
   \label{fig:setup_circle}
 \end{figure}
 
@@ -112,7 +112,7 @@ We also calculated the localization error for each tested point in the grid. Fig
 
 \subsubsection{Movement tracking}
 
-Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA. Which makes localization noisy. As window size increases, localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
+Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA, which results in noisy localization. As window size increases, localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
 
 \begin{figure*}[]
 \centering
@@ -156,7 +156,7 @@ Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with 
   \label{fig:circle_musicbf}
 \end{figure*}
 
-Fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn} shows results for experiments at normal speed, and Fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find that localization error does not depend on how fast the sound sorce is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
+Fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn} shows results for experiments at normal speed, and Fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf} shows results at fast speed. By comparing localization error for each audio source between normal movement speed and fast movement speed, we find that localization error does not depend on how fast the sound source is moving. For example fig~\ref{fig:circle_musican} and fig~\ref{fig:circle_musicaf} shows that localization error is $1.289$ cm at normal movement speed and $1.291$ cm at fast movement speed.
 
 For normal speed movement tracking, localization error is $0.9$ cm for white noise, $1.29$ cm for Music A, and $2.9$ cm for Music B. Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the ``blank'' regions in fig~\ref{fig:circle_musicbn}.
 
