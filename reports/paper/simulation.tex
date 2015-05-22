@@ -1,5 +1,5 @@
 \section{Array Architecture}
-As was mentioned in the previous section, points with the same TDOA to two fixed locations form a hyperbola on a 2D plane. In practical systems, we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ represents accuracy on the measurement of difference of distances, and in practice it is related to sampling rate and TDOA methods. In this section we evaluate delay estimation's impact on localization accuracy.
+As was mentioned in the previous section, points with the same TDOA to two fixed locations form a hyperbola on a 2D plane. However, in practical systems we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ represents accuracy on the measurement of difference of distances, and in practice it is related to sampling rate and estimation of difference of arrival time. In this section we evaluate the impact of difference of distance estimation on localization accuracy.
 
 \begin{figure}[]
   \centering
@@ -19,11 +19,15 @@ As was mentioned in the previous section, points with the same TDOA to two fixed
   \label{fig:sim_2_5}
 \end{figure}
 
-To see how precision affects localization accuracy, we simulated two microphones placed at: $M_1:(x=-10\mbox{ cm},y=0\mbox{ cm})$ and $M_2:(x=10\mbox{ cm},y=0\mbox{ cm})$. A test sound source is emitted at point $P$ which is $50$ centimeters away from $(0,0)$. Fig~\ref{fig:sim_2_5} shows the region where all points $\hat P$ satisfy:
+To see how precision affects localization accuracy, we simulated two microphones placed at: $M_1:(x=-10\mbox{ cm},y=0\mbox{ cm})$ and $M_2:(x=10\mbox{ cm},y=0\mbox{ cm})$. A test sound source is emitted at point $P$ which is $50$ centimeters away from the origin $(0,0)$. Fig~\ref{fig:sim_2_5} shows the region $R$ where all points $\hat P$ satisfy:
 \[
-|(\hat P M_1 - \hat P M_2) - (P M_1 - P M_2)|< 1 \mbox{ cm}
+R:\{\hat P: |(\hat P M_1 - \hat P M_2) - a|< 1 \mbox{ cm}\}
 \]
-Intuitively, points in the region have difference of distance very similar to each other. From fig~\ref{fig:sim_2_5}, the region still has the shape of a hyperbola, but with an uncertainty region around the curve. The uncertainty region is not uniform around the curve, the farther away the point is, the larger the uncertainty region becomes. This indicates for the the same delta distance movement it will generate smaller difference of distance change when the source is farther away from the array. The size of the uncertianty region is also angle dependent: points closer to the line of microphones have larger region compared to points close to the line perpenticular to microphones. 
+, where $a$ is the difference of distance between $P M_1$ and $P M_2$:
+\[
+P M_1 - P M_2 = a
+\]
+Intuitively, points in $R$ have difference of distance very similar to each other. Looking at fig~\ref{fig:sim_2_5}, we can still see that $R$ has the shape of a hyperbola, but with an uncertainty region around it. The thickness of the uncertainty region is not uniform around the hyperbola, the farther away the point is, the larger the uncertainty region becomes. This indicates for the the same delta distance movement it will generate smaller difference of distance change when the source is farther away from the array. The size of the uncertianty region is also angle dependent: points closer to the line connecting microphones have larger region compared to points close to the line bisecting microphones. 
 
 This can also be seen analytically. Assuming two microphones are placed on the x-axis at $M_1:(-c,0)$ and $M2:(c,0)$. All points $P:(x,y)$ with difference of distance $ |PM_1 - PM_2| = 2a$ satisfies:
 \begin{eqnarray}\label{eqn:hyperbola}
@@ -92,7 +96,7 @@ The denominator of equation~\ref{eqn:derivativeF} increases monotonically as $|x
   \label{fig:sim_3_8}
 \end{figure*}
 
-With more than two microphones, each pair of microphones generates a hyperbolic region and localization becomes finding the intersection of hyperbolic regions. The smaller the intersection region, the better the localization accuracy. To see how accuracy changes with array placement and sound source location, three microphones are placed at three vertices of an $20$ cm equilateral triangle. An audio source is placed at $20$ cm away from the center of the array. Fig~\ref{fig:sim_3_2} shows the intersection of regions for $5$ different placement of the sound source. It can be seen that accuracy is worse when sound source is close to the line connecting any two microphones. This observation is consistent with two microphone case, since points close to lines connecting microphones have a larger uncertainty region.
+With more than two microphones, each pair of microphones generates a hyperbolic region and localization becomes finding the intersection of hyperbolic regions. The smaller the intersection region, the better the localization accuracy. To see how accuracy changes with array placement and sound source location, three microphones are placed at the three vertices of an $20$ cm equilateral triangle. An audio source is placed at $20$ cm away from the center of the array. Fig~\ref{fig:sim_3_2} shows the intersection of regions for $5$ different placement of the sound source. It can be seen that accuracy is decreases when sound source becomes close to the line connecting any two microphones. This observation is consistent with two microphone case, since points close to lines connecting microphones have a larger uncertainty region.
 
 To see how sound source distance affects localization accuracy, the same simulation is carried out with the sound source moved from $20$ cm to $80$ cm away from the center of the array. Results are presented in fig~\ref{fig:sim_3_8}. Comparing with fig~\ref{fig:sim_3_2}, accuracy decreases as the distance to the array increases. This is also consistent with our observation in $2$ microphone case where source farther away would result in larger uncertainty region.
 
@@ -134,7 +138,7 @@ To see how sound source distance affects localization accuracy, the same simulat
 
 Intersection area is a measure of the localization accuracy. To evaluate an array's accuracy in a region, we can place sound source at predetermined grid points in the region and look at the intersection area for each tested point in the grid. The center location of intersection region can be used as localization estimate to calculate localization error. Results for a few different microphone array configurations are presented in fig~\ref{fig:sim_hm}.
 
-Fig~\ref{fig:sim_hm_3} shows the accuracy when microphones are placed at three vertices of a $20$ cm equilateral triangle. The region inside the array has good accuracy. However, for regions along line of any two microphones, the accuracy drops significantly. Average error across the region is $18.6$ cm.
+Fig~\ref{fig:sim_hm_3} shows the accuracy when microphones are placed at three vertices of a $20$ cm equilateral triangle. The region inside the array has good accuracy. However, for regions along the line of any two microphones, the accuracy drops significantly. Average error across the region is $18.6$ cm.
 
 To evaluate how adding one microphone(without increasing array size) improves accuracy,  another microphone is added to the array at $(0,0)$. Result is presented in fig~\ref{fig:sim_hm_3_p1}. Addition of the new microphone only slightly improved the accuracy around the array region. Average error dropped from $18.6$ cm to $17.1$ cm. Regions near lines of microphones still have significantly larger uncertainty region.
 
@@ -146,4 +150,4 @@ To further increase the distance between microphones, we placed four microphones
 
 To avoid the need to accurately place four microphones at far distances(as required by fig~\ref{fig:sim_hm_4}), we explored configuration with two arrays. Two $3$ microphone array are placed $1$ meter apart and the result is presented in fig~\ref{fig:sim_hm_2_array}.  The result indicates that this configuration has good accuracy when source is close to the arrays. Accuracy decreases as sound source moves outside of the one meter by one meter region. The average error is $2.60$ cm. 
 
-With simulation results, we decided to build the two array system as described in fig~\ref{fig:sim_hm_2_array}. The setup is reasonably portable (compared to fig~\ref{fig:sim_hm_4}), while at the same time having significantly better accuracy compared to one array systems.
+With the simulation results, we decided to build the two array system as described in fig~\ref{fig:sim_hm_2_array}. The setup is reasonably portable (compared to fig~\ref{fig:sim_hm_4}), while at the same time having significantly better accuracy compared to one array systems.
