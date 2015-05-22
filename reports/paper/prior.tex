@@ -13,7 +13,7 @@ TDOA approaches exploit the difference of arrival time between the acoustic sour
 
 In \cite{tdoa:ppp}, authors used eight microphones mounted on the corners of a ping pong table to localize points where the ball hits the table. They used a threshold to determine the arrival time of acoustic signal. This approach works well in noise free environment but the performance degrades with background noise. Their approach also suffers from dispersive deflections that arrive before the main wavefront of the acoustic signal. To make it more robust, authors in \cite{tdoa:mit3} and \cite{tdoa:mit4} extracted descriptive parameters for each significant peak(e.g., peak height, width, mean arrival time). The algorithm then used extracted parameters to predict arrival time with a second order polynomial, the parameters of which were fitted during calibration at fixed locations.
 
-Cross-correlation has also been used to measure signal arrival time differences\cite{tdoa:mit2, tdoa:micloc, tdoa:3}. Cross-correlation with prefilterings is known as \emph{generalized cross correlation (GCC)}. Different prefilterings have been investigated to improve arrival time difference estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}.
+Cross-correlation has also been used to measure signal arrival time differences\cite{tdoa:mit2, tdoa:micloc, tdoa:3}. Cross-correlation with prefiltering is known as \emph{generalized cross correlation (GCC)}. Different prefiltering approaches have been investigated to improve arrival time difference estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}.
 
 Under the GCC framework, the arrival time difference $t_0$ between two signals $x_1(t)$ and $x_2(t)$ can be estimated as:
 \begin{eqnarray} \label{eq:gcc}
@@ -23,6 +23,6 @@ R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega)
 , where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transform of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to the cross correlation estimator. We focused on three ways of prefiltering the signal:
 \begin{description}[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is unfiltered normal cross correlation.
-\item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divideded by its magnitude. Only phase information contributes to delay estimation.
-\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. part of magnitude information is included in delay estimation.
+\item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divided by its magnitude. Only phase information contributes to delay estimation.
+\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of magnitude information is included in delay estimation.
 \end{description}
