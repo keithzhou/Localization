@@ -526,13 +526,9 @@ In this paper, we proposed and built an inexpensive, portable yet reasonably acc
 \input{./simulation}
 \input{./system}
 \input{./experiment}
+\input{./conclusion}
 
-\section{Conclusion}
-In this paper, we proposed and built an inexpensive, portable yet reasonably accurate sound localization system with two microphone arrays. We analyzed different array architectures and demonstrated that a two array architecture achieves better accuracy compared to a single array system of similar size. By using cross-correlation output as the likelihood for different arrival time differences, each array generates a likelihood map for each possible location in the area. We demonstrated that by merging likelihood maps from the two arrays, we were able to achieve good localization accuracy (less than $3$ cm average error) in a local one meter by one meter region.
-
-This system can be used in HCI applications that incorporate sound position and movement information, such as drawing with music, or can be used to create AI games with physical pieces where the computer controls some of the pieces. This system can also be used to in Augmented Reality (AR) applications that allow user computer interaction with music tags.
-
-For future directions, this system can be extended with another microphone on each array to perform 3D localization. Another possible direction is to investigate multi-source localization using digitally tagged audio sources.
+\input{bib.bbl}
 
 % conference papers do not normally have an appendix
 
@@ -569,66 +565,6 @@ For future directions, this system can be extended with another microphone on ea
 % <OR> manually copy in the resultant .bbl file
 % set second argument of \begin to the number of references
 % (used to reserve space for the reference number labels box)
-\begin{thebibliography}{1}
-\bibitem{intro:gps}
-Wing, Michael G. and Eklund, Aaron and Kellogg, Loren D. ``Consumer-Grade Global Positioning System (GPS) Accuracy and Reliability,'' \emph{Journal of Forestry}, 2005.
-
-\bibitem{intro:blue}
-Bekkelien, Anja, Michel Deriaz, and Stéphane Marchand-Maillet. ``Bluetooth indoor positioning,'' \emph{Master's thesis, University of Geneva}, 2012.
-
-\bibitem{intro:loc}
-Hui Liu; Darabi, H.; Banerjee, P.; Jing Liu, ``Survey of Wireless Indoor Positioning Techniques and Systems,'' \emph{IEEE Transactions on Systems, Man, and Cybernetics, Part C: Applications and Reviews}, 2007
-
-\bibitem{intro:ultra}
-Yazici, A.; Yayan, U.; Yucel, H., ``An ultrasonic based indoor positioning system,'' \emph{2011 International Symposium on Innovations in Intelligent Systems and Applications (INISTA)}, 2011
-
-\bibitem{extended:tusi}
-Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, ``Extended touch user interfaces,'' \emph{IEEE International Conference on  Multimedia and Expo (ICME)}, 2013. 
-
-\bibitem{ltm:pham}
-Pham, D. T., et al. ``Tangible acoustic interface approaches,'' \emph{Proceedings of IPROMS 2005 Virtual Conference}, 2005.
-
-\bibitem{ltm:lpc}
-XueXin Yap, Khong, A.W.H., and Woon-Seng Gan, ``Localization of acoustic source on solids: A linear predictive coding based algorithm for location template matching,'' \emph{IEEE International Conference on Acoustics Speech and Signal Processing (ICASSP)}, 2010
-
-\bibitem{ltm:tusi2}
-Chowdhury, Tusi. ``Single Microphone Tap Localization,'' \emph{University of Toronto}, 2013.
-
-\bibitem{tdoa:ppp}
-Ishii, Hiroshi, et al. ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
-
-\bibitem{tdoa:mit2}
-Paradiso, Joseph A., et al. ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
-
-\bibitem{tdoa:micloc}
-MicLoc, URL: http://ruralhacker.blogspot.ca/p/micloc.html
-
-\bibitem{sys:teensy}
-PJRC, URL: https://www.pjrc.com/teensy/teensy31.html
-
-\bibitem{tdoa:3}
-Polotti, Pietro, et al. ``Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces,'' \emph{Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05)}, 2005.
-
-\bibitem{tdoa:mit3}
-Paradiso, Joseph A., et al. ``Sensor systems for interactive surfaces,'' \emph{IBM Systems Journal}, 2000.
-
-\bibitem{tdoa:mit4}
-Checka, Nisha ``A system for tracking and characterizing acoustic impacts on large interactive surfaces,'' \emph{Diss. Massachusetts Institute of Technology}, 2001.
-
-\bibitem{tdoa:gcc1}
-Brandstein, M.S.; Silverman, H.F., ``A robust method for speech signal time-delay estimation in reverberant rooms,'' \emph{IEEE International Conference on Acoustics, Speech, and Signal Processing}, 1997.
-
-\bibitem{tdoa:gcc2}
-Knapp, C. and Carter, G.Clifford, ``The generalized correlation method for estimation of time delay,'' \emph{IEEE Transactions on Acoustics, Speech and Signal Processing}, 1976.
-
-\bibitem{tdoa:gcc3}
-Aarabi, P. and Guangji Shi, ``Phase-based dual-microphone robust speech enhancement,'' \emph{IEEE Transactions on Systems, Man, and Cybernetics, Part B: Cybernetics}, 2004.
-
-
-\end{thebibliography}
-
-
-
 
 % that's all folks
 \end{document}

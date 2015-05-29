@@ -1,8 +1,8 @@
-\section{Experiment}
+\chapter{Experiment}
 We conducted two sets of experiments to evaluate the system's localization accuracy: one on point localization and the other on movement tracking. 
 
-\subsection{Setup}
-\subsubsection{Point localization}
+\section{Setup}
+\subsection{Point localization}
 
 \begin{figure}[]
   \centering
@@ -20,7 +20,7 @@ We conducted two sets of experiments to evaluate the system's localization accur
 
 An one meter by one meter grid was set up where the arrays were placed at the top left and top right corners of the grid. Fig~\ref{fig:setup_point} shows a picture of the setup. A total of $32$ testing locations were chosen uniformly in this grid. We reported the error as the average distance between our placement of the audio source and the location estimated from the arrays.
 
-\subsubsection{Movement tracking}
+\subsection{Movement tracking}
 To test how well the system tracks movement, we mounted a rotating disk $40$ centimeters in diameter onto the grid at $(x=0$ cm$, y=-30$ cm$)$. Fig~\ref{fig:setup_circle} shows a picture of the setup. A sound source is placed on the edge of the rotating disk and the arrays track the sound source as it rotates in a circle. In this experiment, we evaluated how accuracy changes with:
 \begin{itemize}
 \item window sizes
@@ -30,7 +30,7 @@ To test how well the system tracks movement, we mounted a rotating disk $40$ cen
 \end{itemize}
 
 To test how different sound sources impact localization quality, we conducted the experiments with three different sound sources:
-\begin{description}[\IEEEsetlabelwidth{long a label}\IEEEusemathlabelsep]
+\begin{description}%[\IEEEsetlabelwidth{long a label}\IEEEusemathlabelsep]
 
 \item[White Noise] A recording of white noise.
 
@@ -47,15 +47,15 @@ To test how the movement speed of sound source affects localization quality, eac
 \end{description}
 
 For each experiment conducted, two different movement filters were evaluated:
-\begin{description}[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
+\begin{description}%[\IEEEsetlabelwidth{Very long label}\IEEEusemathlabelsep]
 \item[Averaging filter] localization for past $0.5$ seconds were averaged and outputted as current estimate.
 \item[Kalman filter] A 2nd order Kalman filter was used.
 \end{description}
 
 In the movement tracking experiments described above, we have the ground truth location of the circle, but not the exact location of the audio source at each moment during the movement. Therefore, the error is reported as the distance between the localized point to its closest point on the ground truth circle.
 
-\subsection{Results}
-\subsubsection{Point localization}
+\section{Results}
+\subsection{Point localization}
 To test how accuracy varies with window size, the algorithm is fed with microphone data of different lengths, and the result is shown in fig~\ref{fig:accuracy_vs_window}. The error decreases as window size increases and plateaus after the window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters, which occurred when the window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation.
 
 Although accuracy improves with the window size, computation time also increases with it. The part of calculation that depends on the window size is using cross correlation for TDOA estimation. Cross correlation can be calculated with Fast Fourier Transform (FFT) and the runtime is of order $O(N\log N)$. We measured how the computation time varied with window size and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
@@ -110,7 +110,7 @@ We also calculated the localization error for each tested point in the grid. Fig
 \label{fig:err_win_circle}
 \end{figure}
 
-\subsubsection{Movement tracking}
+\subsection{Movement tracking}
 
 Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA, which results in noisy localization. As window size increases, localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
 

@@ -1,14 +1,14 @@
-\section{Background}
+\chapter{Background}
 Acoustic localization has been researched extensively in the literature. Localization techniques can be broadly categorized into Location Template Matching (LTM) and Time Difference of Arrival (TDOA) based approaches.
 
-\subsection{LTM}
+\section{LTM}
 In LTM based approaches, acoustic templates acquired from different locations are first stored in the system during a ``training'' phase. Localization can be performed by comparing the incoming waveform with the stored templates, and the location with the best matching template is chosen as the output. Different ways of extracting templates from raw acoustic source and different similarity measures have been investigated in the past. 
 
 \cite{extended:tusi} and \cite{ltm:pham} investigated using max value from cross-correlation as a similarity measure to localize user taps on interactive surfaces. \cite{ltm:lpc} used L2 distance in the Linear Predictive Coding coefficient space as a similarity measure to localize taps on surfaces. \cite{ltm:tusi2} further explored accuracy improvement by using multiple templates for each location and speed improvement by merging multiple templates into one representative template.
 
 The requirement of having a template for each location to be detected makes this approach too restrictive for our project, since we want the localization to be continuous in a 2D region.  Moreover, the need to recalibrate all locations during setup is too cumbersome for the end users in a portable system. Therefore, our main focus will be on TDOA based approaches.
 
-\subsection{TDOA}
+\section{TDOA}
 TDOA approaches exploit the difference of arrival time between the acoustic source and two fixed microphones on the plane. It can be easily shown that the acoustic sources with the same TDOA to two fixed microphones on the plane form a hyperbola. When you have more than two microphones, each pair would give a different hyperbola. The intersection of all the hyperbolas marks the source location. TDOA approaches rely on accurate estimates of arrival time differences between microphones. 
 
 In \cite{tdoa:ppp}, authors used eight microphones mounted on the corners of a ping pong table to localize points where the ball hits the table. They used a threshold to determine the arrival time of acoustic signal. This approach works well in noise free environment but the performance degrades with background noise. Their approach also suffers from dispersive deflections that arrive before the main wavefront of the acoustic signal. To make it more robust, authors in \cite{tdoa:mit3} and \cite{tdoa:mit4} extracted descriptive parameters for each significant peak(e.g., peak height, width, mean arrival time). The algorithm then used extracted parameters to predict arrival time with a second order polynomial, the parameters of which were fitted during calibration at fixed locations.
@@ -21,7 +21,7 @@ t_0 &=& \arg\max_{\tau} R_{x_1x_2}(\tau) \\\label{eq:gcc2}
 R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
 \end{eqnarray}
 , where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transforms of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to the cross correlation estimator. We focused on three ways of prefiltering the signal:
-\begin{description}[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
+\begin{description}%[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is unfiltered normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divided by its magnitude. Only phase information contributes to delay estimation.
 \item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of magnitude information is included in delay estimation.
