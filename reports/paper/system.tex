@@ -24,13 +24,13 @@ To handle the uncertainty in TDOA estimation, instead of using point estimate th
 L(x,y) &=& R_{m_1,m_2}(D_{m_1,m_2}(x,y)) + R_{m_1,m_3}(D_{m_1,m_3}(x,y)) \\
  & & +R_{m_2,m_3}(D_{m_2,m_3}(x,y)) 
 \end{eqnarray*}
-,where $R_{m_1,m_2}(\tau)$,$R_{m_1,m_3}(\tau)$, and $R_{m_2,m_3}(\tau)$ denote GCC output from microphone pairs $m_1m_2,m_1m_3,$ and $m_2m_3$.
+where $R_{m_1,m_2}(\tau)$,$R_{m_1,m_3}(\tau)$, and $R_{m_2,m_3}(\tau)$ denote GCC output from microphone pairs $m_1m_2,m_1m_3,$ and $m_2m_3$.
 
 Likelihood maps from two arrays can be combined into the final likelihood map:
 \begin{equation}\label{eq:combine_l}
 L(x,y) = L_1(x,y) L_2(x,y)
 \end{equation}
-, where $L_1(x,y)$ and $L_2(x,y)$ represent the likelihood map from array $1$ and array $2$.
+where $L_1(x,y)$ and $L_2(x,y)$ represent the likelihood map from array $1$ and array $2$.
 
 \begin{figure}[]
   \centering
