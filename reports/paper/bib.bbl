@@ -11,6 +11,15 @@ Hui Liu; Darabi, H.; Banerjee, P.; Jing Liu, ``Survey of Wireless Indoor Positio
 \bibitem{intro:ultra}
 Yazici, A.; Yayan, U.; Yucel, H., ``An ultrasonic based indoor positioning system,'' \emph{2011 International Symposium on Innovations in Intelligent Systems and Applications (INISTA)}, 2011
 
+\bibitem{ild:1}
+Birchfield, Stanley T., and Rajitha Gangishetty, ``Acoustic localization by interaural level difference,'' \emph{IEEE International Conference on Acoustics, Speech, and Signal Processing}, 2005
+
+\bibitem{ild:2}
+Blauert, Jens. ``Spatial hearing: the psychophysics of human sound localization,'' \emph{MIT press}, 1997.
+
+\bibitem{ild:3}
+Raspaud, Martin, Harald Viste, and Gianpaolo Evangelista, ``Binaural source localization by joint estimation of ILD and ITD,'' \emph{IEEE Transactions on Audio, Speech, and Language Processing}, 2010.
+
 \bibitem{extended:tusi}
 Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, ``Extended touch user interfaces,'' \emph{IEEE International Conference on  Multimedia and Expo (ICME)}, 2013. 
 

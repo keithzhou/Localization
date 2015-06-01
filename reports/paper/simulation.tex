@@ -3,18 +3,18 @@ As was mentioned in the previous section, points with the same TDOA to two fixed
 
 \begin{figure}[]
   \centering
-  \begin{subfigure}[]{.23\textwidth}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/sim_2_1}
     \caption{source at $(r=50$ cm, $\theta = 0$ degrees$)$}
   \end{subfigure}
-  \begin{subfigure}[]{.23\textwidth}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/sim_2_2}
     \caption{source at $(r=50$ cm, $\theta = 45$ degrees$)$}
   \end{subfigure}
-  \begin{subfigure}[]{.23\textwidth}
-    \includegraphics[width=\textwidth]{sim/sim_2_3}
-    \caption{source at $(r=50$ cm, $\theta = 90$ degrees$)$}
-  \end{subfigure}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/sim_2_3}
+%    \caption{source at $(r=50$ cm, $\theta = 90$ degrees$)$}
+%  \end{subfigure}
   \caption{Uncertainty region. Yellow dots represent microphones' locations and the white dot represents the location of the source.}
   \label{fig:sim_2_5}
 \end{figure}
@@ -46,57 +46,57 @@ The denominator of equation~\ref{eqn:derivativeF} increases monotonically as $|x
 
 \begin{figure*}[]
   \centering
-  \begin{subfigure}[]{.3\textwidth}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/result_20cm_0_degrees}
     \caption{0 degrees}
   \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_20cm_45_degrees}
-    \caption{45 degrees}
-  \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_20cm_90_degrees}
-    \caption{90 degrees}
-  \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_20cm_45_degrees}
+%    \caption{45 degrees}
+%  \end{subfigure}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_20cm_90_degrees}
+%    \caption{90 degrees}
+%  \end{subfigure}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/result_20cm_135_degrees}
     \caption{135 degrees}
   \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_20cm_180_degrees}
-    \caption{180 degrees}
-  \end{subfigure}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_20cm_180_degrees}
+%    \caption{180 degrees}
+%  \end{subfigure}
   \caption{Uncertainty region. Microphones are at the vertices of a $20$cm equilateral triangle. The source is $20$cm away from the array.}
   \label{fig:sim_3_2}
 \end{figure*}
 
 \begin{figure*}[]
   \centering
-  \begin{subfigure}[]{.3\textwidth}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/result_80cm_0_degrees}
     \caption{0 degrees}
   \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_80cm_45_degrees}
-    \caption{45 degrees}
-  \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_80cm_90_degrees}
-    \caption{90 degrees}
-  \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_80cm_45_degrees}
+%    \caption{45 degrees}
+%  \end{subfigure}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_80cm_90_degrees}
+%    \caption{90 degrees}
+%  \end{subfigure}
+  \begin{subfigure}[]{.46\textwidth}
     \includegraphics[width=\textwidth]{sim/result_80cm_135_degrees}
     \caption{135 degrees}
   \end{subfigure}
-  \begin{subfigure}[]{.3\textwidth}
-    \includegraphics[width=\textwidth]{sim/result_80cm_180_degrees}
-    \caption{180 degrees}
-  \end{subfigure}
+%  \begin{subfigure}[]{.3\textwidth}
+%    \includegraphics[width=\textwidth]{sim/result_80cm_180_degrees}
+%    \caption{180 degrees}
+%  \end{subfigure}
   \caption{Uncertainty region. Microphones are at the vertices of a $20$cm equilateral triangle. The source is $80$cm away from the array.}
   \label{fig:sim_3_8}
 \end{figure*}
 
-With more than two microphones, each pair of microphones generates a hyperbolic region and localization becomes finding the intersection of hyperbolic regions. The smaller the intersection region, the better the localization accuracy. To see how accuracy changes with array placement and sound source location, three microphones are placed at the three vertices of a $20$ cm equilateral triangle. An audio source is placed at $20$ cm away from the center of the array. Fig~\ref{fig:sim_3_2} shows the intersection of regions for $5$ different placement of the sound source. It can be seen that accuracy decreases when sound source becomes close to the line connecting any two microphones. This observation is consistent with the two microphone case, since points close to lines connecting microphones have a larger uncertainty region.
+With more than two microphones, each pair of microphones generates a hyperbolic region and localization becomes finding the intersection of hyperbolic regions. The smaller the intersection region, the better the localization accuracy. To see how accuracy changes with array placement and sound source location, three microphones are placed at the three vertices of a $20$ cm equilateral triangle. An audio source is placed at $20$ cm away from the center of the array. Fig~\ref{fig:sim_3_2} shows the intersection of regions for $2$ different placement of the sound source. It can be seen that accuracy decreases when sound source becomes close to the line connecting any two microphones. This observation is consistent with the two microphone case, since points close to lines connecting microphones have a larger uncertainty region.
 
 To see how sound source distance affects localization accuracy, the same simulation is carried out with the sound source moved from $20$ cm to $80$ cm away from the center of the array. Results are presented in fig~\ref{fig:sim_3_8}. Comparing with fig~\ref{fig:sim_3_2}, accuracy decreases as the distance to the array increases. This is also consistent with our observation in $2$ microphone case where sources farther away would result in larger uncertainty region.
 

@@ -1,8 +1,29 @@
 \chapter{Background}
-Acoustic localization has been researched extensively in the literature. Localization techniques can be broadly categorized into Location Interaural Level Difference (ILD), Template Matching (LTM), and Time Difference of Arrival (TDOA) based approaches.
+Acoustic localization has been researched extensively in the literature. Localization techniques can be broadly categorized into Interaural Level Difference (ILD), Location Template Matching (LTM), and Time Difference of Arrival (TDOA) based approaches.
 
 \section{ILD}
-a
+ILD techniques rely on the observation that signal intensity decays as the distance to the microhone increases. A microphone closer to the signal source would receive the signal with higher intensity than a microphone farther away. With multiple microphones, it is possible to infer the source location by comparing the signal intensity received at different microphones. Human's auditory system has used ILD cues to infer source direction~\cite{ild:2}, and this technique is most effective to localize high frquency sources, because they don't diffract effectively around the listener's head and produce a significant intensity difference.
+
+Let $s(t)$ denote the audio signal. The received signal $\bar s(t) $ at microphone $i$ can be modeled as:
+\[
+\bar s_i(t) = \frac{s(t)}{d_i} + \delta_i(t)
+\]
+where $d_i$ is the distance between the audio source and microphone $i$, and $\delta_i(t)$ represents Gaussian noise.
+The energy received at microphone $i$ is:
+\begin{eqnarray}
+E_i & = & \int \bar s_i(t)^2 dt \\
+\label{eqn:ild1}
+& = & \frac{1}{d_i^2} E_s + E_{\sigma_i}
+\end{eqnarray}
+It shows that the energy declays with the square of the distance. With two microphones, not considering the noise $\delta_i(t)$, energy received at both microphones has to satisfy equation~\ref{eqn:ild1}:
+\begin{eqnarray}
+E_1d_1^2 &=& E_2d_2^2\\
+\label{eqn:ild}
+\frac{E_1}{E_2} &=& \frac{d_2^2}{d_1^2}
+\end{eqnarray}
+It can be shown that, on a 2D plan, points satisfy equation~\ref{eqn:ild} form a circle when $E_1 \ne E_2$ and form a line when $E_1 = E_2$~\cite{ild:1}. With two microphones all points on this curve generate the same energy ratio and can not be distinguised from each other. Multiple approaches have been investigated to eliminate this ambiguity. \cite{ild:1} employed multiple microphones and used the intersection of circles from each microphone pair to estimate the source location. \cite{ild:2} combined ILD with Interaural Time Difference to estimate source direction (i.e azimuth).
+
+ILD approach relies on the accurate measurement of the received energy ratio between microphone pairs. Any obstacle object between the sound source and any microphone would produce a significant distortion in the measured energy ratio. We find this approach to be too restrictive for our system, since in an interactive system we can not control whether or not the user places any obstacle between the sound source and the microphones.
 
 \section{LTM}
 In LTM based approaches, acoustic templates acquired from different locations are first stored in the system during a ``training'' phase. Localization can be performed by comparing the incoming waveform with the stored templates, and the location with the best matching template is chosen as the output. Different ways of extracting templates from raw acoustic source and different similarity measures have been investigated in the past. 
@@ -27,5 +48,17 @@ where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transforms of $x_1(t)$ and $x_
 \begin{description}%[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is unfiltered normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divided by its magnitude. Only phase information contributes to delay estimation.
-\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of magnitude information is included in delay estimation.
+\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of magnitude information is included in arrival time difference estimation.
 \end{description}
+
+To see the reasoning behind different prefitering approaches, we can seperate the magnitude and phase part of $X_1(\omega)$ and $X_2(\omega)$ in Equation~\ref{eq:gcc2}:
+\begin{eqnarray}
+\label{eqn:phat1}
+R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) |X_1(\omega)||X_2(\omega)| e^{j(\omega\tau - (\angle{X_2(\omega)} - \angle{X_1(\omega)}) } d\omega\\
+&=& \int_{-\infty}^\infty W(w)|X_1(\omega)| |X_2(\omega)| \cos(\omega\tau - (\angle X_2(\omega) - \angle X_1(\omega))) d\omega
+\end{eqnarray}
+We look at the real part of equation~\ref{eqn:phat1} only since both $x_1(t)$ and $x_2(t)$ are real valued signals. When $\dot \tau$ is the true arrive time difference between $x_1(t)$ and $x_2(t)$, $\omega \dot \tau - (\angle X_2(\omega) - \angle X_1(\omega)) = 0$, and $\cos(\omega \dot \tau - (\angle X_2(\omega) - \angle X_1(\omega))) = 1$. Therefore, $\cos(\omega\tau - (\angle X_2(\omega) - \angle X_1(\omega)))$ can be seen as a measure of the phase error, and $W(w)|X_1(\omega)||X_2(\omega)|$ describes how the error should be weighted at each frequency. The TDOA estimator essentially sums the weighted phase error at each frequncy. 
+
+Without any prefitering (i.e $W(\omega)=1$), the estimator weighs the phase error at each frequency by the magnitude of the signal at that frequency. In this weighting scheme, phase error at frequencies with higher magnitudes are penalized more compared to frequencies with a lower magnitude. This weighting is approporiate if there is only one source present, since freqeuncies with higher intensities have higher Signal to Noise Ratio (SNR). It makes sense to place higher weights at frequencies with higher SNR. 
+
+However, with multiple sources, the source with the highest volume will dominate the phase error estimation, but there is no particular reson to assign higher weights to signals with higher volume. All sources should contribute equally in phase error estimation. In GCC\_PHAT,  $W(\omega)$ is set to $\frac{1}{|X_1(\omega)||X_2(\omega)|}$. In effect it weighs phase error uniformly across freqiency. 
