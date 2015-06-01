@@ -1,5 +1,5 @@
 \chapter{Array Architecture}
-As was mentioned in the previous section, points with the same TDOA to two fixed locations form a hyperbola on a 2D plane. However, in practical systems we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ represents accuracy on the measurement of difference of distances, and in practice it is related to sampling rate and estimation techniques. In this section we evaluate the impact of difference of distance estimation on localization accuracy.
+As was mentioned in the previous chapter, points with the same TDOA to two fixed locations form a hyperbola on a 2D plane. However, in practical systems we can only measure TDOA up to a precision. Therefore we look at all points with difference of distance close to some target value within measurement error $\epsilon$. This $\epsilon$ represents accuracy on the measurement of difference of distances, and in practice it is related to sampling rate and estimation techniques. In this chapter we evaluate the impact of difference of distance estimation on localization accuracy.
 
 \begin{figure}[]
   \centering
@@ -23,9 +23,9 @@ To see how precision affects localization accuracy, we simulated two microphones
 \[
 2a = P M_1 - P M_2 
 \]
-then fig~\ref{fig:sim_2_5} shows the region $R$ where all points have difference of distance to two microphones close to $2a$ within $1$ cm:
+then the TDOA is $2a/340$ seconds. Assuming a sampling rate of $34$ KHz, fig~\ref{fig:sim_2_5} shows the region $R$ where all points have TDOA close to $2a/340$ s within one sample difference:
 \[
-R=\{\hat P: |(\hat P M_1 - \hat P M_2) - 2a|< 1 \mbox{ cm}\}
+R=\{\hat P: |(\hat P M_1 - \hat P M_2) - 2a|< \frac{1}{2} \mbox{ samples}\}
 \]
 Intuitively, points in $R$ have difference of distance to two microphones very similar to each other. Looking at fig~\ref{fig:sim_2_5}, we can still see that $R$ has the shape of a hyperbola, but with an uncertainty region around it. The thickness of the uncertainty region is not uniform around the hyperbola, the farther away the point is, the larger the uncertainty region becomes. This indicates for the same delta distance movement it will generate smaller difference of distance change when the source is farther away from the array. The size of the uncertainty region is also angle dependent: points closer to the line connecting microphones have larger region compared to points close to the line bisecting microphones. 
 
@@ -132,7 +132,7 @@ To see how sound source distance affects localization accuracy, the same simulat
     \caption{Two $3$ microphone arrays are placed $1$ meter apart. The average error is $2.60$ cm}
     \label{fig:sim_hm_2_array}
   \end{subfigure}
-  \caption{Error heatmap for different array configurations}
+  \caption{Error heatmap for different array configurations. The heatmap scale is the intersection area measured in $cm^2$}.
   \label{fig:sim_hm}
 \end{figure*}
 
