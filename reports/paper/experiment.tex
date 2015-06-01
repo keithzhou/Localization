@@ -62,6 +62,8 @@ Although accuracy improves with the window size, computation time also increases
 
 We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacement because the error is fairly low and consistent around that spike.
 
+To test the limit of the system and to evaluate the accuracy when the source moves outside of the one meter by one meter region, we measured the localization error by placing the source at $10$ locations along $y$ axis ranging from $(0$ cm$, -10$ cm$)$ to $(0$ cm$, -200$ cm$)$. The result is presented in fig~\ref{fig:error_along_y}. The localization error is within $3$ cm when the source is within $100$ cm from the arrays. The error increases to about $5$ cm when the source distance increases to $150$ cm and the error exceeds $10$ cm after the source distance reaches $200$ cm.
+
 \begin{figure}[]
 \centering
 \includegraphics[width=0.5\textwidth]{average_error_window_size.eps}
@@ -83,6 +85,14 @@ We also calculated the localization error for each tested point in the grid. Fig
 \caption{error distribution in the grid. Arrays are placed at $(-0.5$ m$, 0$ m$)$ and $(0.5$ m$, 0$ m$)$}
 \label{fig:error_distribution}
 \end{figure}
+
+\begin{figure}[]
+\centering
+\includegraphics[width=0.5\textwidth]{error_along_y_axis.eps}
+\caption{Localization error as the distance between the source and the microphone arrays increases. The source is placed on the $y$ axis.}
+\label{fig:error_along_y}
+\end{figure}
+
 
 \begin{figure}[]
   \centering
@@ -111,9 +121,10 @@ We also calculated the localization error for each tested point in the grid. Fig
 \label{fig:err_win_circle}
 \end{figure}
 
+
 \subsection{Movement tracking}
 
-Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA, which results in noisy localization. As window size increases, localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
+Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small ($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA, which results in noisy localization. As window size increases, localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
 
 \begin{figure*}[]
 \centering
