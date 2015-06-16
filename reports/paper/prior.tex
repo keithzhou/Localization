@@ -4,26 +4,20 @@ Acoustic localization has been researched extensively in the literature. Localiz
 \section{ILD}
 ILD techniques rely on the observation that signal intensity decays as the distance to the microphone increases. A microphone closer to the signal source would receive the signal with higher intensity than a microphone farther away. With multiple microphones, it is possible to infer the source location by comparing the signal intensity received at different microphones. Human's auditory system has used ILD cues to infer source direction~\cite{ild:2}, and this technique is most effective to localize high frequency sources, because they don't diffract effectively around the listener's head and produce a significant intensity difference.
 
-Let $s(t)$ denote the audio signal. The received signal $\bar s(t) $ at microphone $i$ can be modeled as:
+For a point sound source in a direct field, the signal intensity decays proportional to the square of the distance between the source and the microphone. Let $I_i$ denote the received signal intensity at microphone $i$: 
 \[
-\bar s_i(t) = \frac{s(t)}{d_i} + \delta_i(t)
+I_i \propto \frac{1}{d_i^2} I_s
 \]
-where $d_i$ is the distance between the audio source and microphone $i$, and $\delta_i(t)$ represents Gaussian noise.
-The energy received at microphone $i$ is:
+where $d_i$ is the distance between the audio source and microphone $i$, and $I_s$ is the sound intensity at the source.
+With two microphones, the signal intensity received at both microphones has to satisfy equation~\ref{eqn:ild1}:
 \begin{eqnarray}
-E_i & = & \int \bar s_i(t)^2 dt \\
-\label{eqn:ild1}
-& = & \frac{1}{d_i^2} E_s + E_{\sigma_i}
-\end{eqnarray}
-It shows that the energy decays with the square of the distance. With two microphones, not considering the noise $\delta_i(t)$, energy received at both microphones has to satisfy equation~\ref{eqn:ild1}:
-\begin{eqnarray}
-E_1d_1^2 &=& E_2d_2^2\\
+I_1d_1^2 &=& I_2d_2^2\\
 \label{eqn:ild}
-\frac{E_1}{E_2} &=& \frac{d_2^2}{d_1^2}
+\frac{I_1}{I_2} &=& \frac{d_2^2}{d_1^2}
 \end{eqnarray}
-It can be shown that, on a 2D plane, points satisfy equation~\ref{eqn:ild} form a circle when $E_1 \ne E_2$ and form a line when $E_1 = E_2$~\cite{ild:1}. With two microphones all points on this curve generate the same energy ratio and can not be distinguished from each other. Multiple approaches have been investigated to eliminate this ambiguity. \cite{ild:1} employed multiple microphones and used the intersection of circles from each microphone pair to estimate the source location. \cite{ild:2} combined ILD with Interaural Time Difference to estimate the source direction (i.e azimuth).
+It can be shown that, on a 2D plane, points satisfy equation~\ref{eqn:ild} form a circle when $I_1 \ne I_2$ and form a line when $I_1 = I_2$~\cite{ild:1}. With two microphones all points on this curve generate the same intensity ratio and can not be distinguished from each other. Multiple approaches have been investigated to eliminate this ambiguity. \cite{ild:1} employed multiple microphones and used the intersection of circles from each microphone pair to estimate the source location. \cite{ild:3} combined ILD with Interaural Time Difference (ITD) to estimate the source direction (i.e azimuth). Instead of solving the intersection of circles, \cite{ild:4} employed machine learning techniques to automatically learn the mapping from ILD and ITD features to location coordinate. It uses four microphones and requires a training phase, during which the sound source is manually placed at predetermined locations for the system to learn the parameters that map from feature space to the sound location.
 
-ILD approach relies on the accurate measurement of the received energy ratio between microphone pairs. Any obstacle object between the sound source and any microphone would produce a significant distortion in the measured energy ratio. We find this approach to be too restrictive for our system, since in an interactive system we can not control whether or not the user places any obstacle between the sound source and the microphones.
+ILD approach relies on the accurate measurement of the received intensity ratio between microphone pairs. Any obstacle object between the sound source and any microphone would produce a significant distortion in the measured intensity ratio. We find this approach to be too restrictive for our system, since in an interactive system we can not control whether or not the user places any obstacle between the sound source and the microphones.
 
 \section{LTM}
 In LTM based approaches, acoustic templates acquired from different locations are first stored in the system during a ``training'' phase. Localization can be performed by comparing the incoming waveform with the stored templates, and the location with the best matching template is chosen as the output. Different ways of extracting templates from raw acoustic source and different similarity measures have been investigated in the past. 
@@ -73,9 +67,13 @@ To see the reasoning behind different prefiltering approaches, we separate the m
 \begin{eqnarray}
 \label{eqn:phat1}
 R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) |X_1(\omega)||X_2(\omega)| e^{j(\omega\tau - (\angle{X_2(\omega)} - \angle{X_1(\omega)}) } d\omega\\
-&=& \int_{-\infty}^\infty \underbrace{W(w)|X_1(\omega)| |X_2(\omega)|}_{\mbox{weighting}} \underbrace{\cos(\omega\tau - (\angle X_2(\omega) - \angle X_1(\omega)))}_{\mbox{phase error}} d\omega
+&=& \int_{-\infty}^\infty \underbrace{W(w)|X_1(\omega)| |X_2(\omega)|}_{\mbox{weighting}} \cos(\Theta_\epsilon) d\omega
 \end{eqnarray}
-We can look at the real part of equation~\ref{eqn:phat1} only since both $x_1(t)$ and $x_2(t)$ are real valued signals. When $\dot \tau$ is the true arrival time difference between $x_1(t)$ and $x_2(t)$, $\omega \dot \tau - (\angle X_2(\omega) - \angle X_1(\omega)) = 0$, and $\cos(\omega \dot \tau - (\angle X_2(\omega) - \angle X_1(\omega))) = 1$. When $\dot \tau$ differs from the true arrival time difference, $\cos(\omega \dot \tau - (\angle X_2(\omega) - \angle X_1(\omega))) < 1$. Therefore, $\cos(\omega\tau - (\angle X_2(\omega) - \angle X_1(\omega)))$ can be seen as a measure of the phase error, and $W(w)|X_1(\omega)||X_2(\omega)|$ describes how the error should be weighted at each frequency. The TDOA estimator essentially sums the weighted phase error at each frequency. 
+Where $\Theta_{e}$ is the phase error:
+\[
+\Theta_\epsilon = \omega\tau - (\angle X_2(\omega) - \angle X_1(\omega))
+\]
+We can look at the real part of equation~\ref{eqn:phat1} only since both $x_1(t)$ and $x_2(t)$ are real valued signals. When $\dot \tau$ is the true arrival time difference between $x_1(t)$ and $x_2(t)$, phase error $\Theta_\epsilon  = 0$, and $\cos(\Theta_\epsilon) = 1$. When $\dot \tau$ differs from the true arrival time difference, $\cos(\Theta_\epsilon) < 1$. Therefore, $\cos(\Theta_\epsilon)$ can be seen as a measure of the phase error, and $W(w)|X_1(\omega)||X_2(\omega)|$ describes how the error should be weighted at each frequency. The TDOA estimator essentially sums the weighted phase error at each frequency. 
 
 Without any prefiltering (i.e $W(\omega)=1$), the estimator weighs the phase error at each frequency by the magnitude of the signal at that frequency. In this weighting scheme, phase error at frequencies with higher magnitudes are penalized more compared to frequencies with a lower magnitude. This weighting is appropriate if there is only one source present, since frequencies with higher magnitude have higher Signal to Noise Ratio (SNR). It makes sense to place higher weights at frequencies with higher SNR, since low SNR regions can be dominated by noise. 
 

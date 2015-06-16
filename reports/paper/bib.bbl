@@ -20,6 +20,9 @@ Blauert, Jens. ``Spatial hearing: the psychophysics of human sound localization,
 \bibitem{ild:3}
 Raspaud, Martin, Harald Viste, and Gianpaolo Evangelista, ``Binaural source localization by joint estimation of ILD and ITD,'' \emph{IEEE Transactions on Audio, Speech, and Language Processing}, 2010.
 
+\bibitem{ild:4}
+Guentchev, Kamen, and John Weng. ``Learning-based three dimensional sound localization using a compact non-coplanar array of microphones,'' \emph{Proc. AAAI Spring Symposium on Intelligent Environments}, 1998.
+
 \bibitem{extended:tusi}
 Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, ``Extended touch user interfaces,'' \emph{IEEE International Conference on  Multimedia and Expo (ICME)}, 2013. 
 
