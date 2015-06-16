@@ -37,14 +37,32 @@ TDOA approaches exploit the difference of arrival time between the acoustic sour
 
 In \cite{tdoa:ppp}, authors used eight microphones mounted on the corners of a ping pong table to localize points where the ball hits the table. They used a threshold to determine the arrival time of acoustic signal. This approach works well in noise free environment but the performance degrades with background noise. Their approach also suffers from dispersive deflections that arrive before the main wavefront of the acoustic signal. To make it more robust, authors in \cite{tdoa:mit3} and \cite{tdoa:mit4} extracted descriptive parameters for each significant peak(e.g., peak height, width, mean arrival time). The algorithm then used extracted parameters to predict arrival time with a second order polynomial, the parameters of which were fitted during calibration at fixed locations.
 
-Cross-correlation has also been used to measure signal arrival time differences\cite{tdoa:mit2, tdoa:micloc, tdoa:3}. Cross-correlation with prefiltering is known as \emph{generalized cross correlation (GCC)}. Different prefiltering approaches have been investigated to improve arrival time difference estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}.
+Cross-correlation has also been used to measure signal arrival time differences\cite{tdoa:mit2, tdoa:micloc, tdoa:3}. Cross correlation is a measure of similarity between two signals. For real valued signals $x_1(t)$, $x_2(t)$ a time shift $\tau$:
+\begin{eqnarray}\label{eqn:gcc0}
+\mbox{xcorr}_{x_1,x_2}(\tau) = \int_{-\infty}^{\infty} x_1(t) x_2(t+\tau)dt
+\end{eqnarray}
+We can take Fourier Transform on both sides of equation~\ref{eqn:gcc0}:
+\begin{eqnarray}\label{eqn:gcc1}
+\mathcal{F}\{\mbox{xcorr}_{x_1,x_2}(\tau)\} & = & X_1(\omega) X_2(-\omega)\\
+& =& X_1(\omega) X_2(\omega)^*
+\end{eqnarray}
+Where $X_1(\omega)$ and $X_2(\omega)$ are the Fourier Transforms of $x_1(t)$ and $x_2(t)$. We can retrieve the cross-correlation result in time domain by taking inverse Fourier transform:
+\begin{eqnarray}\label{eqn:gcc2}
+\mbox{xcorr}_{x_1,x_2}(\tau) = \int_{-\infty}^\infty X_1(\omega)X_2(\omega)^*e^{j\omega\tau} d\omega
+\end{eqnarray}
+The arrival time difference $t_0$ is the time shift $\tau$ that maximizes~\ref{eqn:gcc2}:
+\begin{eqnarray}\label{eqn:gcc3}
+t_0 = \arg\max_\tau\mbox{xcorr}_{x_1,x_2}(\tau) 
+\end{eqnarray}
 
-Under the GCC framework, the arrival time difference $t_0$ between two signals $x_1(t)$ and $x_2(t)$ can be estimated as:
+The benefits of calculating cross-correlation in the frequency domain as shown in equation~\ref{eqn:gcc2} are two folds. The first benefit is to speedup the calculation. Calculating cross-correlation using equation~\ref{eqn:gcc0} requires multiplying and summing the two signal vectors for each time shift $\tau$. With discrete signals of length $n$, it will take $O(n^2)$ number of calculations. Doing the same calculation in frequency domain, we need to transform the signal into frequency domain, multiple and sum the two transformed signal vectors once and then transform the result back to the time domain. Transforming a signal from time domain to frequency domain and back can be done efficiently with Fast Fourier Transform (FFT) and Inverse Fast Fourier Transform (IFFT), and the amount of calculation needed is $O(n\log n)$. Multiply and sum the transformed signal vectors takes another $O(n)$. Therefore, the total calculation required to calculate cross-correlation using Fourier transform is $O(n\log n)$, which is asymptotically faster than calculating in the time domain.
+
+The second benefit of formulating cross correlation in frequency domain is that it provides a unified framework to prefilter the signals. Cross-correlation with prefiltering is known as \emph{generalized cross correlation (GCC)}. Different prefiltering approaches have been investigated to improve arrival time difference estimation~\cite{tdoa:gcc1,tdoa:gcc2,tdoa:gcc3}. Under the GCC framework, the arrival time difference $t_0$ between two signals $x_1(t)$ and $x_2(t)$ is estimated as:
 \begin{eqnarray} \label{eq:gcc}
 t_0 &=& \arg\max_{\tau} R_{x_1x_2}(\tau) \\\label{eq:gcc2}
 R_{x_1x_2}(\tau) &=& \int_{-\infty}^\infty W(\omega) X_1(\omega) X_2^{*}(\omega) e^{j\omega\tau} d\omega
 \end{eqnarray}
-where $X_1(\omega)$ and $X_2(\omega)$ are Fourier Transforms of $x_1(t)$ and $x_2(t)$. $W(\omega)$ provides a way to prefilter signals passed to the cross correlation estimator. We focused on three ways of prefiltering the signal:
+$W(\omega)$ provides a way to prefilter signals passed to the cross correlation estimator. We focused on three ways of prefiltering the signal:
 \begin{description}%[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is unfiltered normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divided by its magnitude. Only phase information contributes to delay estimation.
