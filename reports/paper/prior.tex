@@ -1,7 +1,9 @@
 \chapter{Background}
+
+\section{Point localization}
 Acoustic localization has been researched extensively in the literature. Localization techniques can be broadly categorized into Interaural Level Difference (ILD), Location Template Matching (LTM), and Time Difference of Arrival (TDOA) based approaches.
 
-\section{ILD}
+\subsection{ILD}
 ILD techniques rely on the observation that signal intensity decays as the distance to the microphone increases. A microphone closer to the signal source would receive the signal with higher intensity than a microphone farther away. With multiple microphones, it is possible to infer the source location by comparing the signal intensity received at different microphones. Human's auditory system has used ILD cues to infer source direction~\cite{ild:2}, and this technique is most effective to localize high frequency sources, because they don't diffract effectively around the listener's head and produce a significant intensity difference.
 
 For a point sound source in a direct field, the signal intensity decays proportional to the square of the distance between the source and the microphone. Let $I_i$ denote the received signal intensity at microphone $i$: 
@@ -19,14 +21,14 @@ It can be shown that, on a 2D plane, points satisfy equation~\ref{eqn:ild} form 
 
 ILD approach relies on the accurate measurement of the received intensity ratio between microphone pairs. Any obstacle object between the sound source and any microphone would produce a significant distortion in the measured intensity ratio. We find this approach to be too restrictive for our system, since in an interactive system we can not control whether or not the user places any obstacle between the sound source and the microphones.
 
-\section{LTM}
+\subsection{LTM}
 In LTM based approaches, acoustic templates acquired from different locations are first stored in the system during a ``training'' phase. Localization can be performed by comparing the incoming waveform with the stored templates, and the location with the best matching template is chosen as the output. Authors in \cite{extended:tusi} has built a virtual piano keyboard application where different musical notes are associated with different locations on a surface. A user can then play by tapping at different locations on the surface. Different ways of extracting templates from raw acoustic source and different similarity measures have been investigated in the past. 
 
 \cite{extended:tusi} and \cite{ltm:pham} investigated using max value from cross-correlation as a similarity measure to localize user taps on interactive surfaces. \cite{ltm:lpc} used L2 distance in the Linear Predictive Coding coefficient space as a similarity measure to localize taps on surfaces. \cite{ltm:tusi2} further explored accuracy improvement by using multiple templates for each location and speed improvement by merging multiple templates into one representative template.
 
 The requirement of having a template for each location to be detected makes this approach too restrictive for our project, since we want the localization to be continuous in a 2D region. \cite{ltm:tusi2} has investigated contiguous localization by linearly extrapolating between stored locations, but result has high error.  Moreover, the need to recalibrate all locations during setup is too cumbersome for the end users in a portable system. Therefore, our main focus will be on TDOA based approaches.
 
-\section{TDOA}
+\subsection{TDOA}
 TDOA approaches exploit the difference of arrival time between the acoustic source and two fixed microphones on the plane. It can be easily shown that the acoustic sources with the same TDOA to two fixed microphones on the plane form a hyperbola. When you have more than two microphones, each pair would give a different hyperbola. The intersection of all the hyperbolas marks the source location. TDOA approaches rely on accurate estimates of arrival time differences between microphones. 
 
 In \cite{tdoa:ppp}, authors used eight microphones mounted on the corners of a ping pong table to localize points where the ball hits the table. They used a threshold to determine the arrival time of acoustic signal. This approach works well in noise free environment but the performance degrades with background noise. Their approach also suffers from dispersive deflections that arrive before the main wavefront of the acoustic signal. To make it more robust, authors in \cite{tdoa:mit3} and \cite{tdoa:mit4} extracted descriptive parameters for each significant peak(e.g., peak height, width, mean arrival time). The algorithm then used extracted parameters to predict arrival time with a second order polynomial, the parameters of which were fitted during calibration at fixed locations.  Authors in \cite{tdoa:mit5} have used similar techniques and built an interactive window by placing four microphones on four corners of a glass pane. The glass window was installed in shopping centers. A projector projects product information onto the glass where consumers can browse between pages by tapping on the window.
@@ -80,3 +82,10 @@ Without any prefiltering (i.e $W(\omega)=1$), the estimator weighs the phase err
 However, with multiple sources, the source with the highest magnitude will dominate the phase error estimation, but there is no particular reason to assign a higher weight to the source with the highest volume. All sources should contribute equally in the phase error estimation. In GCC\_PHAT,  $W(\omega)$ is set to $\frac{1}{|X_1(\omega)||X_2(\omega)|}$. In effect it ignores the signal magnitude and weighs phase errors uniformly across frequencies. Since the phase error at every frequency is weighted equally, this technique will suffer from error accumulation if the source has a lot of low power regions in the frequency domain. This weighting is also beneficial if the source signal is white noise, since white noise should contain all frequency components with equal magnitude.
 
 In GCC\_PHAT\_SQRT, $W(\omega)$ is set to $\frac{1}{(|X_1(\omega)||X_2(\omega)|)^{0.5}}$. Phase error weighting at each frequency still depends on the signal strength at that frequency, but the dependency is much weaker than that in unfiltered GCC. On the other hand, this weighting scheme doesn't go to the other extreme of completely ignoring signal strength information as does in GCC\_PHAT. This approach represents a balance between unfilterred GCC and GCC\_PHAT.
+
+\section{Movement Tracking}
+a
+\subsection{Averaging filtering}
+a
+\subsection{Kalman filtering}
+a
