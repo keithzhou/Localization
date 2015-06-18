@@ -38,8 +38,13 @@ Chowdhury, Tusi. ``Single Microphone Tap Localization,'' \emph{University of Tor
 \bibitem{tdoa:ppp}
 Ishii, Hiroshi, et al. ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
 
+\bibitem{tdoa:mit5}
+Paradiso, Joseph A., et al. ``Passive acoustic knock tracking for interactive windows,'' \emph{CHI'02 Extended Abstracts on Human Factors in Computing Systems. ACM,} 2002.
+APA 
+
 \bibitem{tdoa:mit2}
 Paradiso, Joseph A., et al. ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
+
 
 \bibitem{tdoa:micloc}
 MicLoc, URL: http://ruralhacker.blogspot.ca/p/micloc.html
