@@ -35,6 +35,18 @@ XueXin Yap, Khong, A.W.H., and Woon-Seng Gan, ``Localization of acoustic source 
 \bibitem{ltm:tusi2}
 Chowdhury, Tusi. ``Single Microphone Tap Localization,'' \emph{University of Toronto}, 2013.
 
+\bibitem{kalman:1}
+Roger R Labbe Jr, ``Kalman and Bayesian Filters in Python'', book, 2015.
+
+\bibitem{kalman:2}
+Kleeman, Lindsay. ``Understanding and applying Kalman filtering,'' \emph{Proceedings of the Second Workshop on Perceptive Systems, Curtin University of Technology, Perth Western Australia (25-26 January 1996)}, 1996.
+
+\bibitem{kalman:3}
+G. Welch and G. Bishop, ``An introduction to the Kalman filter,'' \emph{Dept.  Comput. Sci., Univ. North Carolina, Chapel Hill, Tech. Rep. TR95041}, 2000
+
+\bibitem{kalman:4}
+Negenborn, Rudy. ``Robot localization and Kalman filters,'' \emph{Diss. Utrecht University}, 2003.
+
 \bibitem{tdoa:ppp}
 Ishii, Hiroshi, et al. ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
 
