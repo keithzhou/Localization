@@ -106,6 +106,26 @@ By controlling the impulse response $b_i$, we specify how the past few data shou
 
 When $b_i=\frac{1}{N+1}$, each of the previous $N+1$ localization estimate contributes equally to the output. In this case, the filter becomes a simple averaging filter (also called rolling mean). If the source does not move during the past $N+1$ estimates, and assuming each estimate is an independent estimate of the true location with an additive Gaussian noise. Then it can be shown that the output after filter is an unbiased estimation of the true source location. However, if the source has moved during the past $N+1$ estimates, the filter would output the mean location for the past $N+1$ estimated locations, which results in a ``lagging'' effect between the true source location and the system output. After the stopped moving, the filter output catches up with the source location. 
 
-To reduce the ``lagging'' effect ehxibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location. However, if the localization system 
+To reduce the ``lagging'' effect ehxibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location, which makes the filtered out tracks more closely with the sound source. However, if the localization system is noisy with large estimation variance, then the error in the most recent estimate dominates the filtered output and might produces a large error.
+
+As a compromise between balancing the tradeoff between ``lagging'' problem from assigning equal weights to all estimates in the window and the error problem with assigning more weights. We will aim to design the system so that it produces estimates at a fast rate, so that the source would not move a large distance and it is safe to average the past a few estimates.
 
 \subsection{Kalman filter}
+The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statitical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
+
+The Kalman filter update equations are:
+\begin{eqnarray}
+\hat{x}_k^- & = & A\hat{x}_{k-1} + Bu_k\\
+P_k^- & = & AP_{k-1}A^T + Q\\
+K_k & = & P_k^- H^T(HP_k^-H^T+R)^{-1}\\
+\hat{x}_k & = & \hat{x}_k^- + K_k(z_k-H\hat{x}_k^-) \\
+P_k & = & (1-K_kH)P_k^-
+\end{eqnarray}
+where:
+\begin{itemize}
+\item $\hat{x}_k^-$ is
+\item $P_k^-$ is
+\item $K_k$ is
+\item $hat{x}_k$ is
+\item $P_k$ is
+\end{itemize}
