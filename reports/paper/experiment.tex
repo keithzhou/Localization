@@ -76,7 +76,7 @@ For each experiment conducted, two different movement filters were evaluated:
 \item[Kalman filter] A 2nd order Kalman filter was used.
 \end{description}
 
-In the movement tracking experiments described above, we have the ground truth location of the circle, but not the exact location of the audio source at each moment during the movement. Therefore, the error is reported as the distance between the localized point to its closest point on the ground truth circle.
+In the movement tracking experiments described above, we know the ground truth location of the circle, but not the exact location of the audio source at each moment during the movement. Therefore, the error is reported as the distance between the localized point to its closest point on the ground truth circle.
 \clearpage
 
 \section{Results}
@@ -87,7 +87,7 @@ In the movement tracking experiments described above, we have the ground truth l
 \caption{Localization error versus window size}
 \label{fig:accuracy_vs_window}
 \end{figure}
-To test how accuracy varies with window size, the algorithm is fed with microphone data of different lengths, and the result is shown in fig~\ref{fig:accuracy_vs_window}. The error decreases as window size increases and plateaus after the window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters, which occurred when the window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation. The performance differences among GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is small.
+To test how accuracy varies with window size, the algorithm is fed with microphone data of different lengths, and the result is shown in fig~\ref{fig:accuracy_vs_window}. The error decreases as window size increases and plateaus after the window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters, which occurred when the window size is set to 12 millisecond and when GCC\_PHAT is used for TDOA estimation. The performance differences among GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is small.
 
 \begin{figure}[h!]
 \centering
@@ -137,7 +137,7 @@ Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with 
 \label{fig:circle_wnn}
 \end{figure*}
 
-Fig~\ref{fig:circle_wnn} shows the result when white noise is used as the sound source and the source is rotated at $10$ cm per second. The top right plot in this figures shows the raw detection output with the ground truth circle overlayed on top. It shows that the array's raw output matches the underneath ground truth circle reasonably well. The average error between the localization output with its closest point on the ground truth circle is $0.9$ cm. The top left plot in the figure shows the average error with different movement filters applied as a function of window size. The error decreases as window size increases until the window size exceeds around $10$ ms. When the window size is $12$ cm, the localization accuracy is similar among raw output, Kalman filtering output and averaging filtering output. The bottom left plot shows the tracked movement for averaging filter and the bottom right filter shows the tracked movement for Kalman filtering. Kalman filtering result is smoother while the averaging tracking stays closer to the ground truth circle. Compared to the experiment in fig~\ref{fig:circle_wnf}, where the same sound source is played but rotated at a faster linear speed of $20$ cm per second, we find that the performance is good well between these two movement speeds.
+Fig~\ref{fig:circle_wnn} shows the result when white noise is used as the sound source and the source is rotated at $10$ cm per second. The top right plot in this figures shows the raw detection output with the ground truth circle overlayed on top. It shows that the array's raw output matches the underneath ground truth circle reasonably well. The average error between the localization output with its closest point on the ground truth circle is $0.9$ cm. The top left plot in the figure shows the average error with different movement filters applied as a function of window size. The error decreases as window size increases until the window size exceeds around $10$ ms. When the window size is $12$ cm, the localization accuracy is similar among raw output, Kalman filtering output and averaging filtering output. The bottom left plot shows the tracked movement for averaging filter and the bottom right filter shows the tracked movement for Kalman filtering. Kalman filtering result is smoother while the averaging tracking stays closer to the ground truth circle. Compared to the experiment in fig~\ref{fig:circle_wnf}, where the same sound source is played but rotated at a faster linear speed of $20$ cm per second, we find that the performance is equally good between these two movement speeds.
 
 \begin{figure*}[h!]
 \centering
@@ -146,7 +146,7 @@ Fig~\ref{fig:circle_wnn} shows the result when white noise is used as the sound 
 \label{fig:circle_musican}
 \end{figure*}
 
-Fig~\ref{fig:circle_musican} shows the result when Music A is used as the sound source.  The top right plot shows that the array still tracks the movement well, but has a slightly larger deviation compared to that in fig~\ref{fig:circle_wnn}. The average localization error for Music A is $1.289$ cm. From the top left plot, it can be seen that the error still decreases with the window size. The performance improvement from raw output to Kalman filtering output is bigger than that with white noise (top left plot of fig~\ref{fig:circle_wnn}). Averaging filtering still produces lowest average error. Fig~\ref{fig:circle_musicaf} shows the result for the same sound source moved at twice the speed ($20$ cm per second). The average localization error at the faster speed is $1.291$ cm. Compared to the experiment where the same sound source is placed but with a faster movement speed (fig~\ref{fig:circle_musicaf}, we found that the performance does not degrade as the movement speed increases from $10$ cm per second to $20$ cm per second. 
+Fig~\ref{fig:circle_musican} shows the result when Music A is used as the sound source.  The top right plot shows that the array still tracks the movement well, but has a slightly larger deviation compared to that in fig~\ref{fig:circle_wnn} when white noise was used. The average localization error for Music A is $1.289$ cm. From the top left plot, it can be seen that the error still decreases with the window size. The performance improvement from raw output to Kalman filtering output is bigger than that with white noise (top left plot of fig~\ref{fig:circle_wnn}). Averaging filtering still produces lowest average error. Fig~\ref{fig:circle_musicaf} shows the result for the same sound source moved at twice the speed ($20$ cm per second). The average localization error at the faster speed is $1.291$ cm. Comparing the two experiments where music A was used as the sound source but with different movement speed, we find that the performance does not degrade as the movement speed increases from $10$ cm per second to $20$ cm per second. 
 
 \begin{figure*}[h!]
 \centering
@@ -155,7 +155,7 @@ Fig~\ref{fig:circle_musican} shows the result when Music A is used as the sound 
 \label{fig:circle_musicbn}
 \end{figure*}
 
-Fig~\ref{fig:circle_musicbn} shows the result when Music B is used as the sound source.  The low amplitude intervals in Music B affects the performance significantly. The average localization error is $2.9$ cm. The ``blank'' regions in the music can also be visually seen from the top right plot. The top left plot shows that the Kalman filtering still performs better than raw output. The performance improvement of Kalman filtering is similar to that with Music A. Averaging filtering produces lowest average error. Compared to the faster movement experiment of the same sound source (shown in fig~\ref{fig:circle_musicbf}), we find that the localization error is similar between these two movement speeds.
+Fig~\ref{fig:circle_musicbn} shows the result when Music B is used as the sound source.  The low amplitude intervals in Music B affects the performance significantly. The average localization error is $2.9$ cm. The ``blank'' regions in the music can also be visually seen from the top right plot. The top left plot shows that the Kalman filtering still performs better than raw output. The performance improvement of Kalman filtering is similar to that with Music A. Averaging filtering produces lowest average error. Comparing to the faster movement experiment of the same sound source (shown in fig~\ref{fig:circle_musicbf}), we find that the localization error is similar between these two movement speeds.
 
 \begin{figure*}[h!]
 \centering
@@ -180,11 +180,11 @@ Fig~\ref{fig:circle_musicbn} shows the result when Music B is used as the sound 
 
 \subsection{Discussion}
 
-Different prefiltering options produce very similar result. GCC\_PHAT gives slightly better accuracy, but the different among unfiltered GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is very small.
+Different prefiltering options produce very similar result. GCC\_PHAT gives slightly better accuracy, but the difference among unfiltered GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is very small.
 
-By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}) fast speed, we found that the localization error does increase when the movement speed increased from $10$ cm per second to $20$ cm per second.
+By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}), we find that the localization error does not increase when the movement speed increased from $10$ cm per second to $20$ cm per second.
 
-When white noise is used as the audio source, Kalman filtering and raw localization produces very similar accuracy, and averaging filter gives slightly better accuracy. However, when the audio source is Music A or Music B, Kalman filtering produces better accuracy compared to raw detection, but Averaging filter still gives the best result. In terms of smoothness between movement filters, it can be seen that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past $0.5$ seconds, which makes the filtered output lag the real movement.
+When white noise is used as the audio source, Kalman filtering and raw localization produces very similar accuracy, and averaging filter gives slightly higher accuracy. However, when the audio source is changed to Music A or Music B, Kalman filtering produces better accuracy compared to raw detection, but Averaging filter still gives the best result. Looking at the smoothness of the movement path after applying different movement filters, it can be seen that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past $0.5$ seconds, which makes the filtered output lag the real movement.
 
 \begin{figure}[h!]
   \centering
@@ -217,5 +217,5 @@ When white noise is used as the audio source, Kalman filtering and raw localizat
   \label{fig:show_case}
 \end{figure}
 
-In figure~\ref{fig:show_case}, a few examples of drawing letters with music are presented. Green dots on the plots represent the raw localization output and the red line shows the movement output with averaging filtering (window size of $0.5$ seconds is used). The demonstrated letters are drawn with free hand, without a track guiding the movement. The accuracy is reasonably good, and each letter can be easily recognized. There is a bit of jiggling in the tracked movement. Part of the jiggling comes from the system, and the rest comes from the hand movement. 
+In figure~\ref{fig:show_case}, a few examples of drawing letters with music are presented. Green dots on the plots represent the raw localization output and the red line shows the movement output with averaging filtering (window size of $0.5$ seconds is used). The demonstrated letters are drawn with free hand, without a track guiding the movement. The accuracy is reasonably good, and each letter can be easily recognized. There is a bit of jiggling in the tracked movement. Part of the jiggling can be attributed to the noise from system output, and the rest comes from the hand movement. 
 
