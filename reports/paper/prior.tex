@@ -84,8 +84,28 @@ However, with multiple sources, the source with the highest magnitude will domin
 In GCC\_PHAT\_SQRT, $W(\omega)$ is set to $\frac{1}{(|X_1(\omega)||X_2(\omega)|)^{0.5}}$. Phase error weighting at each frequency still depends on the signal strength at that frequency, but the dependency is much weaker than that in unfiltered GCC. On the other hand, this weighting scheme doesn't go to the other extreme of completely ignoring signal strength information as does in GCC\_PHAT. This approach represents a balance between unfilterred GCC and GCC\_PHAT.
 
 \section{Movement Tracking}
-a
-\subsection{Averaging filtering}
-a
-\subsection{Kalman filtering}
-a
+In the previous section, we discussed various ways of localizing acoustic source. For each received microphone data, the algorithm produces a point estimate of the source location. If we have multiple estimates of the source location, they can be intelligently combined to make better location prediction. 
+
+In this section we describe two ways of combining past estimates to produce better estimates: Finite impulse response (FIR) filter and Kalman filter.
+
+\subsection{FIR filter}
+The impulse response is of finite duration for FIR filters. In our system, we only have access to location estimates from the past, we look at a special category of FIR filters: causal discrete-time FIR filters. In such systems, the output $y[n]$ is a linear weighted combination of past $N+1$ estimates from input $x[n]$:
+\begin{eqnarray}
+y[n] & = & b_0x[n] + b_1x[n-1] + \cdots + b_Nx[n-N]\\
+& = & \sum_{i=0}^N b_i x[n-i]\\
+\end{eqnarray}
+where
+\begin{itemize}
+\item $y[n]$ is the output sequence
+\item $x[n]$ is the input sequence
+\item $N$ is the filter order
+\item $b_i$ is the impulse response
+\end{itemize}
+
+By controlling the impulse response $b_i$, we specify how the past few data should be blended to produce the output. 
+
+When $b_i=\frac{1}{N+1}$, each of the previous $N+1$ localization estimate contributes equally to the output. In this case, the filter becomes a simple averaging filter (also called rolling mean). If the source does not move during the past $N+1$ estimates, and assuming each estimate is an independent estimate of the true location with an additive Gaussian noise. Then it can be shown that the output after filter is an unbiased estimation of the true source location. However, if the source has moved during the past $N+1$ estimates, the filter would output the mean location for the past $N+1$ estimated locations, which results in a ``lagging'' effect between the true source location and the system output. After the stopped moving, the filter output catches up with the source location. 
+
+To reduce the ``lagging'' effect ehxibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location. However, if the localization system 
+
+\subsection{Kalman filter}
