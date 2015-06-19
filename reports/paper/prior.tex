@@ -113,19 +113,20 @@ As a compromise between balancing the tradeoff between ``lagging'' problem from 
 \subsection{Kalman filter}
 The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statitical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
 
-The Kalman filter update equations are:
+The Kalman filter has a prdict step:
 \begin{eqnarray}
-\hat{x}_k^- & = & A\hat{x}_{k-1} + Bu_k\\
-P_k^- & = & AP_{k-1}A^T + Q\\
-K_k & = & P_k^- H^T(HP_k^-H^T+R)^{-1}\\
-\hat{x}_k & = & \hat{x}_k^- + K_k(z_k-H\hat{x}_k^-) \\
-P_k & = & (1-K_kH)P_k^-
+\hat{x}_{k+1}^- & = &F_k \hat{x}_k + B_ku_k\\
+P_{k+1}^- & = & F_kP_kF_k^T + Q_k\\
+\end{eqnarray}
+and an update step:
+\begin{eqnarray}
+y_k & = & z_k - H_k\hat{x}_k^-\\
+S_k & = & H_kP_k^-H_k^T + R_k \\
+K_k & = & P_k^-H_k^TS_k^{-1}\\
+\hat{x}_k & = & \hat{x}_k^- + K_ky\\
+P_k & = & (I-K_kH_k)P_k^-\\
 \end{eqnarray}
 where:
 \begin{itemize}
-\item $\hat{x}_k^-$ is
-\item $P_k^-$ is
-\item $K_k$ is
-\item $hat{x}_k$ is
-\item $P_k$ is
+\item asd
 \end{itemize}
