@@ -111,7 +111,7 @@ To reduce the ``lagging'' effect ehxibited by the averaging filter, we can assig
 As a compromise between balancing the tradeoff between ``lagging'' problem from assigning equal weights to all estimates in the window and the error problem with assigning more weights. We will aim to design the system so that it produces estimates at a fast rate, so that the source would not move a large distance and it is safe to average the past a few estimates.
 
 \subsection{Kalman filter}
-The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statitical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
+The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only the first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statitical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
 
 The Kalman filter has a prdict step:
 \begin{eqnarray}
@@ -135,5 +135,5 @@ where:
 \item $y$ is the residue in the measurement sapce. 
 \item $H$ is the measurement function that transforms from state space to measurement space.
 \item $R$ is the measurement noise matrix that models sensor noise as a covariance matrix
-\item $Q$ is the unmodeled noise in the process.
+\item $Q$ modeles the process noise
 \end{itemize}
