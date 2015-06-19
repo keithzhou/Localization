@@ -113,7 +113,17 @@ As a compromise between balancing the tradeoff between ``lagging'' problem from 
 \subsection{Kalman filter}
 The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only the first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statitical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
 
-The Kalman filter has a prdict step:
+Kalman filter use observed variables to infer hidden variables and use that to help predict the next state. In our system, observed variables are the $x$ and $y$ coordinates of the system, and we also model unobserved motion variables velocity $v_x, v_y$ and acceleration variables $a_x, a_y$. Then the state variables we are tracking ca be represented as:
+\[
+\left[\begin{array}{c}
+x\\
+y\\
+a_x\\
+a_y\\
+\end{array}\right]
+\]
+
+ The Kalman filter has a prdict step:
 \begin{eqnarray}
 \hat{x}_{k+1}^- & = &F_k \hat{x}_k + B_ku_k\\
 P_{k+1}^- & = & F_kP_kF_k^T + Q_k\\
@@ -135,5 +145,7 @@ where:
 \item $y$ is the residue in the measurement sapce. 
 \item $H$ is the measurement function that transforms from state space to measurement space.
 \item $R$ is the measurement noise matrix that models sensor noise as a covariance matrix
-\item $Q$ modeles the process noise
+\item $Q$ models the process noise
 \end{itemize}
+
+In our system, 
