@@ -128,5 +128,12 @@ P_k & = & (I-K_kH_k)P_k^-\\
 \end{eqnarray}
 where:
 \begin{itemize}
-\item asd
+\item $x$ is the state variable
+\item $P$ is the covariance on the state variable $x$
+\item $F_k \hat{x}_k + B_k u_k$ describes the station transition form time $k$ to $k+1$. The Kalman filter is a general framework which allows not only tracking but also controlling the object. I these situations $u_k$ is the control input and $B$ describes the control input model. For our application, we are only tracking and not controlling the movement, $B_ku_k = 0$.
+\item $z$ is the measurement.
+\item $y$ is the residue in the measurement sapce. 
+\item $H$ is the measurement function that transforms from state space to measurement space.
+\item $R$ is the measurement noise matrix that models sensor noise as a covariance matrix
+\item $Q$ is the unmodeled noise in the process.
 \end{itemize}
