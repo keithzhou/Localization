@@ -1,12 +1,17 @@
 \chapter{Experiment}
-\section{Setup}
+\section{System}
 \input{./system}
+\clearpage
 
-We conducted two sets of experiments to evaluate the system's localization accuracy: one on point localization and the other on movement tracking. 
+\section{Setup}
+
+We conducted two sets of experiments to evaluate the system's localization accuracy: one on point localization and the other on movement tracking. For the point localization experiment we looked into using different window size of audio signals and different prefiltering methods. The size of the window limits how far apart the microphone arrays can be. If the time delay from one microphone array to another exceeds the size of the window, the location of the source can never be estimated. A large window size gives a more complete acoustic signal which makes cross-correlation less prone to noise. However, the larger the window size the more time it takes to compute the cross-correlation. This is a trade off that we will address.  
+
+For the movement tracking experiment, on top of the varying window size, we also looked into varying the movement speed of the audio source, applying different movement filters, and using different types of audio source. By applying an increasing movement speed of the audio source, we can test how fast the system can track an audible object moving in real time. We experimented with two types of music as our audio source for movement tracking, one with no low volume throughout, and the other with intermittent low or no volume. We want to test how the system performs when the audio source isn't continuously outputting sound. Furthermore, we applied different movement filters to help reduce noise and smooth out the path of the moving audio source.  
 
 \subsection{Point localization}
 
-\begin{figure}[]
+\begin{figure}[h!]
   \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{setup_1.JPG}
@@ -23,6 +28,20 @@ We conducted two sets of experiments to evaluate the system's localization accur
 An one meter by one meter grid was set up where the arrays were placed at the top left and top right corners of the grid. Fig~\ref{fig:setup_point} shows a picture of the setup. A total of $32$ testing locations were chosen uniformly in this grid. Testing is done by placing the audio source at each grid location, and turning on the audio source with white noise. We reported the error as the average distance between our placement of the audio source and the location estimated from the arrays.
 
 \subsection{Movement tracking}
+
+\begin{figure}[h!]
+  \centering
+%  \begin{subfigure}[]{.2\textwidth}
+%    \includegraphics[width=\textwidth]{setup_ring.JPG}
+%  \end{subfigure}
+  \begin{subfigure}[]{1.0\textwidth}
+    \includegraphics[width=\textwidth]{setup_rotating_disk.JPG}
+  \end{subfigure}
+  \caption{Setup for movement tracking evaluation}
+  \label{fig:setup_circle}
+\end{figure}
+
+
 To test how well the system tracks movement, we mounted a rotating disk $40$ centimeters in diameter onto the grid at $(x=0$ cm$, y=-30$ cm$)$. Fig~\ref{fig:setup_circle} shows a picture of the setup. A sound source is placed on the edge of the rotating disk and the arrays track the sound source as it rotates in a circle. In this experiment we used GCC\_PHAT as the prefiltering for cross-correlation because in the point localization experiment we found out GCC\_PHAT gives the best result. In this experiment, we evaluated how accuracy changes with:
 \begin{itemize}
 \item window sizes 
@@ -45,6 +64,7 @@ To test how different sound sources impact localization quality, we conducted th
 \end{description} 
 
 To test how the movement speed of sound source affects localization quality, each experiment was conducted at two different speeds:
+
 \begin{description}
 \item[Normal] An angular speed of $0.5$ rad/s was maintained, which translates to a linear speed of $10$ cm/s.
 \item[Fast] An angular speed of $1.0$ rad/s was maintained, which translates to a linear speed of $20$ cm/s.
@@ -57,115 +77,101 @@ For each experiment conducted, two different movement filters were evaluated:
 \end{description}
 
 In the movement tracking experiments described above, we have the ground truth location of the circle, but not the exact location of the audio source at each moment during the movement. Therefore, the error is reported as the distance between the localized point to its closest point on the ground truth circle.
+\clearpage
 
 \section{Results}
 \subsection{Point localization}
-To test how accuracy varies with window size, the algorithm is fed with microphone data of different lengths, and the result is shown in fig~\ref{fig:accuracy_vs_window}. The error decreases as window size increases and plateaus after the window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters, which occurred when the window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation. The performance differences among GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is small.
-
-Although accuracy improves with the window size, computation time also increases with it. The part of calculation that depends on the window size is using cross correlation for TDOA estimation. Cross correlation can be calculated with Fast Fourier Transform (FFT) and the runtime is of order $O(N\log N)$. We measured how the computation time varied with window size and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
-
-We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacement because the error is fairly low and consistent around that spike.
-
-To test the limit of the system and to evaluate the accuracy when the source moves outside of the one meter by one meter region, we measured the localization error by placing the source at $10$ locations along $y$ axis ranging from $(0$ cm$, -10$ cm$)$ to $(0$ cm$, -200$ cm$)$. The result is presented in fig~\ref{fig:error_along_y}. The localization error is within $3$ cm when the source is within $100$ cm from the arrays. The error increases to about $5$ cm when the source distance increases to $150$ cm and the error exceeds $10$ cm after the source distance reaches $200$ cm.
-
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{average_error_window_size.eps}
 \caption{Localization error versus window size}
 \label{fig:accuracy_vs_window}
 \end{figure}
+To test how accuracy varies with window size, the algorithm is fed with microphone data of different lengths, and the result is shown in fig~\ref{fig:accuracy_vs_window}. The error decreases as window size increases and plateaus after the window size exceeds around $10$ millisecond. The lowest error achieved is $2.53$ centimeters, which occurred when the window size is set to 12 millisecond and GCC\_PHAT is used for TDOA estimation. The performance differences among GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is small.
 
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{calculation_time.eps}
 \caption{Computation time versus window size}
 \label{fig:speed_vs_window}
 \end{figure}
+As was mentioned before, although accuracy improves with the window size, computation time also increases with it. The part of calculation that depends on the window size is using cross correlation for TDOA estimation. Cross correlation can be calculated with Fast Fourier Transform (FFT) and the runtime is of order $O(N\log N)$. We measured how the computation time varied with window size and Figure~\ref{fig:speed_vs_window} shows the result. The runtime increases approximately linearly in the window size region of interest.
 
-
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{error_distribution.eps}
 \caption{error distribution in the grid. Arrays are placed at $(-0.5$ m$, 0$ m$)$ and $(0.5$ m$, 0$ m$)$}
 \label{fig:error_distribution}
 \end{figure}
+We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacement because the error is fairly low and consistent around that spike.
 
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{error_along_y_axis.eps}
 \caption{Localization error as the distance between the source and the microphone arrays increases. The source is placed on the $y$ axis.}
 \label{fig:error_along_y}
 \end{figure}
+To test the limit of the system and to evaluate the accuracy when the source moves outside of the one meter by one meter region, we measured the localization error by placing the source at $10$ locations along $y$ axis ranging from $(0$ cm$, -10$ cm$)$ to $(0$ cm$, -200$ cm$)$. The result is presented in fig~\ref{fig:error_along_y}. The localization error is within $3$ cm when the source is within $100$ cm from the arrays. The error increases to about $5$ cm when the source distance increases to $150$ cm and the error exceeds $10$ cm after the source distance reaches $200$ cm.
 
-
-\begin{figure}[]
-  \centering
-%  \begin{subfigure}[]{.2\textwidth}
-%    \includegraphics[width=\textwidth]{setup_ring.JPG}
-%  \end{subfigure}
-  \begin{subfigure}[]{1.0\textwidth}
-    \includegraphics[width=\textwidth]{setup_rotating_disk.JPG}
-  \end{subfigure}
-  \caption{Setup for movement tracking evaluation}
-  \label{fig:setup_circle}
-\end{figure}
-
-
-\begin{figure*}[]
+\clearpage
+\subsection{Movement tracking}
+\begin{figure*}[h!]
 \centering
   \includegraphics[width=\textwidth]{trace_window_size_movement.eps}
 \caption{Localization quality versus window size}\label{fig:wn}
 \label{fig:trace_win_circle}
 \end{figure*}
 
-\begin{figure}[]
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{error_window_size_movement.eps}
 \caption{Localization error versus window size}
 \label{fig:err_win_circle}
 \end{figure}
-
-
-\subsection{Movement tracking}
-
 Fig~\ref{fig:wn} gives an intuitive representation of how accuracy changes with window size. When window size is small ($1.02$ millisecond), the audio does not contain enough information to reliably estimate TDOA, which results in noisy localization. As window size increases, the TDOA estimation becomes more accurate and the localization converges to the shape of the ground truth circle. Fig~\ref{fig:err_win_circle} shows how the error changes with window size. The general trend is similar to that in point localization case. Error decreases as the window size increases and plateaus after it exceeds around $10$ milliseconds.
 
-\begin{figure*}[]
+\begin{figure*}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{trace_output_circle_wnn.eps}
 \caption{white noise ($10$ cm per second)}
 \label{fig:circle_wnn}
 \end{figure*}
 
-\begin{figure*}[]
+Fig~\ref{fig:circle_wnn} shows the result when white noise is used as the sound source and the source is rotated at $10$ cm per second. The top right plot in this figures shows the raw detection output with the ground truth circle overlayed on top. It shows that the array's raw output matches the underneath ground truth circle reasonably well. The average error between the localization output with its closest point on the ground truth circle is $0.9$ cm. The top left plot in the figure shows the average error with different movement filters applied as a function of window size. The error decreases as window size increases and until the window size exceeds around $10$ ms. When the window size is $12$ cm, the localization accuracy is similar among raw output, Kalman filtering and averaging filtering. The bottom left plot shows the tracked movement for Averaging filter and the bottom right filter shows the tracked movement for Kalman filtering. Kalman filtering result is smoother while the averaging tracking stays closer to the ground truth circle. Compared to the experiment in fig~\ref{fig:circle_wnf}, where the same sound source is played but at a faster rotating speed of $20$ cm per second, we find that the performance is equally well between these two movement speeds.
+
+\begin{figure*}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{trace_output_circle_man.eps}
 \caption{music A ($10$ cm per second)}
 \label{fig:circle_musican}
 \end{figure*}
 
-\begin{figure*}[]
+Fig~\ref{fig:circle_man} shows the result when Music A is used as the sound source.  The top right plot shows that the array still tracks the movement well, but has a slightly larger deviation compared to that in fig~\ref{fig:circle_wnn}. The average localization error for Music A is $1.289$ cm. From the top left plot, it can be seen that the error still decreases with the window size. The performance improvement from raw output to Kalman filtering output is bigger than that with white noise (top left plot of fig~\ref{circle_wnn}). Averaging filtering still produces lowest average error. Fig~\ref{fig:circle_maf} shows the result for the same sound source moved at twice the speed ($20$ cm per second). The average localization error at the faster speed is $1.291$ cm. Compared to the experiment where the same sound source is placed but with a faster movement speed (fig~\ref{fig:circle_maf}, we found that the performance does not degrade as the movement speed increases from $10$ cm per second to $20$ cm per second. 
+
+\begin{figure*}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{trace_output_circle_mbn.eps}
 \caption{music B ($10$ cm per second)}
 \label{fig:circle_musicbn}
 \end{figure*}
 
-\begin{figure*}[]
+Fig~\ref{fig:circle_mbn} shows the result when Music B is used as the sound source.  The low amplitude intervals in Music B affects the performance significantly. The average localization error is $2.9$. The ``blank'' regions in the music can also be visually seen from the top right plot. The top left plot shows that the Kalman filtering still performs better than of the white noise, and behaves similar to the case with Music A. Averaging filtering produces lowest average error. Compared to the faster movement experiment of the same sound source, we find that the localization error is similar between these two movement speeds.
+
+\begin{figure*}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{trace_output_circle_wnf.eps}
 \caption{white noise ($20$ cm per second)}
 \label{fig:circle_wnf}
 \end{figure*}
 
-\begin{figure*}[]
+\begin{figure*}[h!]
 \centering
   \includegraphics[width=1.0\textwidth]{trace_output_circle_maf.eps}
   \caption{music A ($20$ cm per second)}
   \label{fig:circle_musicaf}
 \end{figure*}
 
-\begin{figure*}[]
+\begin{figure*}[h!]
 \centering
   \includegraphics[width=1.0\textwidth]{trace_output_circle_mbf.eps}
   \caption{music B ($20$ cm per second)}
@@ -176,4 +182,5 @@ Fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn} shows results for experimen
 
 For normal speed movement tracking, localization error is $0.9$ cm for white noise (Fig~\ref{fig:circle_wnn}), $1.29$ cm for Music A (Fig~\ref{fig:circle_musican}), and $2.9$ cm for Music B (Fig~\ref{fig:circle_musicbn}). Localization accuracy is the best for white noise source, and worst for Music B. This is consistent with our expectation because low amplitude regions in Music B would cause arrays to lose track of where the source is. This can also be seen from the ``blank'' regions in fig~\ref{fig:circle_musicbn}. 
 
+\subsection{Discussion}
 It also shows that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past 0.5 seconds, which makes the filtered output lag the real movement.
