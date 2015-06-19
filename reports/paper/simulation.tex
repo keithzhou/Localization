@@ -111,7 +111,7 @@ Each microphone pair generates a hyperbolic region, and the source location is i
 
 \begin{figure}[h!]
   \includegraphics[width=\textwidth]{sim/result_intersection_area_at_each_point_3_line}
-  \caption{$3$ microphones are placed in a line, $10$ cm apart from each other. The average error is $55.05$ cm}
+  \caption{Error heatmap for different array configurations. The heatmap scale is the intersection area measured in $cm^2$. $3$ microphones are placed in a line, $10$ cm apart from each other. The average error is $55.05$ cm}
   \label{fig:sim_hm_3_line}
 \end{figure}
 
@@ -132,6 +132,7 @@ In fig~\ref{fig:sim_hm_3_line}, we experimented with an extreme arrangement wher
     \caption{$3$ microphones are placed at vertices of a $40$cm equilateral triangle. The average error is $10.04$ cm}
     \label{fig:sim_hm_3_2x}
   \end{subfigure}
+  \caption{Error heatmap for different array configurations. The heatmap scale is the intersection area measured in $cm^2$}.
 \end{figure*}
 
 Fig~\ref{fig:sim_hm_3} shows the accuracy when microphones are placed at the three vertices of a $20$ cm equilateral triangle. The region inside the array has good accuracy. However, for regions along the line connecting any two microphones, the accuracy drops significantly. The average distance error across the region is $18.6$ cm.
@@ -158,10 +159,9 @@ To evaluate the array size's impact on accuracy, the size of the original array 
     \label{fig:sim_hm_2_array}
   \end{subfigure}
   \caption{Error heatmap for different array configurations. The heatmap scale is the intersection area measured in $cm^2$}.
-  \label{fig:sim_hm}
 \end{figure*}
 
-To evaluate how adding one microphone (without increasing the array size) improves accuracy, another microphone is added at $(0,0)$ for the array described in fig~\ref{sim:hm_3}. Result is presented in fig~\ref{fig:sim_hm_3_p1}. Addition of the new microphone only slightly improved the accuracy around the array region. The average distance error dropped from $18.6$ cm to $17.1$ cm. Regions near lines connecting microphones still have significantly large intersection area. This result suggests that adding more microphones in a small microphone array (without increasing the array size) is not an effective method for improving the localization accuracy.
+To evaluate how adding one microphone (without increasing the array size) improves accuracy, another microphone is added at $(0,0)$ for the array described in fig~\ref{fig:sim_hm_3}. Result is presented in fig~\ref{fig:sim_hm_3_p1}. Addition of the new microphone only slightly improved the accuracy around the array region. The average distance error dropped from $18.6$ cm to $17.1$ cm. Regions near lines connecting microphones still have significantly large intersection area. This result suggests that adding more microphones in a small microphone array (without increasing the array size) is not an effective method for improving the localization accuracy.
 
 To further increase the distance between microphones, we placed four microphones at four corners of the region. Fig~\ref{fig:sim_hm_4} shows the result. With this configuration, accuracy is consistently good across the region. The average distance error is $0.05$ cm.  However, placing microphones far apart at corners of the region requires accurate placement of all four individual microphones. The system is less portable compared to small arrays with microphones near each other. Placing microphones far apart from each other also causes problems in TDOA estimation, because sampling of microphones in the same array requires synchronized clock.
 

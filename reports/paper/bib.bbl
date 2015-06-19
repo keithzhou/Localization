@@ -57,6 +57,9 @@ APA
 \bibitem{tdoa:mit2}
 Paradiso, Joseph A., et al. ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
 
+\bibitem{sys:1}
+Datasheet for microphone CEM-C9745JAD462P2.54R, URL: http://cdn.sparkfun.com/datasheets/Sensors/Sound/CEM-C9745JAD462P2.54R.pdf
+
 
 \bibitem{tdoa:micloc}
 MicLoc, URL: http://ruralhacker.blogspot.ca/p/micloc.html

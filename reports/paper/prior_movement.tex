@@ -4,7 +4,7 @@ In the previous section, we discussed various ways of localizing acoustic source
 In this section we describe two ways of combining past estimates to produce better estimates: Finite impulse response (FIR) filter and Kalman filter.
 
 \subsection{FIR filter}
-The impulse response is of finite duration for FIR filters. In our system, since we only have access to location estimates from the past, we will look at a special category of FIR filters: causal discrete-time FIR filters. In such systems, the output $y[n]$ is a linear weighted combination of past $N+1$ estimates from input $x[n]$:
+The impulse response is of finite duration for FIR filters. In our system, since only location estimates from the past are available, we look at a specific category of FIR filters: causal discrete-time FIR filters. In such systems, the output $y[n]$ is a linear weighted combination of past $N+1$ estimates from input $x[n]$:
 \begin{eqnarray}
 y[n] & = & b_0x[n] + b_1x[n-1] + \cdots + b_Nx[n-N]\\
 & = & \sum_{i=0}^N b_i x[n-i]\\
@@ -21,12 +21,12 @@ By controlling the impulse response $b_i$, we specify how the past few data shou
 
 When $b_i=\frac{1}{N+1}$, each of the previous $N+1$ localization estimate contributes equally to the output. In this case, the filter becomes a simple averaging filter (also called rolling mean). If the source does not move during the past $N+1$ estimates, and assuming each estimate is an independent estimate of the true location with an additive Gaussian noise. Then it can be shown that the output after filter is an unbiased estimation of the true source location. However, if the source has moved during the past $N+1$ estimates, the filter would only output the mean location for the past $N+1$ estimated locations, which results in a ``lagging'' effect between the true source location and the system output. After the source has stopped moving, the filter output catches up with the source location. 
 
-To reduce the ``lagging'' effect exhibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location, which makes the filtered out tracks more closely with the sound source. However, if the localization system is noisy with large estimation variance, then the error in the most recent estimate dominates the filtered output will be prone to noise and exhibit large variance.
+To reduce the ``lagging'' effect exhibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location, which makes the filtered output tracks more closely with the sound source. However, if the localization system is noisy with large estimation variance, then the error in the most recent estimate dominates the filtered output, which makes the filtered output prone to noise and exhibit large variance.
 
-As a compromise between balancing the tradeoff between ``lagging'' problem from assigning equal weights to all estimates in the window and the noise error problem with assigning more weights to most recent weights. We will aim to design a system that can produce location estimates at a fast rate, so that the source would not have enough time to move a significant distance before the next estimate. Then it will be safe to average just a few estimates from the past. 
+To overcome the ''lagging'' problem while making the system robust to noise, we can design a system that produce location estimates at a fast rate. This way we can make sure that the source would not have enough time to move a significant distance before the next estimate. Then it will be safe to average just a few estimates from the past. 
 
 \subsection{Kalman filter}
-The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters. Even if the noise is not Gaussian, given only the first two statistics of noise, Kalman filter is the best linear estimator[x]. Due to its statistical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons.
+The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters\cite{kalman:1, kalman:3}. Even if the noise is not Gaussian, given only the first two statistics of noise, Kalman filter is the best linear estimator\cite{kalman:2}. Due to its statistical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons\cite{kalman:4}.
 
 Kalman filter uses observed variables to infer hidden variables and use them to help predict the next state. In our system, observed variable $z$ is the $(x,y)$ coordinates of the localized acoustic source:
 \[
@@ -35,7 +35,7 @@ x\\
 y\\
 \end{array}\right]
 \]
-We can also model unobserved motion variables such as velocity $(\dot{x}, \dot{y})$ and acceleration $(\ddot{x}, \ddot{y})$. Then the state variables we are tracking $\mathbf{x}$ can be represented as:
+We can also model unobserved motion variables such as velocity $(\dot{x}, \dot{y})$ and acceleration $(\ddot{x}, \ddot{y})$. Then the state variables $\mathbf{x}$ that we are tracking can be represented as:
 \[
 \mathbf{x} = \left[x, y, \dot{x}, \dot{y}, \ddot{x}, \ddot{y}\right]^T
 \]
@@ -60,13 +60,12 @@ F  =  \left(\begin{array}{cccccc}
 0 & 0 & 0 & 0 & 1 & 0 \\
 0 & 0 & 0 & 0 & 0 & 1 \\
 \end{array}\right)
-\], where $\delta t$ represents the time difference between current time and last state update. 
+\], where $\delta t$ represents the time difference between current time and the time of last state update. 
 \item The Kalman filter is a general framework which allows not only object tracking but also controlling the motion of the object. In these situations $u$ is the control input and $B$ describes the control input model. For our application, we are only tracking and not controlling the movement, $Bu = 0$.
 \item $Q$ models the process noise
 \end{itemize}
 
 After the observation for the next coordinates are made, then the Kalman filter calculates the residue between the prediction $\mathbf{x}^-$ and the measurement $z$:
-state $z$:
 \[
 y = z - H\mathbf{x}^-
 \]
