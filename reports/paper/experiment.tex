@@ -185,3 +185,36 @@ Different prefiltering options produce very similar result. GCC\_PHAT gives slig
 By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}) fast speed, we found that the localization error does increase when the movement speed increased from $10$ cm per second to $20$ cm per second. . 
 
 When white noise is used as the audio source, Kalman filtering and raw localization produces very similar accuracy, and averaging filter gives slightly better accuracy. However, when the audio source is Music A or Music B, Kalman filtering produces better accuracy compared to raw detection, but Averaging filter still gives the best result. In terms of smoothness between movement filters, it can be seen that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past $0.5$ seconds, which makes the filtered output lag the real movement.
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_l.png}
+    \caption{drawing letter `L'}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_m.png}
+    \caption{drawing letter `M'}
+  \end{subfigure}
+
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_r.png}
+    \caption{drawing letter `R'}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_c.png}
+    \caption{drawing letter `C'}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_n.png}
+    \caption{drawing letter `N'}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{show_b.png}
+    \caption{drawing letter `B'}
+  \end{subfigure}
+  \caption{Drawing letters. Green dots represent raw localization output and the red line is the output after averaging filtering}
+  \label{fig:show_case}
+\end{figure}
+
+
