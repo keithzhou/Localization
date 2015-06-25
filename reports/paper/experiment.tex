@@ -224,21 +224,29 @@ In figure~\ref{fig:show_case}, a few examples of drawing letters with music are 
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_1.png}
     \caption{drawing a strip with maximum volume}
+    \label{fig:show_color_1_1}
   \end{subfigure}
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_2.png}
     \caption{Drawing another strip with the volume decreased by $20\%$}
+    \label{fig:show_color_1_2}
   \end{subfigure}
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_3.png}
     \caption{Drawing a third strip with the volume decreased by an additional $20\%$}
+    \label{fig:show_color_1_3}
   \end{subfigure}
+  \caption{Drawing strips where the color of each strip is controlled by the volume of the white noise}
+  \label{fig:show_color}
 \end{figure}
 
+The color of the painted dots can be controlled by the volume of the sound. Fig~\ref{fig:show_color} presented painting three strips with different colors by varying the volume of the white noise. The color is generated in the Hue Saturation Value color space where the Saturation and Value are set to $0.9$ while the volume controls the hue. Figure~\ref{fig:show_color_1_1} shows the painted first strip where the volume is set to maximum. The color is in the red range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. After the volume is decreased, the painted color is in the blue range. In fig~\ref{fig:show_color_1_3}, we painted a third strip after the volume is decreased by another $20$ percent. In the final strip, the color is in the green range. A video demonstration is available at~\cite{demo:color}.
+
 \begin{figure}[h!]
-\centering
-  \begin{subfigure}[]{1.0\textwidth}
+  \centering
     \includegraphics[width=\textwidth]{color_4.png}
-    \caption{Painting a heart shape with free hand. The color of the heart changes with the volume of the song.}
-  \end{subfigure}
+    \caption{Painting a heart shape with a pop music by free hand. The color of the heart changes with the volume of the song.}
+    \label{fig:show_color_2}
 \end{figure}
+
+If a music is used, then the volume naturally changes with the content in the music. In figure~\ref{fig:show_color_2}, we painted a heart shape by free hand with a pop song. The song used here is xx by xxx. As can be seen from the figure, the color of the heart changes at each time instant according to the volume of the song. A video demonstration is available at~\cite{demo:color2}.

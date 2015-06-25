@@ -26,6 +26,12 @@ Guentchev, Kamen, and John Weng. ``Learning-based three dimensional sound locali
 \bibitem{extended:tusi}
 Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, ``Extended touch user interfaces,'' \emph{IEEE International Conference on  Multimedia and Expo (ICME)}, 2013. 
 
+\bibitem{demo:color}
+Video demonstration, Painting strips with white noise, URL: \url{https://youtu.be/O2Y8PY_VOQs}
+
+\bibitem{demo:color2}
+Video demonstration, Paiting a heart with a pop song, URL: \url{https://youtu.be/-bQZxckpj7E}
+
 \bibitem{ltm:pham}
 Pham, D. T., et al. ``Tangible acoustic interface approaches,'' \emph{Proceedings of IPROMS 2005 Virtual Conference}, 2005.
 
@@ -58,14 +64,14 @@ APA
 Paradiso, Joseph A., et al. ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
 
 \bibitem{sys:1}
-Datasheet for microphone CEM-C9745JAD462P2.54R, URL: http://cdn.sparkfun.com/datasheets/Sensors/Sound/CEM-C9745JAD462P2.54R.pdf
+Datasheet for microphone CEM-C9745JAD462P2.54R, URL: \url{http://cdn.sparkfun.com/datasheets/Sensors/Sound/CEM-C9745JAD462P2.54R.pdf}
 
 
 \bibitem{tdoa:micloc}
-MicLoc, URL: http://ruralhacker.blogspot.ca/p/micloc.html
+MicLoc, URL: \url{http://ruralhacker.blogspot.ca/p/micloc.html}
 
 \bibitem{sys:teensy}
-PJRC, URL: https://www.pjrc.com/teensy/teensy31.html
+PJRC, URL: \url{https://www.pjrc.com/teensy/teensy31.html}
 
 \bibitem{tdoa:3}
 Polotti, Pietro, et al. ``Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces,'' \emph{Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05)}, 2005.
