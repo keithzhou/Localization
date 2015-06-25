@@ -219,3 +219,26 @@ When white noise is used as the audio source, Kalman filtering and raw localizat
 
 In figure~\ref{fig:show_case}, a few examples of drawing letters with music are presented. Green dots on the plots represent the raw localization output and the red line shows the movement output with averaging filtering (window size of $0.5$ seconds is used). The demonstrated letters are drawn with free hand, without a track guiding the movement. The accuracy is reasonably good, and each letter can be easily recognized. There is a bit of jiggling in the tracked movement. Part of the jiggling can be attributed to the noise from system output, and the rest comes from the hand movement. 
 
+\begin{figure}[h!]
+\centering
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{color_1.png}
+    \caption{drawing a strip with maximum volume}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{color_2.png}
+    \caption{Drawing another strip with the volume decreased by $20\%$}
+  \end{subfigure}
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{color_3.png}
+    \caption{Drawing a third strip with the volume decreased by an additional $20\%$}
+  \end{subfigure}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+  \begin{subfigure}[]{1.0\textwidth}
+    \includegraphics[width=\textwidth]{color_4.png}
+    \caption{Painting a heart shape with free hand. The color of the heart changes with the volume of the song.}
+  \end{subfigure}
+\end{figure}
