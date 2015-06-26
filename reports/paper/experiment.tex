@@ -220,6 +220,29 @@ When white noise is used as the audio source, Kalman filtering and raw localizat
 In figure~\ref{fig:show_case}, a few examples of drawing letters with music are presented. Each letter took around $5$ to $10$ seconds to draw, depending on the size of the letter and the speed of the movement. Green dots on the plots represent the raw localization output and the red line shows the movement output with averaging filtering (window size of $0.5$ seconds is used). The demonstrated letters are drawn with free hand, without a track guiding the movement. The accuracy is reasonably good, and each letter can be easily recognized. There is a bit of jiggling in the tracked movement. Part of the jiggling can be attributed to the noise from system output, and the rest comes from the hand movement. 
 
 \begin{figure}[h!]
+  \centering
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{scaling_pos.png}
+    \caption{randomly going through the region to collect localized $(x,y)$ data and the received volume data. The volume is kept constant}
+    \label{fig:color_pos}
+  \end{subfigure}
+  \centering
+  \begin{subfigure}[]{.48\textwidth}
+    \includegraphics[width=\textwidth]{color_scaling.png}
+    \caption{calculate a scaling factor for each point in the region. The scaling factor is the average of volume of the 5 closest points from the plot on the left}
+    \label{fig:color_scale}
+  \end{subfigure}
+  \caption{Sound volume normalization}
+  \label{fig:color_norm}
+\end{figure}
+
+The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment.  However, the volume of the audio signal received is itself a function of the location of the audio source. Therefore, the received volume needs to be normalized. For the volume $V$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized volume is $\bar{V}$:
+\[
+\bar{V} = \frac{V}{b_{xy}}
+\]
+The scaling factor $b_{xy}$ is location dependent. It is found by from calibration, which only needs to be carried out once. During calibration, a white noise sound source is moved randomly in the region with constant volume. As the source moves around in the region the calibration modules collects the source's location and received volume information. Then $b_{xy}$ is calculated by taking the volume average of $10$ closest samples from the collected data. Fig~\ref{fig:color_norm} shows and example of the volume control calibration procedure to calibrate volume information in a $60$ cm by $40$ cm region. Fig~\ref{fig:color_pos} shows how the white noise source with constant volume is moved in the region and fig~\ref{fig:color_scale} shows the scaling factor $b_{xy}$ for each point in the region by taking the volume average of $5$ closest points in fig~\ref{fig:color_pos}.
+
+\begin{figure}[h!]
 \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_1.png}
@@ -240,7 +263,7 @@ In figure~\ref{fig:show_case}, a few examples of drawing letters with music are 
   \label{fig:show_color}
 \end{figure}
 
-The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment. To show how the volume acts as a color control, a simple experiment is shown in Figure~\ref{fig:show_color}. In this experiment, three stripes are drawn with the same acoustic source but different volume. The color is generated in the Hue-Saturation-Value color space where the Saturation and Value are set to $0.9$ while the hue is controlled by the volume. Figure~\ref{fig:show_color_1_1} shows the first stripe where the volume is set to the maximum and the painted color is in the red range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. The painted color changed to the blue range after the volume is decreased. In fig~\ref{fig:show_color_1_3}, we painted a third strip where we further decreased the volume by another $20$ percent. In this final stripe, the color changed to the green range. A video demonstration is available at~\cite{demo:color}.
+To show how the volume acts as a color control. a simple experiment is shown in Figure~\ref{fig:show_color}. In this experiment, three stripes are drawn with the same acoustic source but different volume. The color is generated in the Hue-Saturation-Value color space where the Saturation and Value are set to $0.9$ while the hue is controlled by the volume. Figure~\ref{fig:show_color_1_1} shows the first stripe where the volume is set to the maximum and the painted color is in the red range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. The painted color changed to the blue range after the volume is decreased. In fig~\ref{fig:show_color_1_3}, we painted a third strip where we further decreased the volume by another $20$ percent. In this final stripe, the color changed to the green range. A video demonstration is available at~\cite{demo:color}.
 
 \begin{figure}[h!]
   \centering
