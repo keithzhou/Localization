@@ -223,51 +223,57 @@ In figure~\ref{fig:show_case}, a few examples of drawing letters with music are 
   \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{scaling_pos.png}
-    \caption{randomly going through the region to collect localized $(x,y)$ data and the received power data. The volume of the source is kept constant}
+    \caption{randomly traverse the region to collect location $(x,y)$ and received power data. The volume of the source is kept constant}
     \label{fig:color_pos}
   \end{subfigure}
   \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_scaling.png}
-    \caption{Calculate a scaling factor for each point in the region. The scaling factor is the average power of the $5$ closest points from the points on the left}
+    \caption{calculate a scaling factor $b_{xy}$ for each point in the region. The scaling factor is the average power of $5$ closest points from the traversed points on the left}
     \label{fig:color_scale}
   \end{subfigure}
-  \caption{Volume control normalization}
+  \caption{Volume control normalization. Two microphone arrays are placed at $(-50\mbox{ cm}, 0\mbox{ cm})$ and $(50\mbox{ cm}, 0\mbox{ cm})$.}
   \label{fig:color_norm}
 \end{figure}
 
-The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment. For received a signal $x[n]$, the power $P$ is an indicator of the source volume:
+The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment. For signal $x_i[n]$ received at each microphone $i$, the power $P_i$ can be used as an indicator of the source volume:
 \[
-P = \frac{1}{N} \sum_{i=1}^N x[n]^2
+P_i = \frac{1}{N} \sum_{i=1}^N x_i[i]^2
 \]
-However, the received power of the audio signal is itself a function of the location of the audio source (even as the source volume stays constant). Therefore, the received power needs to be normalized. For the power $P$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized power $\bar{P}$:
+Since there are $6$ microphones in our system ($3$ in each array), we choose the maximum power $P$ received across all $6$ microphones as the indicator for the source volume:
+\[
+P = \max_i P_i 
+\]
+However, the received power of the audio signal is itself a function of the audio source location (since the received power decays with increasing distance between the source to receiver). Therefore, the received power needs to be normalized. For the power $P$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized power $\bar{P}$ is:
+
 \[
 \bar{P} = \frac{P}{b_{xy}}
 \]
-The scaling factor $b_{xy}$ is location dependent. It is found from calibration, which needs to be carried out once. During the calibration, a white noise sound source is moved randomly in the region with constant volume. As the source moves around in the region the calibration modules collects the source's location and received power information. Then $b_{xy}$ is calculated by taking the average power of $10$ closest samples from the collected data. Fig~\ref{fig:color_norm} shows and example of the volume control calibration procedure to calibrate the power information in a $60$ cm by $40$ cm region. Fig~\ref{fig:color_pos} shows how the white noise source with constant volume is moved in the region and fig~\ref{fig:color_scale} shows the scaling factor $b_{xy}$ for each point in the region by taking the average power of $5$ closest points in fig~\ref{fig:color_pos}.
+
+The scaling factor $b_{xy}$ is location dependent. To calculate $b_{xy}$, we conduct an one time calibration step at the beginning. During the calibration step, a white noise sound source is used to randomly traverse the entire region with constant volume. As the source moves around in the region the calibration modules collects the source's location and the received power information. Then $b_{xy}$ can be calculated for each location $(x,y)$  by taking the average power of $5$ closest samples from that location. Fig~\ref{fig:color_norm} shows an example of the volume control calibration procedure for calibrating the location power information in a $60$ cm by $40$ cm region. Fig~\ref{fig:color_pos} shows how the white noise source with constant volume is traversed in the region and fig~\ref{fig:color_scale} shows the corresponding scaling factor $b_{xy}$ for each point in the region by taking the average power of $5$ closest points in fig~\ref{fig:color_pos}. As can be seen from the figure, for any fixed $y$ coordinate, the received power first decreases then increases along increase in the $x$ direction. This is because the arrays are placed at the top left and top right corners of the region. For a fixed $x$ coordinate, the received power decreases monotonically along the $y$ direction.
 
 \begin{figure}[h!]
 \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_1.png}
-    \caption{drawing a strip with maximum volume}
+    \caption{drawing a stripe with maximum volume}
     \label{fig:show_color_1_1}
   \end{subfigure}
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_2.png}
-    \caption{Drawing another strip with the volume decreased by $20\%$}
+    \caption{Drawing another stripe with the volume decreased by $20\%$}
     \label{fig:show_color_1_2}
   \end{subfigure}
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_3.png}
-    \caption{Drawing a third strip with the volume decreased by an additional $20\%$}
+    \caption{Drawing a third stripe with the volume decreased by an additional $20\%$}
     \label{fig:show_color_1_3}
   \end{subfigure}
-  \caption{Drawing strips where the color of each strip is controlled by the volume of the white noise}
+  \caption{Drawing stripes where the color of each stripe is controlled by the volume of the white noise}
   \label{fig:show_color}
 \end{figure}
 
-To show how the volume acts as a color control. a simple experiment is shown in Figure~\ref{fig:show_color}. In this experiment, three stripes are drawn with the same acoustic source but different volume. The color is generated in the Hue-Saturation-Value color space where the Saturation and Value are set to $0.9$ while the hue is controlled by the volume. Figure~\ref{fig:show_color_1_1} shows the first stripe where the volume is set to the maximum and the painted color is in the red range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. The painted color changed to the blue range after the volume is decreased. In fig~\ref{fig:show_color_1_3}, we painted a third strip where we further decreased the volume by another $20$ percent. In this final stripe, the color changed to the green range. A video demonstration is available at~\cite{demo:color}.
+To show how the volume acts as a color control. A simple experiment is shown in Figure~\ref{fig:show_color}. In this experiment, three stripes are drawn with the same acoustic source but different volume. The color is generated in the Hue-Saturation-Value color space where the Saturation and Value are set to $0.9$ while the hue is controlled by the volume. Figure~\ref{fig:show_color_1_1} shows the first stripe where the volume is set to the maximum and the painted color is in the red range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. The painted color changed to the blue range after the volume is decreased. In fig~\ref{fig:show_color_1_3}, we painted a third strip where we further decreased the volume by another $20$ percent. In this final stripe, the color changed to the green range. A video demonstration is available at~\cite{demo:color}.
 
 \begin{figure}[h!]
   \centering
@@ -277,5 +283,3 @@ To show how the volume acts as a color control. a simple experiment is shown in 
 \end{figure}
 
 Instead of manually varying the volume of the acoustic source, a natural extension is to use music as our acoustic source. Generally, the volume of music will vary with time and this change will be reflected by the colors drawn. In figure~\ref{fig:show_color_2}, we used a pop song as our acoustic source and painted a heart shape by free hand. The song used here is \emph{Don't Let It Break Your Heart} by \emph{Coldplay}. As can be seen from the figure, the color of the heart changes at each time instant according to the volume of the song. A video demonstration is available at~\cite{demo:color2}.
-
-
