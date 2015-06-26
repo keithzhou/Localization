@@ -1,3 +1,4 @@
+\subsection{Hardware}
 The end system has two arrays, each with three microphones mounted on the vertices of a $20$ cm equilateral triangle. We used omni-directional foil electret condenser microphone due to its low cost and small size. The microphone has a frequency range of $100$ to $10K$ Hz, and a minimum SNR of 58dB\cite{sys:1}. We also used operational amplifer OPA344 from Texas Instrument to amplify the microphone output by a factor of 100, so the received signal can be easily picked up by the analog-to-digital converter (ADC) module installed on the micro-controller. The micro-controller board used in this project is \emph{teensy 3.1}, and it is attached to one of the vertices of the triangle. Fig~\ref{fig:setup_array} shows a picture of the array setup.  The micro-controller contains an onboard RAM of $64$k, and an ADC module capable of sampling at $500$kHz~\cite{tdoa:micloc, sys:teensy}. In this project, the micro-controller collects microphone data on all three channels for a duration $12$ milliseconds and then sends the recorded data to a computer through the USB port for localization. 
 
 \begin{figure}[h!]
@@ -18,6 +19,10 @@ The end system has two arrays, each with three microphones mounted on the vertic
   \label{fig:setup_array}
 \end{figure}
 
+\subsection{Software}
+
+On the software side, \emph{Python} is used as the main programming language since it has extensive libraries in both real time data handling and signal processing. \emph{zeroMQ} is an inter process messaging queue that is used in our system to pass data across different modules. Our system is made up of two data acquisition modules (each is used to receive raw date from microphone array output) and one localization module (listens to both data acquisition modules and perform localization using the raw microphone data). Using \emph{zeroMQ} as connections to different modules adds flexibility to our system, as we can design applications such as the drawing application we have used in our system to interface only with the localization module and disregard how the microphone data is collected. Other localization applications can be easily integrated into our system by connecting them with the localization module. Furthermore, we have built a recording module that interfaces with the data acquisition modules for offline analysis and parameter tuning. 
+
 To handle the uncertainty in TDOA estimation, instead of using point estimate that maximizes equation~\ref{eq:gcc}, we take the cross-correlation output(equation~\ref{eq:gcc2}) as a measure of the likelihood of different arrival time differences. Each index $i$ from the cross-correlation vector denotes the time delay across the two microphones receiving the acoustic signal, and the cross-correlation value $k$[i] at each index $i$ denotes the likelihood of the time delay being $i$. 
 
 For each microphone array, we build a heatmap of likelihood for the region. The intensity at each point on the heatmap represents the likelihood of it being the source. To generate the likelihood heatmap for an microphone array, we apply the following algorithm. For each point ($x$,$y$) on the grid, the theoretical TDOA to each microphone pair can be precomputed using:
@@ -36,10 +41,6 @@ Likelihood maps from two arrays can be combined into the final likelihood map:
 L(x,y) = L_1(x,y) L_2(x,y)
 \end{equation}
 where $L_1(x,y)$ and $L_2(x,y)$ represent the likelihood map from array $1$ and array $2$.
-
-
-
-To see the effect of accuracy improvement using multiple arrays, fig~\ref{fig:liklihood} shows a real life localization where the source is placed at $(0$ cm$,-30$ cm$)$. The top two figures show the individual likelihood maps produced by single microphone arrays. We can see that the individual arrays can give accurate angle estimate, but have high uncertainty in distance estimate. The bottom figure shows the combined likelihood map according to equation~\ref{eq:combine_l}. The combined likelihood map demonstrated that by merging estimates from two arrays the system is able to perform more accurate localization. 
 
 \begin{figure}[h!]
   \centering
@@ -61,5 +62,8 @@ To see the effect of accuracy improvement using multiple arrays, fig~\ref{fig:li
   \caption{Likelihood maps for localization. The source is placed at $(0.0,-0.3)$ m}
   \label{fig:liklihood}
 \end{figure}
+
+To see the effect of accuracy improvement using multiple arrays, fig~\ref{fig:liklihood} shows a real life localization where the source is placed at $(0$ cm$,-30$ cm$)$. The top two figures show the individual likelihood maps produced by single microphone arrays. We can see that the individual arrays can give accurate angle estimate, but have high uncertainty in distance estimate. The bottom figure shows the combined likelihood map according to equation~\ref{eq:combine_l}. The combined likelihood map demonstrated that by merging estimates from two arrays the system is able to perform more accurate localization. 
+
 
 From a timing point of view, the micro-controller spends $12$ milliseconds on sampling the microphone data before sending it to a computer for processing. Sending the data through the USB port takes another $15$ milliseconds, and processing on the computer takes around $50$ milliseconds. Therefore, the total time lag between sound source and localization is around $80$ milliseconds.
