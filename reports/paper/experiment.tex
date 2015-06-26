@@ -223,24 +223,28 @@ In figure~\ref{fig:show_case}, a few examples of drawing letters with music are 
   \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{scaling_pos.png}
-    \caption{randomly going through the region to collect localized $(x,y)$ data and the received volume data. The volume is kept constant}
+    \caption{randomly going through the region to collect localized $(x,y)$ data and the received power data. The volume of the source is kept constant}
     \label{fig:color_pos}
   \end{subfigure}
   \centering
   \begin{subfigure}[]{.48\textwidth}
     \includegraphics[width=\textwidth]{color_scaling.png}
-    \caption{calculate a scaling factor for each point in the region. The scaling factor is the average of volume of the 5 closest points from the plot on the left}
+    \caption{Calculate a scaling factor for each point in the region. The scaling factor is the average power of the $5$ closest points from the points on the left}
     \label{fig:color_scale}
   \end{subfigure}
-  \caption{Sound volume normalization}
+  \caption{Volume control normalization}
   \label{fig:color_norm}
 \end{figure}
 
-The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment.  However, the volume of the audio signal received is itself a function of the location of the audio source. Therefore, the received volume needs to be normalized. For the volume $V$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized volume is $\bar{V}$:
+The volume of the acoustic source can also be used to control the color of the dots painted in the above experiment. For received a signal $x[n]$, the power $P$ is an indicator of the source volume:
 \[
-\bar{V} = \frac{V}{b_{xy}}
+P = \frac{1}{N} \sum_{i=1}^N x[n]^2
 \]
-The scaling factor $b_{xy}$ is location dependent. It is found by from calibration, which only needs to be carried out once. During calibration, a white noise sound source is moved randomly in the region with constant volume. As the source moves around in the region the calibration modules collects the source's location and received volume information. Then $b_{xy}$ is calculated by taking the volume average of $10$ closest samples from the collected data. Fig~\ref{fig:color_norm} shows and example of the volume control calibration procedure to calibrate volume information in a $60$ cm by $40$ cm region. Fig~\ref{fig:color_pos} shows how the white noise source with constant volume is moved in the region and fig~\ref{fig:color_scale} shows the scaling factor $b_{xy}$ for each point in the region by taking the volume average of $5$ closest points in fig~\ref{fig:color_pos}.
+However, the received power of the audio signal is itself a function of the location of the audio source (even as the source volume stays constant). Therefore, the received power needs to be normalized. For the power $P$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized power $\bar{P}$:
+\[
+\bar{P} = \frac{P}{b_{xy}}
+\]
+The scaling factor $b_{xy}$ is location dependent. It is found from calibration, which needs to be carried out once. During the calibration, a white noise sound source is moved randomly in the region with constant volume. As the source moves around in the region the calibration modules collects the source's location and received power information. Then $b_{xy}$ is calculated by taking the average power of $10$ closest samples from the collected data. Fig~\ref{fig:color_norm} shows and example of the volume control calibration procedure to calibrate the power information in a $60$ cm by $40$ cm region. Fig~\ref{fig:color_pos} shows how the white noise source with constant volume is moved in the region and fig~\ref{fig:color_scale} shows the scaling factor $b_{xy}$ for each point in the region by taking the average power of $5$ closest points in fig~\ref{fig:color_pos}.
 
 \begin{figure}[h!]
 \centering
