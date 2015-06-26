@@ -23,7 +23,7 @@ When $b_i=\frac{1}{N+1}$, each of the previous $N+1$ localization estimate contr
 
 To reduce the ``lagging'' effect exhibited by the averaging filter, we can assign higher weights to more recent estimates. Recent estimates gets a higher contribution to the output location, which makes the filtered output tracks more closely with the sound source. However, if the localization system is noisy with large estimation variance, then the error in the most recent estimate dominates the filtered output, which makes the filtered output prone to noise and exhibit large variance.
 
-To overcome the ''lagging'' problem while making the system robust to noise, we can design a system that produce location estimates at a fast rate. This way we can make sure that the source would not have enough time to move a significant distance before the next estimate. Then it will be safe to average just a few estimates from the past. 
+To overcome the ''lagging'' problem while making the system robust to noise, we can design a system that produce location estimates at a fast rate. This way we can make sure that the source would not have enough time to move a significant distance before the next estimate. Then it will be safe to average just a few estimates from the past.
 
 \subsection{Kalman filter}
 The Kalman filter is a recursive filter where input data can be efficiently combined to produce online prediction. If all noise are Gaussian, the Kalman filter is a statistically optimum filter that minimizes squared error of the estimated parameters\cite{kalman:1, kalman:3}. Even if the noise is not Gaussian, given only the first two statistics of noise, Kalman filter is the best linear estimator\cite{kalman:2}. Due to its statistical optimality and its recursive nature that enables online prediction, the Kalman filter has found applications in a wide range of areas. It has been used to track aircraft using RADAR, and to track Robot with sensors and beacons\cite{kalman:4}.
@@ -41,7 +41,7 @@ We can also model unobserved motion variables such as velocity $(\dot{x}, \dot{y
 \]
 Internally, the Kalman filter also keeps track of the uncertainty of the state variables. It is represented as a covariance matrix $P$ on state variables.
 
-Note that by modeling up to acceleration, we are implicitly assuming higher order motion variables are constant (such as jerk). Kalman filter includes a process noise term $Q$ that can be used to partially reduce this effect, but there will exist systematic tracking bias if there is jerk change.
+Note that by modeling up to acceleration, we are implicitly assuming higher order motion variables are constant (such as jerk). This assumption gives the system a tracking bias if there is a jerk change. Kalman filter also includes a term $Q$ that can be used to model the process noise. 
 
 At any time instant, Kalman filter can use current state information to infer the predicted next state $\mathbf{x}^-$ and the predicted uncertainty $P^-$:
 \begin{eqnarray}
