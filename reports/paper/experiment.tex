@@ -240,10 +240,12 @@ The volume of the acoustic source can also be used to control the color of the d
 \[
 P_i = \frac{1}{N} \sum_{i=1}^N x_i[i]^2
 \]
+
 Since there are $6$ microphones in our system ($3$ in each array), we choose the maximum power $P$ received across all $6$ microphones as the indicator for the source volume:
 \[
 P = \max_i P_i 
 \]
+
 However, the received power of the audio signal is itself a function of the audio source location (since the received power decays with increasing distance between the source to receiver). Therefore, the received power needs to be normalized. For the power $P$ received at location $(x,y)$, we normalize it by a scaling factor $b_{xy}$. The normalized power $\bar{P}$ is:
 
 \[
@@ -273,6 +275,7 @@ The scaling factor $b_{xy}$ is location dependent. To calculate $b_{xy}$, we con
   \label{fig:show_color}
 \end{figure}
 
+
 To show how the volume acts as a color control. A simple experiment is shown in Figure~\ref{fig:show_color}. In this experiment, three stripes are drawn with the same acoustic source but different volume. The color is generated in the Hue-Saturation-Value color space where the Saturation and Value are set to $0.9$ while the hue is controlled by the volume. Figure~\ref{fig:show_color_1_1} shows the first stripe where the volume is set to the maximum and the painted color is in the red to orange range. In fig~\ref{fig:show_color_1_2}, we painted another strip after the volume is decreased by $20$ percent. The painted color changed to the blue to purple range after the volume is decreased. In fig~\ref{fig:show_color_1_3}, we painted a third strip where we further decreased the volume by another $20$ percent. In this final stripe, the color changed to the green to yellow range. A video demonstration is available at~\cite{demo:color}.
 
 \begin{figure}[h!]
@@ -282,7 +285,7 @@ To show how the volume acts as a color control. A simple experiment is shown in 
     \label{fig:show_color_3}
 \end{figure}
 
-We have carried out another similar experiment. Instead of stopping and changing the. A video demonstration is available at~\cite{demo:color3} 
+\textcolor{red}{ Instead of stop and change the sound volume, we carried out a similar experiment where the volume is changed as we move the source. In this experiment, we drew an ellipse by free hand in a clockwise fashion. We started with the volume set to the maximum (which corresponds to the red color). Then we gradually decreases the volume as the move to the right. After the volume is decreased to $60\%$ of the maximum volume we started with, we start to gradually increase the volume until the maximum volume is reached again. Figure~\ref{fig:show_color_3} gives a visual presentation of the painted result. As can be seen from the figure, the color is red at the top left region of the ellipse. The color changes to the green yellow range and then back go red orange range as we completes the ellipse. A video demonstration of this experiment is available at~\cite{demo:color3} }
 
 \begin{figure}[h!]
   \centering
