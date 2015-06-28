@@ -4,7 +4,7 @@
 Acoustic localization techniques have been researched extensively in the literature. Localization techniques can be broadly categorized into Interaural Level Difference (ILD), Location Template Matching (LTM), and Time Difference of Arrival (TDOA) based approaches.
 
 \subsection{ILD}
-ILD techniques rely on the observation that signal intensity decays as the distance to the microphone increases. A microphone closer to the signal source would receive the signal with higher intensity than a microphone farther away. With multiple microphones, it is possible to infer the source location by comparing the signal intensity received at different microphones. Human's auditory system has used ILD cues to infer source direction~\cite{ild:2}, and this technique is most effective when used to localize high frequency sources, because these sources don't diffract significantly around the listener's head and produce a significant intensity difference.
+ILD techniques rely on the observation that signal intensity decays as the distance to the microphone increases. A microphone closer to the signal source would receive the signal with higher intensity than a microphone farther away. With multiple microphones, it is possible to infer the source location by comparing the signal intensity received at different microphones. Human's auditory system has used ILD cues to infer source direction~\cite{ild:2, ild:h, ild:5}, and this technique is most effective when used to localize high frequency sources, because these sources don't diffract significantly around the listener's head and produce a significant intensity difference.
 
 For a point sound source in a direct field, the signal intensity decays proportional to the square of the distance between the source and the microphone. Let $I_i$ denote the received signal intensity at microphone $i$: 
 \begin{eqnarray}\label{eqn:ild1}
@@ -62,7 +62,7 @@ $W(\omega)$ provides a way to prefilter signals passed to the cross correlation 
 \begin{description}%[\IEEEsetlabelwidth{Very very long label}\IEEEusemathlabelsep]
 \item[GCC] $W(\omega) = 1$. No prefiltering is done. This is unfiltered normal cross correlation.
 \item[GCC\_PHAT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^{*}(\omega)\right|}$. Each frequency is divided by its magnitude. Only phase information contributes to delay estimation.
-\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of magnitude information is included in arrival time difference estimation.
+\item[GCC\_PHAT\_SQRT] $W(\omega) = \frac{1}{\left|X_1(\omega)X_2^*(\omega)\right|^{0.5}}$. This is somewhere between GCC and GCC\_PHAT. Part of the magnitude information is included in arrival time difference estimation.
 \end{description}
 
 To see the reasoning behind different prefiltering approaches, we separate the magnitude part from the phase part of $X_1(\omega)$ and $X_2(\omega)$ in Equation~\ref{eq:gcc2}:

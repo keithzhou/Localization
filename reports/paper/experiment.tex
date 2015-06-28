@@ -185,7 +185,7 @@ Fig~\ref{fig:circle_musicbn} shows the result when Music B is used as the sound 
 
 Different prefiltering options produce very similar result. GCC\_PHAT gives slightly better accuracy, but the difference among unfiltered GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is very small. 
 
-By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}), we find that the localization error does not increase when the movement speed increased from $10$ cm per second to $20$ cm per second. However, it's conceivable that the localization error will increase with further speed increase, but since our system is designed for HCI, we feel $20$ cm per second covers most of the use cases. 
+By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}), we find that the localization error does not increase when the movement speed increased from $10$ cm per second to $20$ cm per second. However, it's conceivable that the localization error will increase with further speed increase, but since our system is designed for HCI, a speed of $20$ cm per second covers most of the use cases. 
 
 When white noise is used as the audio source, Kalman filtering and raw localization produces very similar accuracy, and averaging filter gives slightly higher accuracy. However, when the audio source is changed to Music A or Music B, Kalman filtering produces better accuracy compared to raw detection, but Averaging filter still gives the best result. Looking at the smoothness of the movement path after applying different movement filters, it can be seen that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past $0.5$ seconds, which makes the filtered output lag the real movement.
 
@@ -284,7 +284,7 @@ To show how the volume acts as a color control. A simple experiment is shown in 
 \begin{figure}[h!]
   \centering
     \includegraphics[width=\textwidth]{color_5.png}
-    \caption{Painting an eclipse. The color of the heart changes with the volume of the song.}
+    \caption{Painting an ellipse. The color of the painting is controlled by the volume of the white noise.}
     \label{fig:show_color_3}
 \end{figure}
 

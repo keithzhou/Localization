@@ -1,4 +1,9 @@
 \begin{thebibliography}{10}
+
+\bibitem{intro:gps2}
+United States Navy Observatory, ``Current GPS Constellation,'' Accessed on Jun 20, 2015, URL: \url{http://tycho.usno.navy.mil/gpscurr.html}.
+
+
 \bibitem{intro:gps}
 Wing, Michael G. and Eklund, Aaron and Kellogg, Loren D. ``Consumer-Grade Global Positioning System (GPS) Accuracy and Reliability,'' \emph{Journal of Forestry}, 2005.
 
@@ -6,13 +11,22 @@ Wing, Michael G. and Eklund, Aaron and Kellogg, Loren D. ``Consumer-Grade Global
 Bekkelien, Anja, Michel Deriaz, and Stéphane Marchand-Maillet. ``Bluetooth indoor positioning,'' \emph{Master's thesis, University of Geneva}, 2012.
 
 \bibitem{intro:loc}
-Hui Liu; Darabi, H.; Banerjee, P.; Jing Liu, ``Survey of Wireless Indoor Positioning Techniques and Systems,'' \emph{IEEE Transactions on Systems, Man, and Cybernetics, Part C: Applications and Reviews}, 2007
+Hui Liu; Darabi, H.; Banerjee, P.; Jing Liu, ``Survey of Wireless Indoor Positioning Techniques and Systems,'' \emph{IEEE Transactions on Systems, Man, and Cybernetics, Part C: Applications and Reviews}, 2007.
+
+\bibitem{intro:wifi}
+Biswas, Joydeep, and Manuela Veloso. ``Wifi localization and navigation for autonomous indoor mobile robots,'' \emph{IEEE International Conference on Robotics and Automation (ICRA)}, 2010.
 
 \bibitem{intro:ultra}
-Yazici, A.; Yayan, U.; Yucel, H., ``An ultrasonic based indoor positioning system,'' \emph{2011 International Symposium on Innovations in Intelligent Systems and Applications (INISTA)}, 2011
+Yazici, A.; Yayan, U.; Yucel, H., ``An ultrasonic based indoor positioning system,'' \emph{2011 International Symposium on Innovations in Intelligent Systems and Applications (INISTA)}, 2011.
+
+\bibitem{intro:ultra2}
+Pal, Amitangshu. ``Localization algorithms in wireless sensor networks: Current approaches and future challenges,'' \emph{Network Protocols and Algorithms}, 2010.
 
 \bibitem{ild:1}
-Birchfield, Stanley T., and Rajitha Gangishetty, ``Acoustic localization by interaural level difference,'' \emph{IEEE International Conference on Acoustics, Speech, and Signal Processing}, 2005
+Birchfield, Stanley T., and Rajitha Gangishetty, ``Acoustic localization by interaural level difference,'' \emph{IEEE International Conference on Acoustics, Speech, and Signal Processing}, 2005.
+
+\bibitem{ild:h}
+Kuroyanagi, Susumu, and Akira Iwata, ``Auditory pulse neural network model to extract the inter-aural time and level difference for sound localization,'' \emph{IEICE TRANSACTIONS on Information and Systems}, 1994. 
 
 \bibitem{ild:2}
 Blauert, Jens. ``Spatial hearing: the psychophysics of human sound localization,'' \emph{MIT press}, 1997.
@@ -22,6 +36,9 @@ Raspaud, Martin, Harald Viste, and Gianpaolo Evangelista, ``Binaural source loca
 
 \bibitem{ild:4}
 Guentchev, Kamen, and John Weng. ``Learning-based three dimensional sound localization using a compact non-coplanar array of microphones,'' \emph{Proc. AAAI Spring Symposium on Intelligent Environments}, 1998.
+
+\bibitem{ild:5}
+Shi, Rock Z., and Timothy K. Horiuchi. ``A neuromorphic VLSI model of bat interaural level difference processing for azimuthal echolocation,'' \emph{IEEE Transactions on Circuits and Systems}, 2007.
 
 \bibitem{extended:tusi}
 Chowdhury, T., Aarabi, P., Weijian Zhou, Yuan Zhonglin, and Kai Zou, ``Extended touch user interfaces,'' \emph{IEEE International Conference on  Multimedia and Expo (ICME)}, 2013. 
@@ -56,6 +73,16 @@ G. Welch and G. Bishop, ``An introduction to the Kalman filter,'' \emph{Dept.  C
 \bibitem{kalman:4}
 Negenborn, Rudy. ``Robot localization and Kalman filters,'' \emph{Diss. Utrecht University}, 2003.
 
+\bibitem{kalman:5}
+Leonard, John J., and Hugh F. ``Mobile robot localization by tracking geometric beacons,'' \emph{IEEE Transactions on Robotics and Automation}, 1991.
+
+\bibitem{kalman:6}
+Roumeliotis, Stergios, and George A. Bekey. ``Bayesian estimation and Kalman filtering: A unified framework for mobile robot localization,'' \emph{IEEE International Conference on Robotics and Automation}, 2000.
+APA 
+
+\bibitem{kalman:7}
+Harvey, Andrew C. ``Forecasting, structural time series models and the Kalman filter,'' \emph{Cambridge university press}, 1990.
+
 \bibitem{tdoa:ppp}
 Ishii, Hiroshi, et al. ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
 
@@ -75,6 +102,9 @@ MicLoc, URL: \url{http://ruralhacker.blogspot.ca/p/micloc.html}
 
 \bibitem{sys:teensy}
 PJRC, URL: \url{https://www.pjrc.com/teensy/teensy31.html}
+
+\bibitem{sys:teensy2}
+Microcontroller datasheet, Freescale Semiconductorsl, URL: \url{http://cache.freescale.com/files/32bit/doc/data_sheet/K20P64M72SF1.pdf}
 
 \bibitem{tdoa:3}
 Polotti, Pietro, et al. ``Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces,'' \emph{Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05)}, 2005.
