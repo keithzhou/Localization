@@ -1,4 +1,7 @@
 \chapter{Experiment}
+In this chapter, we first discuss the hardware equipments that are used to build the final system. Next we discuss the high level software architecture we designed and implemented in our system. We then detail the localization method we used in our system and how we circumvented the need to synchronize clocks across the two arrays. We then describe the experiments we have conducted using our system to test its localization accuracy and system responsiveness. These experiments include acoustic source location estimates and movement tracking. In the discussion section of this chapter we analyze the results from the experiments above. To conclude this chapter, we have included several interesting applications of our system demonstrating how it can be used to facilitate human computer interaction. 
+
+
 \section{System}
 \input{./system}
 \clearpage
@@ -285,7 +288,7 @@ To show how the volume acts as a color control. A simple experiment is shown in 
     \label{fig:show_color_3}
 \end{figure}
 
-\textcolor{red}{ Instead of stop and change the sound volume, we carried out a similar experiment where the volume is changed as we move the source. In this experiment, we drew an ellipse by free hand in a clockwise fashion. We started with the volume set to the maximum (which corresponds to the red color). Then we gradually decreases the volume as the move to the right. After the volume is decreased to $60\%$ of the maximum volume we started with, we start to gradually increase the volume until the maximum volume is reached again. Figure~\ref{fig:show_color_3} gives a visual presentation of the painted result. As can be seen from the figure, the color is red at the top left region of the ellipse. The color changes to the green yellow range and then back go red orange range as we completes the ellipse. A video demonstration of this experiment is available at~\cite{demo:color3} }
+\textcolor{red}{To test how sensitive the color change is to the different volumes in our system, we have conducted the following experiment. In this experiment, we moved the acoustic source clockwise in an elliptical fashion. As we are moving the source, we varied the source volume gradually and noted its color change. We started with the volume set to the maximum (the corresponding color is red). Then we gradually decreased the volume as the move to the right. After the volume is decreased to $60\%$ of the maximum, we started to gradually increase the volume until the maximum is reached again. Figure~\ref{fig:show_color_3} gives a visual presentation of the painted result. As can be seen from the figure, the top left region of the drawn ellipse is red. The color then gradually changes to the green yellow range and then back to the red orange range as we complete the ellipse. A video demonstration of this experiment is available at~\cite{demo:color3} }
 
 \begin{figure}[h!]
   \centering
