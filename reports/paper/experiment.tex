@@ -106,7 +106,7 @@ As was mentioned before, although accuracy improves with the window size, comput
 \caption{Error distribution in the grid. Arrays are placed at $(-0.5$ m$, 0$ m$)$ and $(0.5$ m$, 0$ m$)$}
 \label{fig:error_distribution}
 \end{figure}
-We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. There is one error spike in the mid-left region and we contribute this to audio source misplacement because the error is fairly low and consistent around that spike.
+We also calculated the localization error for each tested point in the grid. Figure~\ref{fig:error_distribution} shows the error distribution inside the grid. The error is below $3$ cm for most areas inside the grid. However, note that there is one error spike in the mid-left region in the grid. We attribute this inconsistency with the surrounding region to errors we have made in placing the audio source, since manually placing the audio source with centimeter precision is difficult. To confirm this speculation, we later reevaluated the errors in this region and found them to be close to the errors in the surrounding region. 
 
 \begin{figure}[h!]
 \centering
@@ -114,9 +114,9 @@ We also calculated the localization error for each tested point in the grid. Fig
 \caption{Localization error as the distance between the source and the microphone arrays increases. The source is placed on the $y$ axis.}
 \label{fig:error_along_y}
 \end{figure}
-To test the limit of the system and to evaluate the accuracy when the source moves outside of the one meter by one meter region, we measured the localization error by placing the source at $10$ locations along $y$ axis ranging from $(0$ cm$, -10$ cm$)$ to $(0$ cm$, -200$ cm$)$. The result is presented in fig~\ref{fig:error_along_y}. The localization error is within $3$ cm when the source is within $100$ cm from the arrays. The error increases to about $5$ cm when the source distance increases to $150$ cm and the error exceeds $10$ cm after the source distance reaches $200$ cm.
+To test the limit of the system and to evaluate the accuracy when the source moves outside of the one meter by one meter region, we measured the localization error by placing the source at $10$ locations along $y$ axis ranging from $(0$ cm$, -10$ cm$)$ to $(0$ cm$, -200$ cm$)$. The result is presented in fig~\ref{fig:error_along_y}. The localization error is on average below $3$ cm when the source is within $100$ cm along the $y$ axis from the arrays. The error increases to about $5$ cm when the source distance increases to $150$ cm and the error exceeds $10$ cm after the source distance reaches $200$ cm. We can see that our system achieves good accuracy within the one meter by one meter region and gradually loses its localization accuracy as we move the source outside.  
 
-\clearpage
+%\clearpage
 \subsection{Movement tracking}
 \begin{figure*}[h!]
 \centering
@@ -183,9 +183,9 @@ Fig~\ref{fig:circle_musicbn} shows the result when Music B is used as the sound 
 
 \subsection{Discussion}
 
-Different prefiltering options produce very similar result. GCC\_PHAT gives slightly better accuracy, but the difference among unfiltered GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is very small.
+Different prefiltering options produce very similar result. GCC\_PHAT gives slightly better accuracy, but the difference among unfiltered GCC, GCC\_PHAT and GCC\_PHAT\_SQRT is very small. 
 
-By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}), we find that the localization error does not increase when the movement speed increased from $10$ cm per second to $20$ cm per second.
+By comparing experiments at normal speed (fig~\ref{fig:circle_wnn} to \ref{fig:circle_musicbn}) with experiments at fast speed (fig~\ref{fig:circle_wnf} to~\ref{fig:circle_musicbf}), we find that the localization error does not increase when the movement speed increased from $10$ cm per second to $20$ cm per second. However, it's conceivable that the localization error will increase with further speed increase, but since our system is designed for HCI, we feel $20$ cm per second covers most of the use cases. 
 
 When white noise is used as the audio source, Kalman filtering and raw localization produces very similar accuracy, and averaging filter gives slightly higher accuracy. However, when the audio source is changed to Music A or Music B, Kalman filtering produces better accuracy compared to raw detection, but Averaging filter still gives the best result. Looking at the smoothness of the movement path after applying different movement filters, it can be seen that raw detection has the most amount of jiggling. Kalman filter reduces the amount of jiggling from raw detection by combining past estimates with current estimates. Averaging filter has the least amount of jiggling. However, averaging filter averages detection outputs from past $0.5$ seconds, which makes the filtered output lag the real movement.
 
@@ -298,3 +298,5 @@ To show how the volume acts as a color control. A simple experiment is shown in 
 \end{figure}
 
 Instead of manually varying the volume of the acoustic source, a natural extension is to use music as our acoustic source. Generally, the volume of music will vary with time and this change will be reflected by the colors drawn. In figure~\ref{fig:show_color_2}, we used a pop song as our acoustic source and painted a heart shape by free hand. The song used here is \emph{Don't Let It Break Your Heart} by \emph{Coldplay}. As can be seen from the figure, the color of the heart changes at each time instant according to the volume of the song. A video demonstration is available at~\cite{demo:color2}.
+
+
