@@ -53,7 +53,7 @@ Video demonstration, Paiting a heart with a pop song, URL: \url{https://youtu.be
 Video demonstration, Paiting an ellipse with white nose, URL: \url{https://youtu.be/RxJ-lpPqi9M}
 
 \bibitem{ltm:pham}
-Pham, D. T., et al. ``Tangible acoustic interface approaches,'' \emph{Proceedings of IPROMS 2005 Virtual Conference}, 2005.
+Pham, DT and Al-Kutubi, M and Ji, Z and Yang, M and Wang, Z and Catheline, S, ``Tangible acoustic interface approaches,'' \emph{Proceedings of IPROMS 2005 Virtual Conference}, 2005.
 
 \bibitem{ltm:lpc}
 XueXin Yap, Khong, A.W.H., and Woon-Seng Gan, ``Localization of acoustic source on solids: A linear predictive coding based algorithm for location template matching,'' \emph{IEEE International Conference on Acoustics Speech and Signal Processing (ICASSP)}, 2010
@@ -84,14 +84,14 @@ APA
 Harvey, Andrew C. ``Forecasting, structural time series models and the Kalman filter,'' \emph{Cambridge university press}, 1990.
 
 \bibitem{tdoa:ppp}
-Ishii, Hiroshi, et al. ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
+Ishii, Hiroshi and Wisneski, Craig and Orbanes, Julian and Chun, Ben and Paradiso, Joe, ``PingPongPlus: design of an athletic-tangible interface for computer-supported cooperative play,'' \emph{Proceedings of the SIGCHI conference on Human Factors in Computing Systems}. ACM, 1999.
 
 \bibitem{tdoa:mit5}
-Paradiso, Joseph A., et al. ``Passive acoustic knock tracking for interactive windows,'' \emph{CHI'02 Extended Abstracts on Human Factors in Computing Systems. ACM,} 2002.
+Paradiso, Joseph A and Leo, Che King and Checka, Nisha and Hsiao, Kaijen, ``Passive acoustic knock tracking for interactive windows,'' \emph{CHI'02 Extended Abstracts on Human Factors in Computing Systems. ACM,} 2002.
 APA 
 
 \bibitem{tdoa:mit2}
-Paradiso, Joseph A., et al. ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
+Paradiso, Joseph and Leo, Che King and Checka, Nisha and Hsiao, Kaijen and others, ``Passive acoustic sensing for tracking knocks atop large interactive displays,'' \emph{Proceedings of IEEE. Vol. 1. IEEE}, 2002.
 
 \bibitem{sys:1}
 Datasheet for microphone CEM-C9745JAD462P2.54R, URL: \url{http://cdn.sparkfun.com/datasheets/Sensors/Sound/CEM-C9745JAD462P2.54R.pdf}
@@ -107,10 +107,10 @@ PJRC, URL: \url{https://www.pjrc.com/teensy/teensy31.html}
 Microcontroller datasheet, Freescale Semiconductorsl, URL: \url{http://cache.freescale.com/files/32bit/doc/data_sheet/K20P64M72SF1.pdf}
 
 \bibitem{tdoa:3}
-Polotti, Pietro, et al. ``Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces,'' \emph{Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05)}, 2005.
+Polotti, Pietro and Sampietro, Manuel and Sarti, Augusto and Tubaro, Stefano and Crevoisier, Alain, ``Acoustic Localization of Tactile Interactions for the Development of Novel Tangible Interfaces,'' \emph{Proc. of the 8th Int. Conference on Digital Audio Effects (DAFX-05)}, 2005.
 
 \bibitem{tdoa:mit3}
-Paradiso, Joseph A., et al. ``Sensor systems for interactive surfaces,'' \emph{IBM Systems Journal}, 2000.
+Paradiso, Joseph A and Hsiao, Kai-yuh and Strickon, Joshua and Lifton, Joshua and Adler, Ari, ``Sensor systems for interactive surfaces,'' \emph{IBM Systems Journal}, 2000.
 
 \bibitem{tdoa:mit4}
 Checka, Nisha ``A system for tracking and characterizing acoustic impacts on large interactive surfaces,'' \emph{Diss. Massachusetts Institute of Technology}, 2001.
